@@ -19,6 +19,7 @@ welcome_mesg = """Hello and welcome to the Tasmota Discord server!
 
 If you have generic questions regarding settings, functionality, or need help with configuration of your device, feel free to ask in the #general channel.
 Do you think you've encountered a bug? The device doesn't work as expected? The #issues channel is for such questions.
+This is not strictly enforced, however please do not post the same issue in both channels.
 
 Solutions or suggestions related to common issues and problems, especially for those new to Tasmota and compatible devices, are available on our wiki:
 
@@ -39,47 +40,62 @@ async def on_message(message):
     if message.content == "!help":
         await client.send_message(message.author, help_mesg)
 
-    elif message.content == "+links":
-        link_list = ["+{}".format(k) for k in links.keys()]
+    elif message.content == "!test":
+        embed = discord.Embed(title="LedState", colour=discord.Colour(0x3afabd), description="Usage: `ledstate <parameter>` where _parameter_ is one of:")
 
-        msg = '{0.author.mention} Available links:\n{1}'.format(message, ",".join(link_list))
+        embed.add_field(name="_None_", value="Show current led state as 0 to 7", inin)
+        embed.add_field(name="0 / off", value="Disable use of LED as much as possible")
+        embed.add_field(name="1 / on", value="Disable use of LED as much as possible")
+        embed.add_field(name="2", value="Show MQTT subscriptions as a led blink")
+        embed.add_field(name="3", value="Show power state and MQTT subscriptions as a led blink")
+        embed.add_field(name="4", value="Show MQTT publications as a led blink")
+        embed.add_field(name="5", value="Show power state and MQTT publications as a led blink")
+        embed.add_field(name="6", value="Show all MQTT messages as a led blink")
+        embed.add_field(name="7", value="Show power state and MQTT messages as a led blink")
 
-        await client.send_message(message.channel, msg)
+        await client.send_message(message.channel, embed=embed)
 
     elif message.content.startswith('!') and len(message.content) > 1:
         cmd = cmds.get(message.content.split(" ")[0][1:].lower(), None)
 
         if cmd:
-            msg = '{}\n```{}```'.format(" ".join([m.mention for m in message.mentions]), "\n".join(cmd))
+            reply = await make_reply(message, "\n".join(cmd))
         else:
-            msg = '{0.author.mention} Command not found. Use ? prefix to search.'.format(message)
+            reply = await make_reply(message, "Unknown command. Use ! prefix for Tasmota commands, ? prefix to search and + for shortlinks.")
 
-        await client.send_message(message.channel, msg)
+        await client.send_message(message.channel, reply)
 
-    elif message.content.startswith('+'):
-        lnk = links.get(message.content[1:].lower(), None)
+    elif message.content.startswith("+links"):
+        link_list = ["+{}".format(k) for k in links.keys()]
+        reply = await make_reply(message, "Available links:\n{}".format(" ".join(link_list)))
+        await client.send_message(message.channel, reply)
+
+    elif message.content.startswith('+') and len(message.content) > 1:
+        lnk = links.get(message.content.split(" ")[0][1:].lower(), None)
 
         if lnk:
-            msg = lnk
+            reply = await make_reply(message, lnk)
 
         else:
-            msg = '{0.author.mention} Shortlink not found.'.format(message)
+            reply = await make_reply(message, "Shortlink not found. +links to see the list.")
 
-        await client.send_message(message.channel, msg)
+        await client.send_message(message.channel, reply)
 
     elif message.content.startswith('?') and len(message.content) > 1:
         cmd = message.content.split(" ")[0][1:].lower()
         result = [c for c in cmds.keys() if cmd in c]
 
         if result:
-            if len(result) > 9:
-                msg = '{0.author.mention} Search yielded too many results. Narrow your query.'.format(message)
-            else:
-                msg = "{0.author.mention} I've found these commands:\n```{1}```".format(message, " ".join(result))
-        else:
-            msg = '{0.author.mention} No commands found.'.format(message)
+            if len(result) > 10:
 
-        await client.send_message(message.channel, msg)
+                reply = await make_reply(message, "Search yielded too many results. Narrow your query.")
+            else:
+                reply = await make_reply(message, "I've found these commands:\n```{}```".format(" ".join(result)))
+
+        else:
+            reply = await make_reply(message, "No commands found")
+
+        await client.send_message(message.channel, reply)
 
 
 @client.event
@@ -90,5 +106,9 @@ async def on_member_join(member):
 @client.event
 async def on_ready():
     print('Logged in as {} ({})'.format(client.user.name, client.user.id))
+
+async def make_reply(message, reply):
+    mentions = " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
+    return "{}\n{}".format(reply, mentions)
 
 client.run(TOKEN)

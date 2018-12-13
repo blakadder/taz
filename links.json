@@ -1,6 +1,7 @@
 {
   "hackbox": "https://thehackbox.org/tasmota",
   "rules": "https://github.com/arendst/Sonoff-Tasmota/wiki/Rules",
+  "wiki": "https://github.com/arendst/Sonoff-Tasmota/wiki",
   "commands": "https://github.com/arendst/Sonoff-Tasmota/wiki/Commands",
-  "esptool": "https://github.com/espressif/esptool/wiki"
+  "esptool": "https://github.com/arendst/Sonoff-Tasmota/wiki/Esptool"
 }
