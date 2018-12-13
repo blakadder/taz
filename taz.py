@@ -41,17 +41,27 @@ async def on_message(message):
         await client.send_message(message.author, help_mesg)
 
     elif message.content == "!test":
-        embed = discord.Embed(title="LedState", colour=discord.Colour(0x3afabd), description="Usage: `ledstate <parameter>` where _parameter_ is one of:")
+        # embed = discord.Embed(title="LedState", colour=discord.Colour(0x3afabd), description="Usage: `ledstate <parameter>` where _parameter_ is one of:")
+        #
+        # embed.add_field(name="_None_", value="Show current led state as 0 to 7", inline=False)
+        # embed.add_field(name="0 / off", value="Disable use of LED as much as possible", inline=False)
+        # embed.add_field(name="1 / on", value="Disable use of LED as much as possible", inline=False)
+        # embed.add_field(name="2", value="Show MQTT subscriptions as a led blink", inline=False)
+        # embed.add_field(name="3", value="Show power state and MQTT subscriptions as a led blink", inline=False)
+        # embed.add_field(name="4", value="Show MQTT publications as a led blink", inline=False)
+        # embed.add_field(name="5", value="Show power state and MQTT publications as a led blink", inline=False)
+        # embed.add_field(name="6", value="Show all MQTT messages as a led blink", inline=False)
+        # embed.add_field(name="7", value="Show power state and MQTT messages as a led blink", inline=False)
 
-        embed.add_field(name="_None_", value="Show current led state as 0 to 7", inin)
-        embed.add_field(name="0 / off", value="Disable use of LED as much as possible")
-        embed.add_field(name="1 / on", value="Disable use of LED as much as possible")
-        embed.add_field(name="2", value="Show MQTT subscriptions as a led blink")
-        embed.add_field(name="3", value="Show power state and MQTT subscriptions as a led blink")
-        embed.add_field(name="4", value="Show MQTT publications as a led blink")
-        embed.add_field(name="5", value="Show power state and MQTT publications as a led blink")
-        embed.add_field(name="6", value="Show all MQTT messages as a led blink")
-        embed.add_field(name="7", value="Show power state and MQTT messages as a led blink")
+        desc = """Usage: `ledstate <parameter>` where _parameter_ is one of:
+        
+        **_None_**: Show current led state as 0 to 7
+        **0 / off**: Disable use of LED as much as possible
+        **1 / on**: Disable use of LED as much as possible
+        """
+
+        embed = discord.Embed(title="LedState", colour=discord.Colour(0x3afabd),
+                              description=desc)
 
         await client.send_message(message.channel, embed=embed)
 
