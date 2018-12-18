@@ -3,5 +3,10 @@
   "rules": "https://github.com/arendst/Sonoff-Tasmota/wiki/Rules",
   "wiki": "https://github.com/arendst/Sonoff-Tasmota/wiki",
   "commands": "https://github.com/arendst/Sonoff-Tasmota/wiki/Commands",
-  "esptool": "https://github.com/arendst/Sonoff-Tasmota/wiki/Esptool"
+  "esptool": "https://github.com/arendst/Sonoff-Tasmota/wiki/Esptool",
+  "basic": "https://github.com/arendst/Sonoff-Tasmota/wiki/Sonoff-Basic",
+  "pow": "https://github.com/arendst/Sonoff-Tasmota/wiki/Sonoff-Pow-and-Pow-R2",
+  "wemos": "https://github.com/arendst/Sonoff-Tasmota/wiki/Wemos%20D1%20Mini",
+  "ha": "https://discord.gg/c5DvZ4e",
+  "github": "https://github.com/arendst/Sonoff-Tasmota"
 }
