@@ -107,11 +107,16 @@ async def links(ctx):
 @commands.has_any_role('Admin', 'Moderator')
 async def mute(ctx, member: discord.Member, duration: int=5):
     if ctx.prefix in ['!']:
-        muted_users[member] = datetime.now() + timedelta(minutes=duration)
-        await bot.add_roles(member, get(member.server.roles, name="Muted"))
-        embed = discord.Embed(title="{} has been muted in all channels for {} minute{}".format(member.name, duration, "s" if duration > 1 else ""), colour=discord.Colour(0xe74c3c),
-                              description="Consider this a warning.")
-        await bot.say(content=member.mention, embed=embed)
+        if member == bot.user:
+            embed = discord.Embed(
+                title="Yeah, good luck with that", colour=discord.Colour(0xe74c3c), description="I'd laugh if I had a sense of humor.")
+            await bot.say(content=member.mention, embed=embed)
+        else:
+            muted_users[member] = datetime.now() + timedelta(minutes=duration)
+            await bot.add_roles(member, get(member.server.roles, name="Muted"))
+            embed = discord.Embed(title="{} has been muted in all channels for {} minute{}".format(member.name, duration, "s" if duration > 1 else ""), colour=discord.Colour(0xe74c3c),
+                                  description="Consider this a warning.")
+            await bot.say(content=member.mention, embed=embed)
 
 
 @bot.command(pass_context=True, hidden=True)
@@ -177,7 +182,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(game=discord.Game(name="your configs"))
+    await bot.change_presence(game=discord.Game(name="you sleep -_-", type = 3))
     print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
 
