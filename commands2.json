@@ -1,0 +1,55 @@
+{
+  "power" : {
+    "name": "Power",
+    "usage": "`power<x> <parameter>` where _<x>_ is relay number and _parameter_ is one of:",
+    "group": "Main",
+    "options": [0, 14, 26],
+    "params": [
+      {
+        "name": "_None_",
+        "function": "Show current power state of relay<x> as On or Off, also resetting its PulseTime"
+      },
+      {
+        "name": "0 / off",
+        "function": "Turn relay<x> power Off"
+      },
+      {
+        "name": "1 / on",
+        "function": "Turn relay<x> power On"
+      },
+      {
+        "name": "2 / toggle",
+        "function": "Toggle power of relay<x>"
+      },
+      {
+        "name": "3 / blink",
+        "function": "Blink power of relay<x>"
+      },
+      {
+        "name": "4 / blinkoff",
+        "function": "Stop blinking power of relay<x>"
+      }
+    ]
+  },
+
+  "powerretain" : {
+    "name": "PowerRetain",
+    "usage": "`powerretain <parameter>` where _parameter_ is one of:",
+    "group": "MQTT",
+    "options": [26],
+    "params": [
+      {
+        "name": "_None_",
+        "function": "Show current MQTT power retain state"
+      },
+      {
+        "name": "0 / off",
+        "function": "(default) Disable MQTT power retain on status update"
+      },
+      {
+        "name": "1 / on",
+        "function": "Enable MQTT power retain on status update"
+      }
+    ]
+  }
+}

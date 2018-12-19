@@ -1,0 +1,51 @@
+
+{
+  "setoption0": {
+    "params": [
+      {
+        "name": "_None_",
+        "function": "Show current Save power changes state"
+      },
+      {
+        "name": "0 / off",
+        "function": "Do not save power changes and do not set relay after restart"
+      },
+      {
+        "name": "1 / on",
+        "function": "(default) Save power changes and set relay after restart"
+      }
+    ]
+  },
+  "setoption14": {
+    "params": [
+      {
+        "name": "_None_",
+        "function": "Show current relay switch mode"
+      },
+      {
+        "name": "0 / off",
+        "function": "(default) Set self-locking mode for all relays"
+      },
+      {
+        "name": "1 / on",
+        "function": "Set interlock mode for all relays"
+      }
+    ]
+  },
+  "setoption26": {
+    "params": [
+      {
+        "name": "_None_",
+        "function": "Show current POWER postfix setting"
+      },
+      {
+        "name": "0 / off",
+        "function": "(default) Keep using POWER without postfix for single power devices"
+      },
+      {
+        "name": "1 / on",
+        "function": "Add postfix to all POWER messages"
+      }
+    ]
+  }
+}

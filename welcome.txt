@@ -1,0 +1,15 @@
+Hello and welcome to the Tasmota Discord server!
+
+If you have generic questions regarding settings, functionality, or need help with configuration of your device, feel free to ask in the #general channel.
+Do you think you've encountered a bug? The device doesn't work as expected? The #issues channel is for such questions.
+This is not strictly enforced, however please do not post the same issue in both channels.
+
+Solutions or suggestions related to common issues and problems, especially for those new to Tasmota and compatible devices, are available on our wiki:
+
+https://github.com/arendst/Sonoff-Tasmota/wiki/Initial-Configuration
+https://github.com/arendst/Sonoff-Tasmota/wiki/FAQs
+https://github.com/arendst/Sonoff-Tasmota/wiki/Troubleshooting (especially this one)
+
+Please keep in mind that we're all volunteers here. Please be polite and patient. While we allow off-topic conversations, the channels are moderated. Flooding the chat, spamming links, being rude etc. is a quick way to be kicked (and/or banned, depending on the case).
+
+Just be a decent human being and we'll all get along just fine.
