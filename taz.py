@@ -1,4 +1,8 @@
 import discord
+import asyncio
+from discord.ext import commands
+from discord.utils import get
+from datetime import datetime, timedelta
 import json
 
 from discord_token import TOKEN
@@ -6,89 +10,171 @@ from discord_token import TOKEN
 with open('commands.json') as c:
     cmds = json.load(c)
 
+with open('commands2.json') as c2:
+    cmds2 = json.load(c2)
+
+with open('options.json') as o:
+    opts = json.load(o)
+
 with open('links.json') as l:
-    links = json.load(l)
+    links_list = json.load(l)
 
-client = discord.Client()
+with open('welcome.txt') as w:
+    welcome_mesg = w.read()
 
-help_mesg = """I provide quick access to various commands used in Tasmota software.
-If you know the exact command (without parameters), use prefix "!" to read its summary (for example `!switchtopic`).
-Alternatively, you can use prefix "?" so I can find commands by partial name (for example `?topic`)."""
+with open('help.txt') as h:
+    help_mesg = h.read()
 
-welcome_mesg = """Hello and welcome to the Tasmota Discord server!
+muted_users = {}
 
-If you have generic questions regarding settings, functionality, or need help with configuration of your device, feel free to ask in the #general channel.
-Do you think you've encountered a bug? The device doesn't work as expected? The #issues channel is for such questions.
+#client = discord.Client()
+bot = commands.Bot(command_prefix=['!', '?', '+'], description="Helper Bot", case_insensitive=False)
 
-Solutions or suggestions related to common issues and problems, especially for those new to Tasmota and compatible devices, are available on our wiki:
+# @client.event
+# async def on_message(message):
+#     # we do not want the bot to reply to itself
+#     if message.author == client.user:
+#         return
+#
+#     if message.content == "!help":
+#         await client.send_message(message.author, help_mesg)
+#
+#     elif message.content == "!test":
+#         cmd = cmds2['power']
+#
+#         embed = discord.Embed(title=cmd['name'], colour=discord.Colour(0x3afabd), description=await command_output(cmd),
+#                               url="https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}".format(cmd['group']))
+#
+#
+#         if cmd['options']:
+#             embed.description += "\n\nSetOptions related to this command:\n"
+#
+#             for o in cmd['options']:
+#                 embed.description += "\n`setoption{}` {}".format(o, opts["setoption{}".format(o)]['params'][0]['function'])
+#                 #embed.add_field(name="setoption{}".format(o), value=opts["setoption{}".format(o)]['params'][0]['function'], inline=False)
+#
+#         embed.set_footer(text="Click the function name to see other commands from group {}".format(cmd['group']))
+#
+#         await client.send_message(message.channel, embed=embed)
+#
+#     elif message.content.startswith('!') and len(message.content) > 1:
+#         cmd = cmds.get(message.content.split(" ")[0][1:].lower(), None)
+#
+#         if cmd:
+#             reply = await make_reply(message, "\n".join(cmd))
+#         else:
+#             reply = await make_reply(message, "Unknown command. Use ! prefix for Tasmota commands, ? prefix to search and + for shortlinks.")
+#
+#         await client.send_message(message.channel, reply)
+#
+#     elif message.content.startswith("+links"):
+#         link_list = sorted(["+{}".format(k) for k in links.keys()])
+#         reply = await make_reply(message, "Available links:\n{}".format(" ".join(link_list)))
+#         await client.send_message(message.channel, reply)
+#
+#     elif message.content.startswith("+issue") and len(message.content.split(" ")) > 1:
+#         nr = message.content.split(" ")[1]
+#         lnk = "https://github.com/arendst/Sonoff-Tasmota/issues/{}".format(nr)
+#         reply = await make_reply(message, lnk)
+#         await client.send_message(message.channel, reply)
+#
+#     elif message.content.startswith('+') and len(message.content) > 1:
+#         lnk = links.get(message.content.split(" ")[0][1:].lower(), None)
+#
+#         if lnk:
+#             reply = await make_reply(message, lnk)
+#
+#         else:
+#             reply = await make_reply(message, "Shortlink not found. +links to see the list.")
+#
+#         await client.send_message(message.channel, reply)
+#
+#     elif message.content.startswith('?') and len(message.content) > 1:
+#         cmd = message.content.split(" ")[0][1:].lower()
+#         result = [c for c in cmds.keys() if cmd in c]
+#         print(result)
+#
+#         if result:
+#             if len(result) > 15:
+#                 reply = await make_reply(message, "Search yielded too many results. Narrow your query.")
+#             else:
+#                 reply = await make_reply(message, "I've found these commands:\n```{}```".format(" ".join(result)))
+#
+#         else:
+#             reply = await make_reply(message, "No commands found")
+#
+#         await client.send_message(message.channel, reply)
 
-https://github.com/arendst/Sonoff-Tasmota/wiki/Initial-Configuration
-https://github.com/arendst/Sonoff-Tasmota/wiki/FAQs
-https://github.com/arendst/Sonoff-Tasmota/wiki/Troubleshooting (especially this one)
+@bot.command(pass_context=True)
+async def links(ctx):
+    if ctx.prefix in ['!', '+']:
+        link_list = " ".join(sorted(["+{}".format(k) for k in links_list.keys()]))
+        embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
+        await bot.say(embed=embed)
 
-Please keep in mind that we're all volunteers here. Please be polite and patient. While we allow off-topic conversations, the channels are moderated. Flooding the chat, spamming links, being rude etc. is a quick way to be kicked (and/or banned, depending on the case).
+@bot.command(pass_context=True)
+@commands.has_any_role('Admin', 'Moderator')
+async def mute(ctx, member: discord.Member, duration: int=5):
+    if ctx.prefix in ['!']:
+        muted_users[member] = datetime.now() + timedelta(minutes=duration)
+        await bot.add_roles(member, get(member.server.roles, name="Muted"))
+        embed = discord.Embed(title="{} has been muted in all channels for {} minute(s)".format(member.name, duration), colour=discord.Colour(0xe74c3c),
+                              description="Consider this a warning.")
+        await bot.say(content=member.mention, embed=embed)
 
-Just be a decent human being and we'll all get along just fine."""
-
-@client.event
-async def on_message(message):
-    # we do not want the bot to reply to itself
-    if message.author == client.user:
-        return
-
-    if message.content == "!help":
-        await client.send_message(message.author, help_mesg)
-
-    elif message.content == "+links":
-        link_list = ["+{}".format(k) for k in links.keys()]
-
-        msg = '{0.author.mention} Available links:\n{1}'.format(message, ",".join(link_list))
-
-        await client.send_message(message.channel, msg)
-
-    elif message.content.startswith('!') and len(message.content) > 1:
-        cmd = cmds.get(message.content.split(" ")[0][1:].lower(), None)
-
-        if cmd:
-            msg = '{}\n```{}```'.format(" ".join([m.mention for m in message.mentions]), "\n".join(cmd))
+@bot.command(pass_context=True)
+@commands.has_any_role('Admin', 'Moderator')
+async def unmute(ctx, member: discord.Member):
+    if ctx.prefix in ['!']:
+        if muted_users.get(member, None):
+            await bot.remove_roles(member, get(member.server.roles, name="Muted"))
+            embed = discord.Embed(title="{} is no longer muted".format(member.name), colour=discord.Colour(0x2ecc71))
         else:
-            msg = '{0.author.mention} Command not found. Use ? prefix to search.'.format(message)
+            embed = discord.Embed(title="{} is not currently muted".format(member.name), colour=discord.Colour(0xe74c3c))
+        await bot.say(embed=embed)
 
-        await client.send_message(message.channel, msg)
+@bot.command(pass_context=True)
+@commands.has_any_role('Admin', 'Moderator')
+async def muted(ctx):
+    if ctx.prefix in ['!']:
+        embed = discord.Embed(title="Currently muted members", colour=discord.Colour(0xe74c3c))
+        for member, duration in muted_users.items():
+            embed.add_field(name=member.name, value=duration.strftime("Until %Y-%m-%d %H:%M"), inline=False)
+        await bot.say(embed=embed)
 
-    elif message.content.startswith('+'):
-        lnk = links.get(message.content[1:].lower(), None)
+async def mute_check():
+    await bot.wait_until_ready()
+    # channel = discord.Object(id='521370717175152692')
+    while not bot.is_closed:
+        for member, d in list(muted_users.items()):
+            if datetime.now() >= muted_users[member]:
+                await bot.remove_roles(member, get(member.server.roles, name="Muted"))
+                embed = discord.Embed(title="You are no longer muted", colour=discord.Colour(0x2ecc71))
+                await bot.send_message(member, content=member.mention, embed=embed)
+                del muted_users[member]
+                print("Unmuted {}".format(member.name))
+                asyncio.sleep(1)
+        await asyncio.sleep(15) # task runs every 60 seconds
 
-        if lnk:
-            msg = lnk
-
-        else:
-            msg = '{0.author.mention} Shortlink not found.'.format(message)
-
-        await client.send_message(message.channel, msg)
-
-    elif message.content.startswith('?') and len(message.content) > 1:
-        cmd = message.content.split(" ")[0][1:].lower()
-        result = [c for c in cmds.keys() if cmd in c]
-
-        if result:
-            if len(result) > 9:
-                msg = '{0.author.mention} Search yielded too many results. Narrow your query.'.format(message)
-            else:
-                msg = "{0.author.mention} I've found these commands:\n```{1}```".format(message, " ".join(result))
-        else:
-            msg = '{0.author.mention} No commands found.'.format(message)
-
-        await client.send_message(message.channel, msg)
-
-
-@client.event
+@bot.event
 async def on_member_join(member):
-    await client.send_message(member, welcome_mesg)
+    await bot.send_message(member, welcome_mesg)
 
-
-@client.event
+@bot.event
 async def on_ready():
-    print('Logged in as {} ({})'.format(client.user.name, client.user.id))
+    await bot.change_presence(game=discord.Game(name="your configs"))
+    print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
-client.run(TOKEN)
+async def make_reply(message, reply):
+    mentions = " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
+    return "{}\n{}".format(reply, mentions)
+
+async def command_output(cmd):
+    reply = "Usage: {}\n\n{}".format(cmd['usage'], "\n".join(["**{}**: {}".format(p['name'], p['function']) for p in cmd['params']]))
+    return reply
+
+async def mentions(message):
+    return " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
+
+bot.loop.create_task(mute_check())
+bot.run(TOKEN)
