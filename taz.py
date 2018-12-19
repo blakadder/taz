@@ -13,8 +13,8 @@ with open('commands.json') as c:
 with open('commands2.json') as c2:
     cmds2 = json.load(c2)
 
-with open('options.json') as o:
-    opts = json.load(o)
+# with open('options.json') as o:
+#     opts = json.load(o)
 
 with open('links.json') as l:
     links_list = json.load(l)
@@ -30,22 +30,32 @@ muted_users = {}
 #client = discord.Client()
 bot = commands.Bot(command_prefix=['!', '?', '+'], description="Helper Bot", case_insensitive=False)
 
-# @client.event
-# async def on_message(message):
-#     # we do not want the bot to reply to itself
-#     if message.author == client.user:
-#         return
-#
-#     if message.content == "!help":
-#         await client.send_message(message.author, help_mesg)
-#
+@bot.event
+async def on_message(message):
+    found = False
+    msg = message.content
+    if msg.startswith("+") and len(msg) > 1:
+        link = links_list.get(msg[1:], None)
+        if link:
+            found = True
+            await bot.send_message(message.channel, await make_reply(message, link))
+
+    elif msg.startswith("!") and len(msg) > 1:
+        pass
+
+    elif msg.startswith("?") and len(msg) > 1:
+        pass
+
+    if not found:
+        await bot.process_commands(message)
+
+
 #     elif message.content == "!test":
 #         cmd = cmds2['power']
 #
 #         embed = discord.Embed(title=cmd['name'], colour=discord.Colour(0x3afabd), description=await command_output(cmd),
 #                               url="https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}".format(cmd['group']))
-#
-#
+##
 #         if cmd['options']:
 #             embed.description += "\n\nSetOptions related to this command:\n"
 #
@@ -67,27 +77,7 @@ bot = commands.Bot(command_prefix=['!', '?', '+'], description="Helper Bot", cas
 #
 #         await client.send_message(message.channel, reply)
 #
-#     elif message.content.startswith("+links"):
-#         link_list = sorted(["+{}".format(k) for k in links.keys()])
-#         reply = await make_reply(message, "Available links:\n{}".format(" ".join(link_list)))
-#         await client.send_message(message.channel, reply)
-#
-#     elif message.content.startswith("+issue") and len(message.content.split(" ")) > 1:
-#         nr = message.content.split(" ")[1]
-#         lnk = "https://github.com/arendst/Sonoff-Tasmota/issues/{}".format(nr)
-#         reply = await make_reply(message, lnk)
-#         await client.send_message(message.channel, reply)
-#
-#     elif message.content.startswith('+') and len(message.content) > 1:
-#         lnk = links.get(message.content.split(" ")[0][1:].lower(), None)
-#
-#         if lnk:
-#             reply = await make_reply(message, lnk)
-#
-#         else:
-#             reply = await make_reply(message, "Shortlink not found. +links to see the list.")
-#
-#         await client.send_message(message.channel, reply)
+
 #
 #     elif message.content.startswith('?') and len(message.content) > 1:
 #         cmd = message.content.split(" ")[0][1:].lower()
@@ -112,17 +102,19 @@ async def links(ctx):
         embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
         await bot.say(embed=embed)
 
-@bot.command(pass_context=True)
+
+@bot.command(pass_context=True, hidden=True)
 @commands.has_any_role('Admin', 'Moderator')
 async def mute(ctx, member: discord.Member, duration: int=5):
     if ctx.prefix in ['!']:
         muted_users[member] = datetime.now() + timedelta(minutes=duration)
         await bot.add_roles(member, get(member.server.roles, name="Muted"))
-        embed = discord.Embed(title="{} has been muted in all channels for {} minute(s)".format(member.name, duration), colour=discord.Colour(0xe74c3c),
+        embed = discord.Embed(title="{} has been muted in all channels for {} minute{}".format(member.name, duration, "s" if duration > 1 else ""), colour=discord.Colour(0xe74c3c),
                               description="Consider this a warning.")
         await bot.say(content=member.mention, embed=embed)
 
-@bot.command(pass_context=True)
+
+@bot.command(pass_context=True, hidden=True)
 @commands.has_any_role('Admin', 'Moderator')
 async def unmute(ctx, member: discord.Member):
     if ctx.prefix in ['!']:
@@ -133,7 +125,8 @@ async def unmute(ctx, member: discord.Member):
             embed = discord.Embed(title="{} is not currently muted".format(member.name), colour=discord.Colour(0xe74c3c))
         await bot.say(embed=embed)
 
-@bot.command(pass_context=True)
+
+@bot.command(pass_context=True, hidden=True)
 @commands.has_any_role('Admin', 'Moderator')
 async def muted(ctx):
     if ctx.prefix in ['!']:
@@ -142,9 +135,9 @@ async def muted(ctx):
             embed.add_field(name=member.name, value=duration.strftime("Until %Y-%m-%d %H:%M"), inline=False)
         await bot.say(embed=embed)
 
+
 async def mute_check():
     await bot.wait_until_ready()
-    # channel = discord.Object(id='521370717175152692')
     while not bot.is_closed:
         for member, d in list(muted_users.items()):
             if datetime.now() >= muted_users[member]:
@@ -156,22 +149,47 @@ async def mute_check():
                 asyncio.sleep(1)
         await asyncio.sleep(15) # task runs every 60 seconds
 
+
+@bot.command(pass_context=True)
+async def issue(ctx, issue: int):
+    if ctx.prefix in ['+']:
+        await bot.say("https://github.com/arendst/Sonoff-Tasmota/issues/{}".format(issue))
+
+
+@bot.command(pass_context=True, hidden=True)
+@commands.has_any_role('Admin', 'Moderator')
+async def inactive(ctx, days: int=30):
+    if ctx.prefix in ['!']:
+        await bot.say("{} members are inactive for more than {} day{}. Use !prune <days> command to kick them.".format(await bot.estimate_pruned_members(server=ctx.message.server, days=days), days, "s" if days > 1 else ""))
+
+
+@bot.command(pass_context=True, hidden=True)
+@commands.has_any_role('Admin')
+async def prune(ctx, days: int=30):
+    if ctx.prefix in ['!']:
+        await bot.say("{} members inactive for more than {} day{} were kicked. ".format(await bot.prune_members(server=ctx.message.server, days=days), days, "s" if days > 1 else ""))
+
+
 @bot.event
 async def on_member_join(member):
     await bot.send_message(member, welcome_mesg)
+
 
 @bot.event
 async def on_ready():
     await bot.change_presence(game=discord.Game(name="your configs"))
     print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
+
 async def make_reply(message, reply):
     mentions = " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
-    return "{}\n{}".format(reply, mentions)
+    return "{}\n{}".format(mentions, reply)
+
 
 async def command_output(cmd):
     reply = "Usage: {}\n\n{}".format(cmd['usage'], "\n".join(["**{}**: {}".format(p['name'], p['function']) for p in cmd['params']]))
     return reply
+
 
 async def mentions(message):
     return " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
