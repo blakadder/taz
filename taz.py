@@ -182,7 +182,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(game=discord.Game(name="you sleep -_-", type = 3))
+    await bot.change_presence(game=discord.Game(name="photos of post girls", type = 3))
     print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
 
