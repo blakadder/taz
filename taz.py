@@ -175,11 +175,12 @@ async def prune(ctx, days: int=30):
         await bot.say("{} members inactive for more than {} day{} were kicked. ".format(await bot.prune_members(server=ctx.message.server, days=days), days, "s" if days > 1 else ""))
 
 
-@bot.command(pass_context=True)
+@bot.command(pass_context=True, ignore_extras=False)
 @commands.has_any_role('Admin')
-async def watch(ctx, what: str):
+async def watch(ctx, *args):
+    print(ctx.args)
     if ctx.prefix in ['!']:
-        await bot.change_presence(game=discord.Game(name=what, type=3))
+        await bot.change_presence(game=discord.Game(name=" ".join(args), type=3))
 
 
 @bot.event
@@ -189,7 +190,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(game=discord.Game(name="photos of post girls", type = 3))
+    # await bot.change_presence(game=discord.Game(name="photos of post girls", type = 3))
     print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
 
