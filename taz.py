@@ -175,6 +175,13 @@ async def prune(ctx, days: int=30):
         await bot.say("{} members inactive for more than {} day{} were kicked. ".format(await bot.prune_members(server=ctx.message.server, days=days), days, "s" if days > 1 else ""))
 
 
+@bot.command(pass_context=True)
+@commands.has_any_role('Admin')
+async def watch(ctx, what: str):
+    if ctx.prefix in ['!']:
+        await bot.change_presence(game=discord.Game(name=what, type=3))
+
+
 @bot.event
 async def on_member_join(member):
     await bot.send_message(member, welcome_mesg)
