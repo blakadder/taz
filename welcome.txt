@@ -4,12 +4,19 @@ If you have generic questions regarding settings, functionality, or need help wi
 Do you think you've encountered a bug? The device doesn't work as expected? The #issues channel is for such questions.
 This is not strictly enforced, however please do not post the same issue in both channels.
 
+**If this software helps you save money which you'd otherwise spend on commercial home automation systems, please consider a donation: <https://paypal.me/tasmota>. Thank you.**
+
 Solutions or suggestions related to common issues and problems, especially for those new to Tasmota and compatible devices, are available on our wiki:
 
-https://github.com/arendst/Sonoff-Tasmota/wiki/Initial-Configuration
-https://github.com/arendst/Sonoff-Tasmota/wiki/FAQs
-https://github.com/arendst/Sonoff-Tasmota/wiki/Troubleshooting (especially this one)
+<https://github.com/arendst/Sonoff-Tasmota/wiki/Initial-Configuration>
+<https://github.com/arendst/Sonoff-Tasmota/wiki/FAQs>
+<https://github.com/arendst/Sonoff-Tasmota/wiki/Troubleshooting> (especially this one)
 
 Please keep in mind that we're all volunteers here. Please be polite and patient. While we allow off-topic conversations, the channels are moderated. Flooding the chat, spamming links, being rude etc. is a quick way to be kicked (and/or banned, depending on the case).
 
 Just be a decent human being and we'll all get along just fine.
+
+**NOTE FOR HOME ASSISTANT USERS:**
+Before asking for help with Tasmota/Home Assistant, make sure that both are in the latest available versions.
+Be prepared that we will ask if you have verified that the MQTT messages sent from Tasmota device are correct. This can be done using `mosquitto_sub`, `mqtt_spy` or other MQTT clients available for free.
+This applies especially for Auto Discovery functions. If the messages are correct, the issue might be related to HA configuration and as such, might be resolved better on the HA Discord: https://discord.gg/c5DvZ4e
