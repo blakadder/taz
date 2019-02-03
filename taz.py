@@ -88,8 +88,8 @@ async def on_message(message):
 #
 #         await client.send_message(message.channel, reply)
 
-@bot.command(pass_context=True, brief="Return a link or show available links.")
-async def l(ctx, link: str=''):
+@bot.command(aliases=["l", "links"], pass_context=True, brief="Return a link or show available links.")
+async def link(ctx, link: str=''):
     if link and links_list.get(link):
         link = links_list[link]
         await bot.send_message(ctx.message.channel, "<{}>".format(link))
@@ -100,8 +100,8 @@ async def l(ctx, link: str=''):
         await bot.say(embed=embed)
 
 
-@bot.command(pass_context=True, brief="Show SetOption description and usage.")
-async def o(ctx, nr: str):
+@bot.command(aliases=["o", "setoption", "so"], pass_context=True, brief="Show SetOption description and usage.")
+async def option(ctx, nr: str):
     if opts.get(nr) and opts[nr]['enabled']:
         option = opts[nr]
         embed = discord.Embed(title="SetOption"+nr, description=option['desc'], colour=discord.Colour(0x3498db))
@@ -113,9 +113,9 @@ async def o(ctx, nr: str):
     await bot.say(embed=embed)
 
 
-@bot.command(pass_context=True, brief="Mute a user or show the list of currently muted users.")
+@bot.command(aliases=["m"], pass_context=True, brief="Mute a user or show the list of currently muted users.")
 @commands.has_any_role('Admin', 'Moderator')
-async def m(ctx, member: discord.Member=None, duration: int=5):
+async def mute(ctx, member: discord.Member=None, duration: int=5):
     if member and member == bot.user:
         embed = discord.Embed(
             title="Yeah, good luck with that", colour=discord.Colour(0x3498db), description="I'd laugh if I had a sense of humor.")
@@ -133,9 +133,9 @@ async def m(ctx, member: discord.Member=None, duration: int=5):
         await bot.say(embed=embed)
 
 
-@bot.command(pass_context=True, brief="Unmute a user.")
+@bot.command(aliases=["u"], pass_context=True, brief="Unmute a user.")
 @commands.has_any_role('Admin', 'Moderator')
-async def u(ctx, member: discord.Member):
+async def unmute(ctx, member: discord.Member):
     if muted_users.get(member, None):
         await bot.remove_roles(member, get(member.server.roles, name="Muted"))
         embed = discord.Embed(title="{} is no longer muted".format(member.name), colour=discord.Colour(0x2ecc71))
@@ -150,15 +150,15 @@ async def u(ctx, member: discord.Member):
 #         await bot.say("https://github.com/arendst/Sonoff-Tasmota/issues/{}".format(issue))
 
 
-@bot.command(pass_context=True, brief="Show count of users inactive for <x> days.")
+@bot.command(aliases=["i"], pass_context=True, brief="Show count of users inactive for <x> days.")
 @commands.has_any_role('Admin', 'Moderator')
-async def i(ctx, days: int=30):
+async def inactive(ctx, days: int=30):
     await bot.say("{} members are inactive for more than {} day{}.".format(await bot.estimate_pruned_members(server=ctx.message.server, days=days), days, "s" if days > 1 else ""))
 
 
-@bot.command(pass_context=True, brief="Prune members inactive for <x> days.")
+@bot.command(aliases=["p"], pass_context=True, brief="Prune members inactive for <x> days.")
 @commands.has_any_role('Admin')
-async def p(ctx, days: int=30):
+async def prune(ctx, days: int=30):
     await bot.say("{} members inactive for more than {} day{} were kicked. ".format(await bot.prune_members(server=ctx.message.server, days=days), days, "s" if days > 1 else ""))
 
 
