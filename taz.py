@@ -1,10 +1,14 @@
 import discord
 import asyncio
+import json
+import re
+
 from discord.ext import commands
 from discord.utils import get
 from datetime import datetime, timedelta
-import json
-import re
+
+from github import Github
+from github.GithubException import UnknownObjectException
 
 from discord_token import TOKEN
 
@@ -28,6 +32,9 @@ with open('help.txt') as h:
 
 muted_users = {}
 
+git = Github()
+tasmota = git.get_repo("arendst/Sonoff-Tasmota")
+
 re_issue = re.compile("#(\d{1,5})")
 
 bot = commands.Bot(command_prefix=['?'], description="Helper Bot", case_insensitive=False)
@@ -36,10 +43,20 @@ bot = commands.Bot(command_prefix=['?'], description="Helper Bot", case_insensit
 async def on_message(message):
     msg = message.content
     found = re.findall(re_issue, msg)
+    bad = []
     if found:
-        issues = ["[{}](<https://github.com/arendst/Sonoff-Tasmota/issues/{}>)".format(i,i) for i in found]
-        embed = discord.Embed(title="GitHub issues mentioned", description=", ".join(issues), colour=discord.Colour(0x3498db))
-        await bot.send_message(message.channel, embed=embed)
+        for i in found:
+            try:
+                issue = tasmota.get_issue(number=int(i))
+                embed = discord.Embed(description="[#{}: {}](<{}>)".format(i, issue.title, issue.url), colour=discord.Colour(0x3498db))
+                await bot.send_message(message.channel, embed=embed)
+            except Exception as error:
+                if isinstance(error, UnknownObjectException):
+                    bad.append(i)
+        if bad:
+            embed = discord.Embed(description="Issue(s) {} not found.".format(", ".join([i for i in sorted(bad)])),
+                                  colour=discord.Colour(0x3498db))
+            await bot.send_message(message.channel, embed=embed)
 
     await bot.process_commands(message)
 
@@ -181,7 +198,6 @@ async def on_command_error(error, ctx):
     await bot.send_message(ctx.message.channel, embed=embed)
 
 
-
 @bot.event
 async def on_ready():
     # await bot.change_presence(game=discord.Game(name="photos of post girls", type = 3))
@@ -215,5 +231,6 @@ async def mute_check():
                 asyncio.sleep(1)
         await asyncio.sleep(15) # task runs every 60 seconds
 
-bot.loop.create_task(mute_check())
-bot.run(TOKEN)
+if __name__ == "__main__":
+    bot.loop.create_task(mute_check())
+    bot.run(TOKEN)
