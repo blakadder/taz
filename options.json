@@ -1,51 +1,242 @@
-
 {
-  "setoption0": {
-    "params": [
-      {
-        "name": "_None_",
-        "function": "Show current Save power changes state"
-      },
-      {
-        "name": "0 / off",
-        "function": "Do not save power changes and do not set relay after restart"
-      },
-      {
-        "name": "1 / on",
-        "function": "(default) Save power changes and set relay after restart"
-      }
-    ]
+  "0": {
+    "desc": "Save power state and use after restart",
+		"params": "ON|OFF",
+		"enabled": true
   },
-  "setoption14": {
-    "params": [
-      {
-        "name": "_None_",
-        "function": "Show current relay switch mode"
-      },
-      {
-        "name": "0 / off",
-        "function": "(default) Set self-locking mode for all relays"
-      },
-      {
-        "name": "1 / on",
-        "function": "Set interlock mode for all relays"
-      }
-    ]
+  "1": {
+    "desc": "Restrict button actions to single, double and hold",
+		"params": "ON|OFF",
+		"enabled": true
   },
-  "setoption26": {
-    "params": [
-      {
-        "name": "_None_",
-        "function": "Show current POWER postfix setting"
-      },
-      {
-        "name": "0 / off",
-        "function": "(default) Keep using POWER without postfix for single power devices"
-      },
-      {
-        "name": "1 / on",
-        "function": "Add postfix to all POWER messages"
-      }
-    ]
+  "2": {
+    "desc": "Show value units in JSON messages",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "3": {
+    "desc": "MQTT enabled",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "4": {
+    "desc": "Respond as Command topic instead of RESULT",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "5": {
+    "desc": "MQTT retain on Power",
+		"params": "ON|OFF",
+		"enabled": false
+  },
+  "6": {
+    "desc": "MQTT retain on Button",
+		"params": "ON|OFF",
+		"enabled": false
+  },
+  "7": {
+    "desc": "MQTT retain on Switch",
+		"params": "ON|OFF",
+		"enabled": false
+  },
+  "8": {
+    "desc": "Convert temperature from Celsius to Fahrenheit",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "9": {
+    "desc": "MQTT retain on Sensor",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "10": {
+    "desc": "MQTT retained LWT to OFFLINE when topic changes",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "11": {
+    "desc": "Swap Single and Double press Button",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "12": {
+    "desc": "Do not use flash page rotate",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "13": {
+    "desc": "Button single press only",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "14": {
+    "desc": "Power interlock mode",
+		"params": "ON|OFF",
+		"enabled": false
+  },
+  "15": {
+    "desc": "Do not allow PWM control",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "16": {
+    "desc": "Reverse clock",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "17": {
+    "desc": "Allow entry of decimal color values",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "18": {
+    "desc": "CO2 color to light signal",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "19": {
+    "desc": "HASS discovery",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "20": {
+    "desc": "Do not control Power with Dimmer",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "21": {
+    "desc": "Energy monitoring while powered off",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "22": {
+    "desc": "MQTT serial",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "23": {
+    "desc": "MQTT serial binary",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "24": {
+    "desc": "Convert pressure from hPa to mmHg",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "25": {
+    "desc": "KNX enabled",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "26": {
+    "desc": "Use Power device index on single relay devices",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "27": {
+    "desc": "KNX enhancement",
+		"params": "ON|OFF",
+		"enabled": false
+  },
+  "28": {
+    "desc": "RF receive decimal",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "29": {
+    "desc": "IR receive decimal",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "30": {
+    "desc": "Enforce HASS light group",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "31": {
+    "desc": "Do not show Wifi and Mqtt state using Led",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "32": {
+    "desc": "Key hold time (ms)",
+		"params": "1..100",
+		"enabled": true
+  },
+  "33": {
+    "desc": "Sonoff POW Max_Power_Retry",
+		"params": "1..250",
+		"enabled": true
+  },
+  "34": {
+    "desc": "TUYA dimmer DeviceID",
+		"params": "0.255",
+		"enabled": true
+  },
+  "50": {
+    "desc": "Timers enabled",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "51": {
+    "desc": "Generic ESP8285 GPIO enabled",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "52": {
+    "desc": "Add UTC time offset to JSON message",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "53": {
+    "desc": "Show hostname and IP address in GUI",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "54": {
+    "desc": "Apply SetOption20 to Tuya",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "55": {
+    "desc": "mDNS enabled",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "56": {
+    "desc": "Use wifi network scan at restart",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "57": {
+    "desc": "Use wifi network rescan regularly",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "58": {
+    "desc": "Add IR raw data to JSON message",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "59": {
+    "desc": "Change state topic from tele/STATE to stat/RESULT",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "60": {
+    "desc": "Enable normal sleep instead of dynamic sleep",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "61": {
+    "desc": "Force local operation when button/switch topic is set",
+		"params": "ON|OFF",
+		"enabled": true
+  },
+  "62": {
+    "desc": "Force no pull-up",
+		"params": "ON|OFF",
+		"enabled": true
   }
 }
