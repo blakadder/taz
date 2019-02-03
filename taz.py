@@ -43,20 +43,20 @@ bot = commands.Bot(command_prefix=['?'], description="Helper Bot", case_insensit
 async def on_message(message):
     msg = message.content
     found = re.findall(re_issue, msg)
+    response = []
     bad = []
     if found:
         for i in found:
             try:
                 issue = tasmota.get_issue(number=int(i))
-                embed = discord.Embed(description="[#{}: {}](<{}>)".format(i, issue.title, issue.url), colour=discord.Colour(0x3498db))
-                await bot.send_message(message.channel, embed=embed)
+                response.append("[#{}: {}](<{}>)".format(i, issue.title, issue.url))
             except Exception as error:
                 if isinstance(error, UnknownObjectException):
                     bad.append(i)
         if bad:
-            embed = discord.Embed(description="Issue(s) {} not found.".format(", ".join([i for i in sorted(bad)])),
-                                  colour=discord.Colour(0x3498db))
-            await bot.send_message(message.channel, embed=embed)
+            response.append("{} not found.".format(", ".join([i for i in sorted(bad)])))
+        embed = discord.Embed(title="Tasmota issues", description="\n".join(response), colour=discord.Colour(0x3498db))
+        await bot.send_message(message.channel, embed=embed)
 
     await bot.process_commands(message)
 
