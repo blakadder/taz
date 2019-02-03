@@ -112,12 +112,12 @@
   "22": {
     "desc": "MQTT serial",
 		"params": "ON|OFF",
-		"enabled": true
+		"enabled": false
   },
   "23": {
     "desc": "MQTT serial binary",
 		"params": "ON|OFF",
-		"enabled": true
+		"enabled": false
   },
   "24": {
     "desc": "Convert pressure from hPa to mmHg",
@@ -127,7 +127,7 @@
   "25": {
     "desc": "KNX enabled",
 		"params": "ON|OFF",
-		"enabled": true
+		"enabled": false
   },
   "26": {
     "desc": "Use Power device index on single relay devices",
