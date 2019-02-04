@@ -49,7 +49,7 @@ async def on_message(message):
         for i in found:
             try:
                 issue = tasmota.get_issue(number=int(i))
-                response.append("[#{}: {}](<{}>)".format(i, issue.title, issue.url))
+                response.append("[#{}: {}](<https://github.com/arendst/Sonoff-Tasmota/issues/{}>)".format(i, issue.title, i))
             except Exception as error:
                 if isinstance(error, UnknownObjectException):
                     bad.append(i)
