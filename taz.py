@@ -35,7 +35,7 @@ muted_users = {}
 git = Github()
 tasmota = git.get_repo("arendst/Sonoff-Tasmota")
 
-re_issue = re.compile("#(\d{1,5})")
+re_issue = re.compile("(?:\A|\s)#(\d{1,5})")
 
 bot = commands.Bot(command_prefix=['?'], description="Helper Bot", case_insensitive=False)
 
