@@ -36,6 +36,7 @@ git = Github()
 tasmota = git.get_repo("arendst/Sonoff-Tasmota")
 
 re_issue = re.compile("(?:\A|\s)#(\d{1,5})")
+re_tasmota = re.compile("ta[sz]moto")
 
 bot = commands.Bot(command_prefix=['?'], description="Helper Bot", case_insensitive=False)
 
@@ -43,6 +44,7 @@ bot = commands.Bot(command_prefix=['?'], description="Helper Bot", case_insensit
 async def on_message(message):
     msg = message.content
     found = re.findall(re_issue, msg)
+    moto = re.findall(re_tasmota, msg)
     response = []
     bad = []
     if found:
@@ -57,6 +59,9 @@ async def on_message(message):
             response.append("{} not found.".format(", ".join([i for i in sorted(bad)])))
         embed = discord.Embed(title="Tasmota issues", description="\n".join(response), colour=discord.Colour(0x3498db))
         await bot.send_message(message.channel, embed=embed)
+
+    if moto:
+        await bot.send_file(message.channel, "tasmoto.jpg")
 
     await bot.process_commands(message)
 
