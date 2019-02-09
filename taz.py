@@ -61,7 +61,7 @@ async def on_message(message):
         await bot.send_message(message.channel, embed=embed)
 
     if moto:
-        await bot.send_file(message.channel, "tasmoto.jpg")
+        await bot.send_file(message.channel, "tasmoto.png")
 
     await bot.process_commands(message)
 
