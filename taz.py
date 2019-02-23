@@ -36,7 +36,7 @@ git = Github()
 tasmota = git.get_repo("arendst/Sonoff-Tasmota")
 
 re_issue = re.compile("(?:\A|\s)#(\d{1,5})")
-re_tasmota = re.compile("ta[sz]moto")
+re_tasmota = re.compile("[Tt]a[sz]moto")
 
 bot = commands.Bot(command_prefix=['?'], description="Helper Bot", case_insensitive=False)
 
@@ -65,51 +65,6 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-#     elif message.content == "!test":
-#         cmd = cmds2['power']
-#
-#         embed = discord.Embed(title=cmd['name'], colour=discord.Colour(0x3afabd), description=await command_output(cmd),
-#                               url="https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}".format(cmd['group']))
-##
-#         if cmd['options']:
-#             embed.description += "\n\nSetOptions related to this command:\n"
-#
-#             for o in cmd['options']:
-#                 embed.description += "\n`setoption{}` {}".format(o, opts["setoption{}".format(o)]['params'][0]['function'])
-#                 #embed.add_field(name="setoption{}".format(o), value=opts["setoption{}".format(o)]['params'][0]['function'], inline=False)
-#
-#         embed.set_footer(text="Click the function name to see other commands from group {}".format(cmd['group']))
-#
-#         await client.send_message(message.channel, embed=embed)
-#
-#     elif message.content.startswith('!') and len(message.content) > 1:
-#         cmd = cmds.get(message.content.split(" ")[0][1:].lower(), None)
-#
-#         if cmd:
-#             reply = await make_reply(message, "\n".join(cmd))
-#         else:
-#             reply = await make_reply(message, "Unknown command. Use ! prefix for Tasmota commands, ? prefix to search and + for shortlinks.")
-#
-#         await client.send_message(message.channel, reply)
-#
-
-#
-#     elif message.content.startswith('?') and len(message.content) > 1:
-#         cmd = message.content.split(" ")[0][1:].lower()
-#         result = [c for c in cmds.keys() if cmd in c]
-#         print(result)
-#
-#         if result:
-#             if len(result) > 15:
-#                 reply = await make_reply(message, "Search yielded too many results. Narrow your query.")
-#             else:
-#                 reply = await make_reply(message, "I've found these commands:\n```{}```".format(" ".join(result)))
-#
-#         else:
-#             reply = await make_reply(message, "No commands found")
-#
-#         await client.send_message(message.channel, reply)
-
 @bot.command(aliases=["l", "links"], pass_context=True, brief="Return a link or show available links.")
 async def link(ctx, link: str=''):
     if link and links_list.get(link):
@@ -133,6 +88,11 @@ async def option(ctx, nr: str):
     else:
         embed = discord.Embed(description="SetOption{} not found.".format(nr), colour=discord.Colour(0x3498db))
     await bot.say(embed=embed)
+
+
+@bot.command(aliases=["c", "cmd"], pass_context=True, brief="Link to wiki page of command")
+async def command(ctx, cmd: str):
+    await bot.say("<https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}>".format(cmd))
 
 
 @bot.command(aliases=["m"], pass_context=True, brief="Mute a user or show the list of currently muted users.")
@@ -164,12 +124,6 @@ async def unmute(ctx, member: discord.Member):
     else:
         embed = discord.Embed(title="{} is not currently muted".format(member.name), colour=discord.Colour(0x3498db))
     await bot.say(embed=embed)
-
-
-# @bot.command(pass_context=True)
-# async def issue(ctx, issue: int):
-#     if ctx.prefix in ['+']:
-#         await bot.say("https://github.com/arendst/Sonoff-Tasmota/issues/{}".format(issue))
 
 
 @bot.command(aliases=["i"], pass_context=True, brief="Show count of users inactive for <x> days.")

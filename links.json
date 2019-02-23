@@ -9,5 +9,7 @@
   "wemos": "https://github.com/arendst/Sonoff-Tasmota/wiki/Wemos%20D1%20Mini",
   "ha": "https://discord.gg/c5DvZ4e",
   "github": "https://github.com/arendst/Sonoff-Tasmota",
-  "tuya": "https://www.youtube.com/watch?v=m_O24tTzv8g"
+  "tuya": "https://www.youtube.com/watch?v=m_O24tTzv8g",
+  "template":"https://github.com/arendst/Sonoff-Tasmota/wiki/Templates",
+  "contrib":"https://github.com/arendst/Sonoff-Tasmota/wiki/Contributing"
 }
