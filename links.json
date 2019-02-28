@@ -12,5 +12,7 @@
   "tuya": "https://www.youtube.com/watch?v=m_O24tTzv8g",
   "templates": "https://github.com/arendst/Sonoff-Tasmota/wiki/Templates",
   "backlog": "https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#Using-Backlog",
-  "faq": "https://github.com/arendst/Sonoff-Tasmota/wiki/faq"
+  "faq": "https://github.com/arendst/Sonoff-Tasmota/wiki/faq",  
+  "tdm": "https://github.com/jziolkowski/tdm",
+  "exorcism": "https://github.com/arendst/Sonoff-Tasmota/wiki/FAQ#my-device-randomly-switches-on-and-off-do-i-have-ghosts-in-my-house"
 }
