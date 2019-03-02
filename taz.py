@@ -27,6 +27,9 @@ with open('links.json') as l:
 with open('welcome.txt') as w:
     welcome_mesg = w.read()
 
+with open('remarks.txt') as r:
+    remarks = r.read()
+
 with open('help.txt') as h:
     help_mesg = h.read()
 
@@ -147,6 +150,7 @@ async def watch(ctx, *args):
 @bot.event
 async def on_member_join(member):
     await bot.send_message(member, welcome_mesg)
+    await bot.send_message(member, remarks)
 
 
 @bot.event
@@ -159,7 +163,6 @@ async def on_command_error(error, ctx):
 
 @bot.event
 async def on_ready():
-    # await bot.change_presence(game=discord.Game(name="photos of post girls", type = 3))
     print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
 

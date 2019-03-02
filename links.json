@@ -5,11 +5,14 @@
   "commands": "https://github.com/arendst/Sonoff-Tasmota/wiki/Commands",
   "esptool": "https://github.com/arendst/Sonoff-Tasmota/wiki/Esptool",
   "basic": "https://github.com/arendst/Sonoff-Tasmota/wiki/Sonoff-Basic",
-  "pow": "https://github.com/arendst/Sonoff-Tasmota/wiki/Sonoff-Pow-and-Pow-R2",
+  "pow": "https://github.com/arendst/Sonoff-Tasmota/wiki/Power-Monitoring-Calibration",
   "wemos": "https://github.com/arendst/Sonoff-Tasmota/wiki/Wemos%20D1%20Mini",
   "ha": "https://discord.gg/c5DvZ4e",
   "github": "https://github.com/arendst/Sonoff-Tasmota",
-  "tuya": "https://www.youtube.com/watch?v=m_O24tTzv8g"
-  "templates": "https://github.com/arendst/Sonoff-Tasmota/wiki/Templates"
-  "backlog": "https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#Using-Backlog"
-  "faq": "https://github.com/arendst/Sonoff-Tasmota/wiki/faq"
+  "tuya": "https://www.youtube.com/watch?v=m_O24tTzv8g",
+  "templates": "https://github.com/arendst/Sonoff-Tasmota/wiki/Templates",
+  "backlog": "https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#Using-Backlog",
+  "faq": "https://github.com/arendst/Sonoff-Tasmota/wiki/faq",
+  "tdm": "https://github.com/jziolkowski/tdm",
+  "exorcism": "https://github.com/arendst/Sonoff-Tasmota/wiki/FAQ#my-device-randomly-switches-on-and-off-do-i-have-ghosts-in-my-house"
+}
