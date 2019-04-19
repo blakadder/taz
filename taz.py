@@ -75,10 +75,7 @@ async def on_message(message):
             await bot.send_file(message.channel, "tasmoto.png")
 
         if cmnd or cmdqt:
-            if cmnd:
-                result = cmnd
-            if cmdqt:
-                result = cmdqt
+            result = cmnd + cmdqt
 
             response = await verify_command(result)
             if response:
