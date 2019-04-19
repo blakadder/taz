@@ -40,7 +40,7 @@ tasmota = git.get_repo("arendst/Sonoff-Tasmota")
 
 re_issue = re.compile("(?:\A|\s)#(\d{1,5})")
 re_tasmota = re.compile("[Tt][oa][sz]m[ao]t[ao]")
-re_command = re.compile("(?:\b)?\?c (\w*)(?:\b)?")
+re_command = re.compile("(?:\s)?\?c (\w*)(?:\b)?")
 re_commandq = re.compile("`(\w*)`(?:\b)?")
 
 
@@ -123,11 +123,12 @@ async def option(ctx, nr: str):
 
 @bot.command(aliases=["c", "cmd"], pass_context=True, brief="Link to wiki page of command")
 async def command(ctx, cmd: str):
-    response = await verify_command([cmd])
-    if response:
-        embed = discord.Embed(title="Tasmota Wiki", description="\n".join(response),
-                              colour=discord.Colour(0x3498db))
-        await bot.say(embed=embed)
+    pass
+    # response = await verify_command([cmd])
+    # if response:
+    #     embed = discord.Embed(title="Tasmota Wiki", description="\n".join(response),
+    #                           colour=discord.Colour(0x3498db))
+    #     await bot.say(embed=embed)
 
 
 @bot.command(aliases=["m"], pass_context=True, brief="Mute a user or show the list of currently muted users.")
