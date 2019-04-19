@@ -12,11 +12,11 @@ from github.GithubException import UnknownObjectException
 
 from discord_token import TOKEN
 
-with open('commands.json') as c:
-    cmds = json.load(c)
-
-with open('commands2.json') as c2:
-    cmds2 = json.load(c2)
+# with open('commands.json') as c:
+#     cmds = json.load(c)
+#
+# with open('commands2.json') as c2:
+#     cmds2 = json.load(c2)
 
 with open('options.json') as o:
     opts = json.load(o)
@@ -39,7 +39,12 @@ git = Github()
 tasmota = git.get_repo("arendst/Sonoff-Tasmota")
 
 re_issue = re.compile("(?:\A|\s)#(\d{1,5})")
-re_tasmota = re.compile("[Tt]a[sz]moto")
+re_tasmota = re.compile("[Tt][oa][sz]m[ao]t[ao]")
+re_command = re.compile("(?:\b)?\?c (\w*)(?:\b)?")
+re_commandq = re.compile("`(\w*)`(?:\b)?")
+
+
+comms = ["Backlog", "BlinkCount", "BlinkTime", "ButtonDebounce", "FanSpeed", "Interlock", "LedPower", "LedState", "Power", "PowerOnState", "PulseTime", "SwitchDebounce", "SwitchMode", "Delay", "Emulation", "Event", "FriendlyName", "Gpios", "Gpio", "Gpio", "I2Cscan", "LogHost", "LogPort", "Modules", "Module", "OtaUrl", "Pwm", "Pwm", "PwmFrequency", "PwmRange", "Reset", "Restart", "Template", "SaveData", "SerialLog", "Sleep", "State", "Status", "SysLog", "Timezone", "TimeSTD", "TimeDST", "Upgrade", "Upload", "WebLog", "AP", "Hostname", "IPAddress1", "IPAddress2", "IPAddress3", "IPAddress4", "NtpServer", "Password", "Password", "Ssid", "WebPassword", "WebSend", "WebServer", "WifiConfig", "ButtonRetain", "ButtonTopic", "FullTopic", "GroupTopic", "MqttClient", "MqttFingerprint", "MqttHost", "MqttPassword", "MqttPort", "MqttPort", "MqttRetry", "MqttUser", "PowerRetain", "Prefix1", "Prefix2", "Prefix3", "Publish", "Publish2", "SensorRetain", "StateText1", "StateText2", "StateText3", "StateText4", "SwitchRetain", "SwitchTopic", "TelePeriod", "Topic", "Rule", "RuleTimer", "Mem", "Var", "Add", "Sub", "Mult", "Scale", "CalcRes", "Latitude", "Longitude", "Timers", "Timer", "Altitude", "AmpRes", "Counter", "CounterDebounce", "CounterType", "EnergyRes", "HumRes", "PressRes", "Sensor13", "Sensor15", "Sensor27", "Sensor34", "TempRes", "VoltRes", "WattRes", "AmpRes", "CurrentHigh", "CurrentLow", "CurrentSet", "EnergyRes", "EnergyReset", "EnergyReset1", "EnergyReset2", "EnergyReset3", "FreqRes", "FrequencySet", "MaxPower", "MaxPowerHold", "MaxPowerWindow", "PowerDelta", "PowerHigh", "PowerLow", "PowerSet", "Status", "VoltageHigh", "VoltageLow", "VoltageSet", "VoltRes", "WattRes", "Channel", "Color", "Color2", "Color3", "Color4", "Color5", "Color6", "CT", "Dimmer", "Fade", "HsbColor", "HsbColor1", "HsbColor2", "HsbColor3", "Led", "LedTable", "Pixels", "Rotation", "Scheme", "Speed", "Wakeup", "WakeupDuration", "Width1", "Width2", "Width3", "Width4", "Baudrate", "SBaudrate", "SerialDelimiter", "SerialDelimiter", "SerialDelimiter", "SerialSend", "SerialSend2", "SerialSend3", "SerialSend4", "SerialSend5", "SSerialSend", "SSerialSend2", "SSerialSend3", "SSerialSend4", "SSerialSend5", "RfCode", "RfHigh", "RfHost", "RfKey", "RfLow", "RfRaw", "RfSync", "IRsend", "IRhvac", "MP3DAC", "MP3Device", "MP3EQ", "MP3Pause", "MP3Play", "MP3Reset", "MP3Stop", "MP3Track", "MP3Volume", "DomoticzIdx", "DomoticzKeyIdx", "DomoticzSensorIdx", "DomoticzSwitchIdx", "DomoticzUpdateTimer", "KnxTx_Cmnd", "KnxTx_Val", "KNX_ENABLED", "KNX_ENHANCED", "KNX_PA", "KNX_GA", "KNX_GA", "KNX_CB", "KNX_CB", "Display", "DisplayAddress", "DisplayDimmer", "DisplayMode", "DisplayModel", "DisplayRefresh", "DisplaySize", "DisplayRotate", "DisplayText", "DisplayCols", "DisplayRows", "DisplayFont"]
 
 bot = commands.Bot(command_prefix=['?'], description="Helper Bot", case_insensitive=False)
 
@@ -48,25 +53,48 @@ async def on_message(message):
     msg = message.content
     found = re.findall(re_issue, msg)
     moto = re.findall(re_tasmota, msg)
+    cmnd = re.findall(re_command, msg)
+    cmdqt = re.findall(re_commandq, msg)
     response = []
     bad = []
-    if found:
-        for i in found:
-            try:
-                issue = tasmota.get_issue(number=int(i))
-                response.append("[#{}: {}](<https://github.com/arendst/Sonoff-Tasmota/issues/{}>)".format(i, issue.title, i))
-            except Exception as error:
-                if isinstance(error, UnknownObjectException):
-                    bad.append(i)
-        if bad:
-            response.append("{} not found.".format(", ".join([i for i in sorted(bad)])))
-        embed = discord.Embed(title="Tasmota issues", description="\n".join(response), colour=discord.Colour(0x3498db))
-        await bot.send_message(message.channel, embed=embed)
+    if message.author != bot.user:
+        if found:
+            for i in found:
+                try:
+                    issue = tasmota.get_issue(number=int(i))
+                    response.append("[#{}: {}](<https://github.com/arendst/Sonoff-Tasmota/issues/{}>)".format(i, issue.title, i))
+                except Exception as error:
+                    if isinstance(error, UnknownObjectException):
+                        bad.append(i)
+            if bad:
+                response.append("{} not found.".format(", ".join([i for i in sorted(bad)])))
+            embed = discord.Embed(title="Tasmota issues", description="\n".join(response), colour=discord.Colour(0x3498db))
+            await bot.send_message(message.channel, embed=embed)
 
-    if moto:
-        await bot.send_file(message.channel, "tasmoto.png")
+        if moto and moto[0].lower() != 'tasmota':
+            await bot.send_file(message.channel, "tasmoto.png")
+
+        if cmnd or cmdqt:
+            if cmnd:
+                result = cmnd
+            if cmdqt:
+                result = cmdqt
+
+            response = await verify_command(result)
+            if response:
+                embed = discord.Embed(title="Tasmota Wiki", description="\n".join(response),
+                                      colour=discord.Colour(0x3498db))
+                await bot.send_message(message.channel, embed=embed)
 
     await bot.process_commands(message)
+
+
+async def verify_command(result):
+    response = set(["[{}](<https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}>)".format(
+        comms[list(map(lambda x: x.lower(), comms)).index(c.lower())], c.lower()) for c in result if
+        c.lower() in map(lambda x: x.lower(), comms)])
+    return response
+
 
 @bot.command(aliases=["l", "links"], pass_context=True, brief="Return a link or show available links.")
 async def link(ctx, link: str=''):
@@ -95,7 +123,11 @@ async def option(ctx, nr: str):
 
 @bot.command(aliases=["c", "cmd"], pass_context=True, brief="Link to wiki page of command")
 async def command(ctx, cmd: str):
-    await bot.say("<https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}>".format(cmd))
+    response = await verify_command([cmd])
+    if response:
+        embed = discord.Embed(title="Tasmota Wiki", description="\n".join(response),
+                              colour=discord.Colour(0x3498db))
+        await bot.say(embed=embed)
 
 
 @bot.command(aliases=["m"], pass_context=True, brief="Mute a user or show the list of currently muted users.")
