@@ -7,11 +7,13 @@
   "esptool": ["Tasmota Wiki: EspTool","https://github.com/arendst/Sonoff-Tasmota/wiki/Flashing#esptoolpy"],
   "templates": ["Tasmota Wiki: Templates","https://github.com/arendst/Sonoff-Tasmota/wiki/Templates"],
   "faq": ["Tasmota Wiki: Frequently Asked Questions","https://github.com/arendst/Sonoff-Tasmota/wiki/faq"],
+  "prereq": ["Tasmota Wiki: Prerequisites","https://github.com/arendst/Sonoff-Tasmota/wiki/Prerequisites"],
+  "hw": ["Tasmota Wiki: Hardware preparation","https://github.com/arendst/Sonoff-Tasmota/wiki/Hardware-Preparation"],
+  "expand": ["Tasmota Wiki: Expanding Sonoff","https://github.com/arendst/Sonoff-Tasmota/wiki/Expanding-Sonoffs"],
 
   "ha": ["Official HomeAssistant Discord","https://discord.gg/c5DvZ4e"],
   "github": ["Tasmota GitHub","https://github.com/arendst/Sonoff-Tasmota"],
   "tuya": ["How to Setup Tasmota on a new Smart Plug or Switch","https://www.youtube.com/watch?v=m_O24tTzv8g"],
-
 
   "tdm": ["Tasmota Device Manager","https://github.com/jziolkowski/tdm"],
   "exorcism": ["My device randomly switches on and off. Do I have ghosts in my house?","https://github.com/arendst/Sonoff-Tasmota/wiki/FAQ#my-device-randomly-switches-on-and-off-do-i-have-ghosts-in-my-house"],
