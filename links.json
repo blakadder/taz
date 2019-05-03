@@ -15,5 +15,5 @@
 
   "tdm": ["Tasmota Device Manager","https://github.com/jziolkowski/tdm"],
   "exorcism": ["My device randomly switches on and off. Do I have ghosts in my house?","https://github.com/arendst/Sonoff-Tasmota/wiki/FAQ#my-device-randomly-switches-on-and-off-do-i-have-ghosts-in-my-house"],
-  "repo": ["Blakadder's Official Tasmota Template Repository","https://blakadder.github.io/templates"]
+  "repo": ["Official Device Template Repository","https://blakadder.github.io/templates"]
 }
