@@ -172,6 +172,11 @@ async def prune(ctx, days: int=30):
     await bot.say("{} members inactive for more than {} day{} were kicked. ".format(await bot.prune_members(server=ctx.message.server, days=days), days, "s" if days > 1 else ""))
 
 
+@bot.command(pass_context=True, brief="Let me Google that for you.")
+async def lmgtfy(ctx, q: str):
+    await bot.say("http://lmgtfy.com/?q={}".format(q))
+
+
 @bot.command(pass_context=True, ignore_extras=False, hidden=True)
 @commands.has_any_role('Admin')
 async def watch(ctx, *args):
