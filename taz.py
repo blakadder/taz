@@ -38,7 +38,7 @@ muted_users = {}
 git = Github()
 tasmota = git.get_repo("arendst/Sonoff-Tasmota")
 
-re_issue = re.compile("(?:\A|\s)#(\d{1,5})")
+re_issue = re.compile("(?:\A|\s)#(\d{4})")
 re_tasmota = re.compile("[Tt][oa][sz]m[ao]t[ao]")
 re_command = re.compile("(?:\s)?\?c (\w*)(?:\b)?")
 re_commandq = re.compile("`(\w*)`(?:\b)?")
@@ -62,8 +62,10 @@ async def on_message(message):
         if found:
             for i in found:
                 try:
-                    issue = tasmota.get_issue(number=int(i))
-                    response.append("[#{}: {}](<https://github.com/arendst/Sonoff-Tasmota/issues/{}>)".format(i, issue.title, i))
+                    nr = int(i)
+                    if nr > 1000:
+                        issue = tasmota.get_issue(number=nr)
+                        response.append("[#{}: {}](<https://github.com/arendst/Sonoff-Tasmota/issues/{}>)".format(i, issue.title, i))
                 except Exception as error:
                     if isinstance(error, UnknownObjectException):
                         bad.append(i)
