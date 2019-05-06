@@ -63,7 +63,7 @@ async def on_message(message):
             for i in found:
                 try:
                     nr = int(i)
-                    if nr > 1000:
+                    if nr >= 1000:
                         issue = tasmota.get_issue(number=nr)
                         response.append("[#{}: {}](<https://github.com/arendst/Sonoff-Tasmota/issues/{}>)".format(i, issue.title, i))
                 except Exception as error:
