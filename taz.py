@@ -1,3 +1,5 @@
+from random import randint
+
 import discord
 import asyncio
 import json
@@ -42,6 +44,7 @@ re_issue = re.compile("(?:\A|\s)#(\d{4})")
 re_tasmota = re.compile("[Tt][oa][sz]m[ao]t[ao]")
 re_command = re.compile("(?:\s)?\?c (\w*)(?:\b)?")
 re_commandq = re.compile("`(\w*)`(?:\b)?")
+re_tdm = re.compile("[TDM|tdm]\s+\d+\.\d+")
 
 
 comms = ["Backlog", "BlinkCount", "BlinkTime", "ButtonDebounce", "FanSpeed", "Interlock", "LedPower", "LedMask", "LedState", "Power", "PowerOnState", "PulseTime", "SwitchDebounce", "SwitchMode", "Delay", "Emulation", "Event", "FriendlyName", "Gpios", "Gpio", "Gpio", "I2Cscan", "LogHost", "LogPort", "Modules", "Module", "OtaUrl", "Pwm", "Pwm", "PwmFrequency", "PwmRange", "Reset", "Restart", "Template", "SaveData", "SerialLog", "Sleep", "State", "Status", "SysLog", "Timezone", "TimeSTD", "TimeDST", "Upgrade", "Upload", "WebLog", "AP", "Hostname", "IPAddress1", "IPAddress2", "IPAddress3", "IPAddress4", "NtpServer", "Password", "Password", "Ssid", "WebPassword", "WebSend", "WebServer", "WifiConfig", "ButtonRetain", "ButtonTopic", "FullTopic", "GroupTopic", "MqttClient", "MqttFingerprint", "MqttHost", "MqttPassword", "MqttPort", "MqttPort", "MqttRetry", "MqttUser", "PowerRetain", "Prefix1", "Prefix2", "Prefix3", "Publish", "Publish2", "SensorRetain", "StateText1", "StateText2", "StateText3", "StateText4", "SwitchRetain", "SwitchTopic", "TelePeriod", "Topic", "Rule", "RuleTimer", "Mem", "Var", "Add", "Sub", "Mult", "Scale", "CalcRes", "Latitude", "Longitude", "Timers", "Timer", "Altitude", "AmpRes", "Counter", "CounterDebounce", "CounterType", "EnergyRes", "HumRes", "PressRes", "Sensor13", "Sensor15", "Sensor27", "Sensor34", "TempRes", "VoltRes", "WattRes", "AmpRes", "CurrentHigh", "CurrentLow", "CurrentSet", "EnergyRes", "EnergyReset", "EnergyReset1", "EnergyReset2", "EnergyReset3", "FreqRes", "FrequencySet", "MaxPower", "MaxPowerHold", "MaxPowerWindow", "PowerDelta", "PowerHigh", "PowerLow", "PowerSet", "Status", "VoltageHigh", "VoltageLow", "VoltageSet", "VoltRes", "WattRes", "Channel", "Color", "Color2", "Color3", "Color4", "Color5", "Color6", "CT", "Dimmer", "Fade", "HsbColor", "HsbColor1", "HsbColor2", "HsbColor3", "Led", "LedTable", "Pixels", "Rotation", "Scheme", "Speed", "Wakeup", "WakeupDuration", "Width1", "Width2", "Width3", "Width4", "Baudrate", "SBaudrate", "SerialDelimiter", "SerialDelimiter", "SerialDelimiter", "SerialSend", "SerialSend2", "SerialSend3", "SerialSend4", "SerialSend5", "SSerialSend", "SSerialSend2", "SSerialSend3", "SSerialSend4", "SSerialSend5", "RfCode", "RfHigh", "RfHost", "RfKey", "RfLow", "RfRaw", "RfSync", "IRsend", "IRhvac", "MP3DAC", "MP3Device", "MP3EQ", "MP3Pause", "MP3Play", "MP3Reset", "MP3Stop", "MP3Track", "MP3Volume", "DomoticzIdx", "DomoticzKeyIdx", "DomoticzSensorIdx", "DomoticzSwitchIdx", "DomoticzUpdateTimer", "KnxTx_Cmnd", "KnxTx_Val", "KNX_ENABLED", "KNX_ENHANCED", "KNX_PA", "KNX_GA", "KNX_GA", "KNX_CB", "KNX_CB", "Display", "DisplayAddress", "DisplayDimmer", "DisplayMode", "DisplayModel", "DisplayRefresh", "DisplaySize", "DisplayRotate", "DisplayText", "DisplayCols", "DisplayRows", "DisplayFont"]
@@ -56,6 +59,7 @@ async def on_message(message):
     moto = re.findall(re_tasmota, msg)
     cmnd = re.findall(re_command, msg)
     cmdqt = re.findall(re_commandq, msg)
+    tdm = re.findall(re_tdm, msg)
     response = []
     bad = []
     if message.author != bot.user:
@@ -85,6 +89,9 @@ async def on_message(message):
                 embed = discord.Embed(title="Tasmota Wiki", description="\n".join(response),
                                       colour=discord.Colour(0x3498db))
                 await bot.send_message(message.channel, embed=embed)
+
+        if tdm:
+            await bot.send_message(message.channel, content="Your nagging delayed the 0.2 release by another {} days.".format(randint(1,14)))
 
     await bot.process_commands(message)
 
