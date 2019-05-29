@@ -94,16 +94,17 @@ async def on_message(message):
         if tdm:
             await bot.send_message(message.channel, content="Your nagging delayed the 0.2 release by another {} days.".format(randint(1, 30)))
 
-        if lnk and links_list.get(lnk[0]):
+        if lnk:
+            if links_list.get(lnk[0]):
                 lnk = links_list[lnk[0]]
                 embed = discord.Embed(description="[{}](<{}>)".format(lnk[0], lnk[1]),
                                       colour=discord.Colour(0x3498db))
-        else:
-            link_list = " ".join(sorted(
-                ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
-            embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
-            embed.set_footer(text="You can click them directly.")
-        await bot.send_message(message.channel, embed=embed)
+            else:
+                link_list = " ".join(sorted(
+                    ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
+                embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
+                embed.set_footer(text="You can click them directly.")
+            await bot.send_message(message.channel, embed=embed)
 
     await bot.process_commands(message)
 
