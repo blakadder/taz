@@ -96,17 +96,19 @@ async def on_message(message):
             await message.channel.send(content="Your nagging delayed the 0.2 release by another {} days.".format(randint(1, 30)))
 
         if lnk:
-            lnk = lnk.lower()
-            if links_list.get(lnk[0]):
-                lnk = links_list[lnk[0]]
-                embed = discord.Embed(description="[{}](<{}>)".format(lnk[0], lnk[1]),
-                                      colour=discord.Colour(0x3498db))
-            else:
-                link_list = " ".join(sorted(
-                    ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
-                embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
-                embed.set_footer(text="You can click them directly.")
-            await message.channel.send(embed=embed)
+            ctx = await bot.get_context(message)
+            await ctx.invoke(link, lnk)
+            # lnk = lnk.lower()
+            # if links_list.get(lnk[0]):
+            #     lnk = links_list[lnk[0]]
+            #     embed = discord.Embed(description="[{}](<{}>)".format(lnk[0], lnk[1]),
+            #                           colour=discord.Colour(0x3498db))
+            # else:
+            #     link_list = " ".join(sorted(
+            #         ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
+            #     embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
+            #     embed.set_footer(text="You can click them directly.")
+            # await message.channel.send(embed=embed)
 
     await bot.process_commands(message)
 
@@ -118,9 +120,19 @@ async def verify_command(result):
     return response
 
 
-@bot.command(aliases=["l", "links"], pass_context=True, brief="Return a link or show available links.")
-async def link(ctx, link: str=''):
-    pass
+@bot.command(aliases=["l", "links"], brief="Return a link or show available links.")
+async def link(ctx, lnk: str=''):
+    lnk = lnk[0].lower()
+    if lnk and links_list.get(lnk):
+        lnk = links_list[lnk]
+        embed = discord.Embed(description="[{}](<{}>)".format(lnk[0], lnk[1]),
+                              colour=discord.Colour(0x3498db))
+    else:
+        link_list = " ".join(sorted(
+            ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
+        embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
+        embed.set_footer(text="You can click them directly.")
+    await ctx.channel.send(embed=embed)
 
 
 # @bot.command(aliases=["o", "setoption", "so"], brief="Show SetOption description and usage.")
@@ -184,7 +196,7 @@ async def prune(ctx, days: int=30):
     await ctx.channel.send("{} members inactive for more than {} day{} were kicked. ".format(await ctx.message.guild.prune_members(days=days), days, "s" if days > 1 else ""))
 
 
-@bot.command(pass_context=True, brief="Let me Google that for you.")
+@bot.command(brief="Let me Google that for you.")
 async def lmgtfy(ctx, q: str):
     await ctx.channel.send("http://lmgtfy.com/?q={}".format(q))
 
@@ -194,7 +206,7 @@ async def rtfw(ctx):
     await ctx.channel.send(file=File('rtfw.png'))
 
 
-@bot.command(pass_context=True, ignore_extras=False, hidden=True)
+@bot.command(ignore_extras=False, hidden=True)
 @commands.has_any_role('Admin')
 async def watch(ctx, *args):
     await bot.change_presence(game=discord.Game(name=" ".join(args), type=3))
@@ -204,6 +216,11 @@ async def watch(ctx, *args):
 async def on_member_join(member):
     await member.send(welcome_mesg)
     await member.send(remarks)
+
+
+@bot.event
+async def on_member_update(old, new):
+    pass
 
 
 @bot.event
