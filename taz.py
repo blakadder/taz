@@ -5,6 +5,7 @@ import asyncio
 import json
 import re
 
+from discord import File
 from discord.ext import commands
 from discord.utils import get
 from datetime import datetime, timedelta
@@ -95,6 +96,7 @@ async def on_message(message):
             await message.channel.send(content="Your nagging delayed the 0.2 release by another {} days.".format(randint(1, 30)))
 
         if lnk:
+            lnk = lnk.lower()
             if links_list.get(lnk[0]):
                 lnk = links_list[lnk[0]]
                 embed = discord.Embed(description="[{}](<{}>)".format(lnk[0], lnk[1]),
@@ -185,6 +187,11 @@ async def prune(ctx, days: int=30):
 @bot.command(pass_context=True, brief="Let me Google that for you.")
 async def lmgtfy(ctx, q: str):
     await ctx.channel.send("http://lmgtfy.com/?q={}".format(q))
+
+
+@bot.command(brief="RTFW")
+async def rtfw(ctx):
+    await ctx.channel.send(file=File('rtfw.png'))
 
 
 @bot.command(pass_context=True, ignore_extras=False, hidden=True)
