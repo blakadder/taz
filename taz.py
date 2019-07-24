@@ -166,7 +166,7 @@ async def lmgtfy(ctx, *q: str):
     await ctx.channel.send("http://lmgtfy.com/?q={}".format('+'.join(q)))
 
 
-@bot.command(brief="RTFW")
+@bot.command(aliases=["rtfm"], brief="RTFW")
 async def rtfw(ctx):
     await ctx.channel.send(file=File('rtfw.png'))
 
