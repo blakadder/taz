@@ -172,9 +172,14 @@ async def rtfw(ctx):
 
 @bot.command(brief="Re-send welcome message to mentioned user(s)")
 async def welcome(ctx):
-    for member in ctx.message.mentions:
-        await member.send(welcome_mesg)
-        await member.send(remarks)
+    if ctx.message.mentions:
+        for member in ctx.message.mentions:
+            await member.send(welcome_mesg)
+            await member.send(remarks)
+    else:
+        await ctx.message.author.send(welcome_mesg)
+        await ctx.message.author.send(remarks)
+    await ctx.channel.send("Welcome message sent.")
 
 
 @bot.command(ignore_extras=False, hidden=True)
