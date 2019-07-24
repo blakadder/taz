@@ -1,5 +1,5 @@
 **NOTE FOR TUYA USERS:**
-Support is provided ONLY in two cases: a) your device is on the supported devices list (<https://github.com/arendst/Sonoff-Tasmota/wiki#supported-devices>) or b) you have already flashed your device and need help with configuration.
+Before asking for help with configuration of GPIOs on your newly flashed device, check if you can find the template on <https://blakadder.github.io/templates/>. Read more about templates on <https://github.com/arendst/Sonoff-Tasmota/wiki/Templates>.
 
 **NOTE FOR HOME ASSISTANT USERS:**
 Before asking for help with Tasmota/Home Assistant, make sure that both are in the latest available versions.

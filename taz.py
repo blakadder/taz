@@ -170,6 +170,12 @@ async def lmgtfy(ctx, *q: str):
 async def rtfw(ctx):
     await ctx.channel.send(file=File('rtfw.png'))
 
+@bot.command(brief="Re-send welcome message to mentioned user(s)")
+async def welcome(ctx):
+    for member in ctx.message.mentions:
+        await member.send(welcome_mesg)
+        await member.send(remarks)
+
 
 @bot.command(ignore_extras=False, hidden=True)
 @commands.has_any_role('Admin')
@@ -205,18 +211,18 @@ async def on_ready():
     print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
 
-async def make_reply(message, reply):
-    mentions = " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
-    return "{}\n{}".format(mentions, reply)
+# async def make_reply(message, reply):
+#     mentions = " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
+#     return "{}\n{}".format(mentions, reply)
 
 
-async def command_output(cmd):
-    reply = "Usage: {}\n\n{}".format(cmd['usage'], "\n".join(["**{}**: {}".format(p['name'], p['function']) for p in cmd['params']]))
-    return reply
+# async def command_output(cmd):
+#     reply = "Usage: {}\n\n{}".format(cmd['usage'], "\n".join(["**{}**: {}".format(p['name'], p['function']) for p in cmd['params']]))
+#     return reply
 
 
-async def mentions(message):
-    return " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
+# async def mentions(message):
+#     return " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
 
 
 async def mute_check():
