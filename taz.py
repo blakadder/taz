@@ -109,11 +109,11 @@ async def link(ctx, lnk: str=''):
             ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
         embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
         embed.set_footer(text="You can click them directly.")
-    # print(ctx.message.mentions)
-    await ctx.channel.send(embed=embed)
+    mentions = [m.mention for m in ctx.message.mentions if not m.bot]
+    await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
 
-@bot.command(aliases=["c", "cmd"], pass_context=True, brief="Link to wiki page of command")
+@bot.command(aliases=["c", "cmd"], brief="Link to wiki page of command")
 async def command(ctx, cmd: str):
     pass
 
