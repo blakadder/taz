@@ -161,9 +161,9 @@ async def prune(ctx, days: int=30):
     await ctx.channel.send("{} members inactive for more than {} day{} were kicked. ".format(await ctx.message.guild.prune_members(days=days), days, "s" if days > 1 else ""))
 
 
-@bot.command(brief="Let me Google that for you.")
-async def lmgtfy(ctx, q: str):
-    await ctx.channel.send("http://lmgtfy.com/?q={}".format(q))
+@bot.command(aliases=["g", "jfgi", "utfg", "foo", "lmg"], brief="Let me Google that for you.")
+async def lmgtfy(ctx, *q: str):
+    await ctx.channel.send("http://lmgtfy.com/?q={}".format('+'.join(q)))
 
 
 @bot.command(brief="RTFW")
