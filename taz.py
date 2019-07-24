@@ -174,8 +174,9 @@ async def rtfw(ctx):
 async def welcome(ctx):
     if ctx.message.mentions:
         for member in ctx.message.mentions:
-            await member.send(welcome_mesg)
-            await member.send(remarks)
+            if not member.bot:
+                await member.send(welcome_mesg)
+                await member.send(remarks)
     else:
         await ctx.message.author.send(welcome_mesg)
         await ctx.message.author.send(remarks)
