@@ -15,15 +15,6 @@ from github.GithubException import UnknownObjectException
 
 from discord_token import TOKEN
 
-# with open('commands.json') as c:
-#     cmds = json.load(c)
-#
-# with open('commands2.json') as c2:
-#     cmds2 = json.load(c2)
-
-# with open('options.json') as o:
-#     opts = json.load(o)
-
 with open('links.json') as l:
     links_list = json.load(l)
 
@@ -32,9 +23,6 @@ with open('welcome.txt') as w:
 
 with open('remarks.txt') as r:
     remarks = r.read()
-
-# with open('help.txt') as h:
-#     help_mesg = h.read()
 
 muted_users = {}
 
@@ -45,7 +33,7 @@ re_issue = re.compile("(?:\A|\s)#(\d{4})")
 re_tasmota = re.compile("t[oa][sz]m[ao]t[ao]", re.IGNORECASE)
 re_command = re.compile("(?:\s)?\?c (\w*)(?:\b)?")
 re_commandq = re.compile("`(\w*)`(?:\b)?")
-re_link = re.compile("(?:\s)?\?l (\w*)(?:\b)?")
+re_link = re.compile("(?:\s)+\?l (\w*)(?:\b)?")
 re_tdm = re.compile("tdm\s+\d+\.\d+", re.IGNORECASE)
 
 options = ["SetOption{}".format(o) for o in range(70)]
@@ -92,23 +80,12 @@ async def on_message(message):
                                       colour=discord.Colour(0x3498db))
                 await message.channel.send(embed=embed)
 
-        if tdm:
+        if tdm and message.author.id != 244557530057932800:
             await message.channel.send(content="Your nagging delayed the 0.2 release by another {} days.".format(randint(1, 30)))
 
         if lnk:
             ctx = await bot.get_context(message)
-            await ctx.invoke(link, lnk)
-            # lnk = lnk.lower()
-            # if links_list.get(lnk[0]):
-            #     lnk = links_list[lnk[0]]
-            #     embed = discord.Embed(description="[{}](<{}>)".format(lnk[0], lnk[1]),
-            #                           colour=discord.Colour(0x3498db))
-            # else:
-            #     link_list = " ".join(sorted(
-            #         ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
-            #     embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
-            #     embed.set_footer(text="You can click them directly.")
-            # await message.channel.send(embed=embed)
+            await ctx.invoke(link, lnk[0])
 
     await bot.process_commands(message)
 
@@ -122,7 +99,7 @@ async def verify_command(result):
 
 @bot.command(aliases=["l", "links"], brief="Return a link or show available links.")
 async def link(ctx, lnk: str=''):
-    lnk = lnk[0].lower()
+    lnk = lnk.lower()
     if lnk and links_list.get(lnk):
         lnk = links_list[lnk]
         embed = discord.Embed(description="[{}](<{}>)".format(lnk[0], lnk[1]),
@@ -132,20 +109,8 @@ async def link(ctx, lnk: str=''):
             ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
         embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
         embed.set_footer(text="You can click them directly.")
+    # print(ctx.message.mentions)
     await ctx.channel.send(embed=embed)
-
-
-# @bot.command(aliases=["o", "setoption", "so"], brief="Show SetOption description and usage.")
-# async def option(nr: str):
-#     embed = discord.Embed(description="[SetOption{}](<https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#SetOption{}>)".format(nr, nr),
-#                           colour=discord.Colour(0x3498db))
-#     # if opts.get(nr) and opts[nr]['enabled']:
-#     #     option = opts[nr]
-#     #     embed = discord.Embed(title="SetOption"+nr, description=option['desc'], colour=discord.Colour(0x3498db))
-#     #     embed.add_field(name="Usage", value="SetOption{} {}".format(nr, option['params']), inline=False)
-#     #     embed.set_footer(text="Every SetOption used without parameters returns current setting.")
-#
-#     await bot.say(embed=embed)
 
 
 @bot.command(aliases=["c", "cmd"], pass_context=True, brief="Link to wiki page of command")
