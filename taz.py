@@ -280,7 +280,8 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
                         embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
                         break
                 else:
-                    embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds")
+                    variants = sorted([i["variant"] for i in size_branch])
+                    embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds. Available variants:\n\n{}".format("\n".join(variants)))
             else:
                 for bin in size_branch:
                     bins.append("[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n".format(**bin))
@@ -290,9 +291,9 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
                 mentions = [m.mention for m in ctx.message.mentions if not m.bot]
 
         else:
-            embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Size not found in builds")
+            embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Size not found in builds. Available sizes:\n\n{}".format("\n".join(list(core_branch.keys()))))
     else:
-        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Core version not found in builds")
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Core version not found in builds. Available cores:\n\n{}".format("\n".join(list(hackbox_dict["development"].keys()))))
 
     await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
