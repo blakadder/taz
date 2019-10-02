@@ -337,7 +337,7 @@ async def on_ready():
 
 async def find_command(cmd):
     for cmnd in commands_dict.keys():
-        if cmd == cmnd.lower():
+        if cmd.lower() == cmnd.lower():
             return cmnd
 
 
