@@ -1,9 +1,9 @@
-from random import randint
-
 import discord
 import asyncio
 import json
 import re
+
+from datetime import datetime
 
 from discord import File
 from discord.ext import commands
@@ -16,7 +16,10 @@ from github.GithubException import UnknownObjectException
 from discord_token import TOKEN
 
 with open('links.json') as l:
-    links_list = json.load(l)
+    links_dict = json.load(l)
+
+with open('commands.json') as c:
+    commands_dict = json.load(c)
 
 with open('welcome.txt') as w:
     welcome_mesg = w.read()
@@ -30,31 +33,25 @@ git = Github()
 tasmota = git.get_repo("arendst/Sonoff-Tasmota")
 
 re_issue = re.compile("(?:\A|\s)#(\d{4})")
-re_tasmota = re.compile("t[oa][sz]m[ao]t[ao]", re.IGNORECASE)
-re_command = re.compile("(?:\s)?\?c (\w*)(?:\b)?")
-re_commandq = re.compile("`(\w*)`(?:\b)?")
-re_link = re.compile("(?:\s)+\?l (\w*)(?:\b)?")
-re_tdm = re.compile("tdm\s+\d+\.\d+", re.IGNORECASE)
-
-options = ["SetOption{}".format(o) for o in range(99)]
-comms = options + ["Buzzer", "Backlog", "BlinkCount", "BlinkTime", "ButtonDebounce", "FanSpeed", "Interlock", "LedLink", "LedPower", "LedMask", "LedState", "Power", "PowerOnState", "PulseTime", "SwitchDebounce", "SwitchMode", "Delay", "Emulation", "Event", "FriendlyName", "Gpios", "Gpio", "Gpio", "I2Cscan", "LogHost", "LogPort", "Modules", "Module", "OtaUrl", "Pwm", "Pwm", "PwmFrequency", "PwmRange", "Reset", "Restart", "Template", "SaveData", "SerialLog", "Sleep", "State", "Status", "SysLog", "Time", "Timezone", "TimeSTD", "TimeDST", "Upgrade", "Upload", "WebLog", "AP", "Hostname", "IPAddress1", "IPAddress2", "IPAddress3", "IPAddress4", "NtpServer", "Password", "Password", "Ssid", "WebPassword", "WebSend", "WebServer", "WifiConfig", "ButtonRetain", "ButtonTopic", "FullTopic", "GroupTopic", "MqttClient", "MqttFingerprint", "MqttHost", "MqttPassword", "MqttPort", "MqttPort", "MqttRetry", "MqttUser", "PowerRetain", "Prefix1", "Prefix2", "Prefix3", "Publish", "Publish2", "SensorRetain", "StateText1", "StateText2", "StateText3", "StateText4", "SwitchRetain", "SwitchTopic", "TelePeriod", "Topic", "Rule", "RuleTimer", "Mem", "Var", "Add", "Sub", "Mult", "Scale", "CalcRes", "Latitude", "Longitude", "Timers", "Timer", "Altitude", "AmpRes", "Counter", "CounterDebounce", "CounterType", "EnergyRes", "HumRes", "PressRes", "Sensor13", "Sensor15", "Sensor27", "Sensor34", "Sensor53", "TempRes", "VoltRes", "WattRes", "AmpRes", "CurrentHigh", "CurrentLow", "CurrentSet", "EnergyRes", "EnergyReset", "EnergyReset1", "EnergyReset2", "EnergyReset3", "FreqRes", "FrequencySet", "MaxPower", "MaxPowerHold", "MaxPowerWindow", "PowerDelta", "PowerHigh", "PowerLow", "PowerSet", "Status", "VoltageHigh", "VoltageLow", "VoltageSet", "VoltRes", "WattRes", "Channel", "Color", "Color2", "Color3", "Color4", "Color5", "Color6", "CT", "Dimmer", "Fade", "HsbColor", "HsbColor1", "HsbColor2", "HsbColor3", "Led", "LedTable", "Pixels", "Rotation", "Scheme", "Speed", "Wakeup", "WakeupDuration", "Width1", "Width2", "Width3", "Width4", "Baudrate", "SBaudrate", "SerialDelimiter", "SerialDelimiter", "SerialDelimiter", "SerialSend", "SerialSend2", "SerialSend3", "SerialSend4", "SerialSend5", "SSerialSend", "SSerialSend2", "SSerialSend3", "SSerialSend4", "SSerialSend5", "RfCode", "RfHigh", "RfHost", "RfKey", "RfLow", "RfRaw", "RfSync", "IRsend", "IRhvac", "MP3DAC", "MP3Device", "MP3EQ", "MP3Pause", "MP3Play", "MP3Reset", "MP3Stop", "MP3Track", "MP3Volume", "DomoticzIdx", "DomoticzKeyIdx", "DomoticzSensorIdx", "DomoticzSwitchIdx", "DomoticzUpdateTimer", "KnxTx_Cmnd", "KnxTx_Val", "KNX_ENABLED", "KNX_ENHANCED", "KNX_PA", "KNX_GA", "KNX_GA", "KNX_CB", "KNX_CB", "Display", "DisplayAddress", "DisplayDimmer", "DisplayMode", "DisplayModel", "DisplayRefresh", "DisplaySize", "DisplayRotate", "DisplayText", "DisplayCols", "DisplayRows", "DisplayFont", "TuyaMcu", "Websensor", "Subscribe", "Unsubscribe", "Tariff", "Motor", "SetMIS", "SetSPR", "SetRPM", "DoMove", "DoRotate", "DoTurn"]
+re_command = re.compile("(?:\s)?\?c (\w*)(?:\b)?|`(\w*)`(?:\b)?", re.IGNORECASE)
+re_link = re.compile("(?:\s)?\?l (\w*)(?:\b)?|\[(\w*)\](?:\b)?")
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('?'), description="Helper Bot", case_insensitive=True)
+
 
 @bot.event
 async def on_message(message):
     msg = message.content
-    found = re.findall(re_issue, msg)
-    moto = re.findall(re_tasmota, msg)
+    issues = re.findall(re_issue, msg)
     cmnd = re.findall(re_command, msg)
-    cmdqt = re.findall(re_commandq, msg)
-    lnk = re.findall(re_link, msg)
-    tdm = re.findall(re_tdm, msg)
+    lnks = re.findall(re_link, msg)
     response = []
     bad = []
+
     if message.author != bot.user:
-        if found:
-            for i in found:
+        ctx = await bot.get_context(message)
+        if issues:
+            for i in issues:
                 try:
                     nr = int(i)
                     if nr >= 1000:
@@ -68,56 +65,149 @@ async def on_message(message):
             embed = discord.Embed(title="Tasmota issues", description="\n".join(response), colour=discord.Colour(0x3498db))
             await message.channel.send(embed=embed)
 
-        # if moto and moto[0].lower() != 'tasmota':
-        #     await bot.send_file(message.channel, "tasmoto.png")
+        if cmnd:
+            parsed_cmnds = set(sorted([c for result in cmnd for c in result if c]))
+            await ctx.invoke(command, parsed_cmnds)
 
-        if cmnd or cmdqt:
-            result = cmnd + cmdqt
-
-            response = await verify_command(result)
-            if response:
-                embed = discord.Embed(title="Tasmota Wiki", description="\n".join(response),
-                                      colour=discord.Colour(0x3498db))
-                await message.channel.send(embed=embed)
-
-        if tdm and message.author.id != 244557530057932800:
-            await message.channel.send(content="Your nagging delayed the 0.2 release by another {} days.".format(randint(1, 30)))
-
-        if lnk:
-            ctx = await bot.get_context(message)
-            await ctx.invoke(link, lnk[0])
+        if lnks:
+            parsed_links = set(sorted([l for result in lnks for l in result if l]))
+            await ctx.invoke(links, parsed_links)
 
     await bot.process_commands(message)
 
 
-async def verify_command(result):
-    response = set(["[{}](<https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}>)".format(
-        comms[list(map(lambda x: x.lower(), comms)).index(c.lower())], c.lower()) for c in result if
-        c.lower() in map(lambda x: x.lower(), comms)])
-    return response
+# COMMANDS #
+@bot.command(aliases=["l"], brief="Return a link or show available links.")
+async def links(ctx, keywords: str=''):
+    print(keywords)
+    if not isinstance(keywords, str):
+        found_links = []
+        for keyword in keywords:
+            keyword = keyword.lower()
+            if links_dict.get(keyword):
+                lnk = links_dict[keyword]
+                found_links.append("[{}](<{}>)".format(lnk["description"], lnk["url"]))
+                embed = discord.Embed(description="\n".join(found_links), colour=discord.Colour(0x3498db))
 
-
-@bot.command(aliases=["l", "links"], brief="Return a link or show available links.")
-async def link(ctx, lnk: str=''):
-    lnk = lnk.lower()
-    if lnk and links_list.get(lnk):
-        lnk = links_list[lnk]
-        embed = discord.Embed(description="[{}](<{}>)".format(lnk[0], lnk[1]),
-                              colour=discord.Colour(0x3498db))
-    else:
+    elif not keywords:
         link_list = " ".join(sorted(
-            ["[{}](<{}>): {}\n".format(k, links_list[k][1], links_list[k][0]) for k in links_list.keys()]))
+            ["[{}](<{}>): {}\n".format(k, links_dict[k]["url"], links_dict[k]["description"]) for k in links_dict.keys()]))
         embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
         embed.set_footer(text="You can click them directly.")
+
     mentions = [m.mention for m in ctx.message.mentions if not m.bot]
     await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
 
+@commands.has_any_role('Admin', 'Moderator', "Contributor")
+@bot.group(name="link", aliases=["ls"])
+async def link_group(ctx):
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Invalid command passed")
+        await ctx.send(embed=embed)
+
+
+@link_group.command(name="add", brief="Add a link")
+async def link_add(ctx, keyword: str, url: str, *description: str):
+    keyword = keyword.lower()
+    description = " ".join(description)
+
+    if await find_link(keyword, url):
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="This keyword or this url is already present")
+        await ctx.send(embed=embed)
+
+    else:
+        links_dict[keyword] = {"description": description, "url": url}
+        with open('links.json', "w") as l:
+            json.dump(links_dict, l, indent=2)
+
+        with open('links.log', "a+") as log:
+            log.write("{} {} added link '{}: {} ({})'\n".format(datetime.strftime(datetime.now(), "%x %X"), ctx.message.author, keyword, description, url))
+
+        embed = discord.Embed(title="Success", description="Added link '{}'".format(keyword), colour=discord.Colour(0x7ED321))
+        await ctx.channel.send(embed=embed)
+
+
+@link_group.command(name="del", brief="Delete a link")
+async def link_del(ctx, keyword: str):
+    keyword = keyword.lower()
+    lnk = await find_link(keyword)
+    print(lnk)
+    if lnk:
+        links_dict.pop(lnk)
+        with open('links.json', "w") as l:
+            json.dump(links_dict, l, indent=2)
+
+        with open('links.log', "a+") as log:
+            log.write(
+                "{} {} deleted link '{}'\n".format(datetime.strftime(datetime.now(), "%x %X"), ctx.message.author, keyword))
+
+        embed = discord.Embed(title="Success", description="Deleted link '{}'".format(lnk), colour=discord.Colour(0x7ED321))
+        await ctx.channel.send(embed=embed)
+    else:
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Link '{}' not found".format(keyword))
+        await ctx.send(embed=embed)
+
+# COMMANDS #
 @bot.command(aliases=["c", "cmd"], brief="Link to wiki page of command")
-async def command(ctx, cmd: str):
-    pass
+async def command(ctx, cmds):
+    if not isinstance(cmds, str):
+        found_commands = []
+        for cmd in cmds:
+            cmnd = await find_command(cmd)
+            if cmnd:
+                found_commands.append("[{}](<https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}>)".format(cmnd, cmnd))
+
+        if found_commands:
+            embed = discord.Embed(title="Tasmota Commands Wiki", description="\n".join(found_commands),
+                                  colour=discord.Colour(0x3498db))
+            await ctx.channel.send(embed=embed)
 
 
+@commands.has_any_role('Admin', 'Moderator', "Contributor")
+@bot.group(name="commands", aliases=["cs"])
+async def command_group(ctx):
+    if ctx.invoked_subcommand is None:
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Invalid command passed")
+        await ctx.send(embed=embed)
+
+
+@command_group.command(name="add", brief="Add a Tasmota command")
+async def command_add(ctx, cmd: str):
+    cmnd = await find_command(cmd)
+    if cmnd:
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Command already exists")
+        await ctx.send(embed=embed)
+    else:
+        commands_dict.update({cmd: {}})
+        with open('commands.json', "w") as c:
+            json.dump(commands_dict, c, indent=2)
+
+        with open('command.log', "a+") as log:
+            log.write("{} {} added command '{}'\n".format(datetime.strftime(datetime.now(), "%x %X"), ctx.message.author, cmd))
+
+        embed = discord.Embed(title="Success", description="Added command '{}'".format(cmd), colour=discord.Colour(0x7ED321))
+        await ctx.channel.send(embed=embed)
+
+
+@command_group.command(name="del", brief="Delete a Tasmota command")
+async def command_del(ctx, cmd: str):
+    cmnd = await find_command(cmd)
+    if cmnd:
+        commands_dict.pop(cmnd)
+        with open('commands.json', "w") as c:
+            json.dump(commands_dict, c, indent=2)
+
+        with open('command.log', "a+") as log:
+            log.write("{} {} deleted command '{}'\n".format(datetime.strftime(datetime.now(), "%x %X"), ctx.message.author, cmd))
+
+        embed = discord.Embed(title="Success", description="Deleted command '{}'".format(cmd), colour=discord.Colour(0x7ED321))
+        await ctx.channel.send(embed=embed)
+    else:
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Command '{}' not found".format(cmd))
+        await ctx.send(embed=embed)
+
+# MUTE/UNMUTE #
 @bot.command(aliases=["m"], brief="Mute a user or show the list of currently muted users.")
 @commands.has_any_role('Admin', 'Moderator')
 async def mute(ctx, member: discord.Member=None, duration: int=5):
@@ -148,7 +238,7 @@ async def unmute(ctx, member: discord.Member):
         embed = discord.Embed(title="{} is not currently muted".format(member.name), colour=discord.Colour(0x3498db))
     await ctx.channel.send(embed=embed)
 
-
+# PRUNING #
 @bot.command(aliases=["i"], pass_context=True, brief="Show count of users inactive for <x> days.")
 @commands.has_any_role('Admin', 'Moderator')
 async def inactive(ctx, days: int=30):
@@ -160,7 +250,7 @@ async def inactive(ctx, days: int=30):
 async def prune(ctx, days: int=30):
     await ctx.channel.send("{} members inactive for more than {} day{} were kicked. ".format(await ctx.message.guild.prune_members(days=days), days, "s" if days > 1 else ""))
 
-
+# HELPERS #
 @bot.command(aliases=["g", "jfgi", "utfg", "foo", "lmg"], brief="Let me Google that for you.")
 async def lmgtfy(ctx, *q: str):
     await ctx.channel.send("http://lmgtfy.com/?q={}".format('+'.join(q)))
@@ -170,6 +260,7 @@ async def lmgtfy(ctx, *q: str):
 async def rtfw(ctx):
     await ctx.channel.send(file=File('rtfw.png'))
 
+# WELCOME #
 @bot.command(brief="Re-send welcome message to mentioned user(s)")
 async def welcome(ctx):
     if ctx.message.mentions:
@@ -182,22 +273,12 @@ async def welcome(ctx):
         await ctx.message.author.send(remarks)
     await ctx.channel.send("Welcome message sent.")
 
-
-@bot.command(ignore_extras=False, hidden=True)
-@commands.has_any_role('Admin')
-async def watch(ctx, *args):
-    await bot.change_presence(game=discord.Game(name=" ".join(args), type=3))
-
-
+# EVENTS #
 @bot.event
 async def on_member_join(member):
     await member.send(welcome_mesg)
     await member.send(remarks)
 
-
-@bot.event
-async def on_member_update(old, new):
-    pass
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -216,18 +297,18 @@ async def on_ready():
     print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
 
-# async def make_reply(message, reply):
-#     mentions = " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
-#     return "{}\n{}".format(mentions, reply)
+async def find_command(cmd):
+    for cmnd in commands_dict.keys():
+        if cmd == cmnd.lower():
+            return cmnd
 
 
-# async def command_output(cmd):
-#     reply = "Usage: {}\n\n{}".format(cmd['usage'], "\n".join(["**{}**: {}".format(p['name'], p['function']) for p in cmd['params']]))
-#     return reply
-
-
-# async def mentions(message):
-#     return " ".join([m.mention for m in message.mentions]) if message.mentions else message.author.mention
+async def find_link(keyword, url=""):
+    for k, v in links_dict.items():
+        if k == keyword:
+            return k
+        elif v["url"].lower() == url.lower():
+            return k
 
 
 async def mute_check():
@@ -241,7 +322,7 @@ async def mute_check():
                 del muted_users[member]
                 print("Unmuted {}".format(member.name))
                 asyncio.sleep(1)
-        await asyncio.sleep(15) # task runs every 60 seconds
+        await asyncio.sleep(15)
 
 if __name__ == "__main__":
     bot.loop.create_task(mute_check())

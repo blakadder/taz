@@ -1,3 +1,0 @@
-I provide quick access to various commands used in Tasmota software.
-If you know the exact command (without parameters), use prefix "!" to read its summary (for example `!switchtopic`).
-Alternatively, you can use prefix "?" so I can find commands by partial name (for example `?topic`).

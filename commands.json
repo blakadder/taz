@@ -1,1114 +1,284 @@
 {
-  "blinkcount": [
-    "BlinkCount : Show current BlinkCount",
-    "BlinkCount 0: Blink many times before restoring power state",
-    "BlinkCount 1..32000: Set how many blinks before restoring power state"
-  ],
-  "blinktime": [
-    "BlinkTime : Show current BlinkTime in 0.1 seconds",
-    "BlinkTime 2..3600: Set BlinkTime with 0.1 seconds increment"
-  ],
-  "buttondebounce": [
-    "ButtonDebounce : (6.1.1.12) Show current button debounce time in ms",
-    "ButtonDebounce 40..1000: (6.1.1.12) Set button debounce time in ms"
-  ],
-  "fanspeed": [
-    "FanSpeed : (iFan02 only) Show current fan speed",
-    "FanSpeed 0 / off: (iFan02 only) Turn fan Off",
-    "FanSpeed 1..3: (iFan02 only) Set fan speed",
-    "FanSpeed +: (6.1.1.4) (iFan02 only) Increment fan speed",
-    "FanSpeed -: (6.1.1.4) (iFan02 only) Decrement fan speed"
-  ],
-  "ledpower": [
-    "LedPower : Show current led power state as On or Off",
-    "LedPower 0 / off: Turn led AND LedState Off",
-    "LedPower 1 / on: Turn led On AND LedState Off"
-  ],
-  "ledstate": [
-    "LedState : Show current led state as 0 to 7",
-    "LedState 0 / off: Disable use of LED as much as possible",
-    "LedState 1 / on: Show power state on led (inverted for Sonoff Touch)",
-    "LedState 2: Show MQTT subscriptions as a led blink",
-    "LedState 3: Show power state and MQTT subscriptions as a led blink",
-    "LedState 4: Show MQTT publications as a led blink",
-    "LedState 5: Show power state and MQTT publications as a led blink",
-    "LedState 6: Show all MQTT messages as a led blink",
-    "LedState 7: Show power state and MQTT messages as a led blink"
-  ],
-  "power": [
-    "Power<x> : Show current power state of relay<x> as On or Off, also resetting its PulseTime<x> (see below)",
-    "Power<x> 0 / off: Turn relay<x> power Off",
-    "Power<x> 1 / on: Turn relay<x> power On",
-    "Power<x> 2 / toggle: Toggle power of relay<x>",
-    "Power<x> 3 / blink: Blink power of relay<x>",
-    "Power<x> 4 / blinkoff: Stop blinking power of relay<x>"
-  ],
-  "poweronstate": [
-    "PowerOnState : Show current relay power on state",
-    "PowerOnState 0 / off: Keep relay(s) off after power on",
-    "PowerOnState 1 / on: Turn relay(s) on after power on",
-    "PowerOnState 2 / toggle: Toggle relay(s) on from last saved",
-    "PowerOnState 3: (default) Turn relay(s) on as last saved",
-    "PowerOnState 4: Turn relay(s) on and disable further relay control",
-    "PowerOnState 5: After a pulsetime period turn relay(s) on; acts as inverted PulseTime mode"
-  ],
-  "powerretain": [
-    "PowerRetain : Show current MQTT power retain state",
-    "PowerRetain 0 / off: (default) Disable MQTT power retain on status update",
-    "PowerRetain 1 / on: Enable MQTT power retain on status update",
-    "PowerRetain : Show current MQTT power retain state",
-    "PowerRetain 0 / off: (default) Disable MQTT power retain on status update",
-    "PowerRetain 1 / on: Enable MQTT power retain on status update"
-  ],
-  "pulsetime": [
-    "PulseTime<x> : Show current PulseTime of relay<x> in 0.1 seconds",
-    "PulseTime<x> 0 / off: (Default) Disable use of PulseTime for relay<x>",
-    "PulseTime<x> 1..111: Set PulseTime for relay<x> with 0.1 seconds increment",
-    "PulseTime<x> 112..64900: Set PulseTime for relay<x> with 1 seconds increment starting with 12 seconds (add 100 to desired interval in seconds, e.g. 113 = 13 seconds and 220 = 120 seconds)"
-  ],
-  "switchdebounce": [
-    "SwitchDebounce : (6.1.1.12) Show current switch debounce time in ms",
-    "SwitchDebounce 40..1000: (6.1.1.12) Set button switch time in ms"
-  ],
-  "switchmode": [
-    "SwitchMode<x> : Show current external switch mode",
-    "SwitchMode<x> 0: (default) Set switch mode to TOGGLE",
-    "SwitchMode<x> 1: Set switch mode to FOLLOW (0 = Off, 1 = On)",
-    "SwitchMode<x> 2: Set switch mode to inverted FOLLOW (0 = On, 1 = Off)",
-    "SwitchMode<x> 3: Set switch mode to PUSHBUTTON (Normally 1, 0 = toggle)",
-    "SwitchMode<x> 4: Set switch mode to inverted PUSHBUTTON (Normally 0, 1 = toggle)",
-    "SwitchMode<x> 5: Set switch mode to PUSHBUTTON (Normally 1, 0 = toggle, Hold = hold)",
-    "SwitchMode<x> 6: Set switch mode to inverted PUSHBUTTON (Normally 0, 1 = toggle, Hold = hold)",
-    "SwitchMode<x> 7: Set switch mode to PUSHBUTTON (0 = toggle, 1 = toggle)"
-  ],
-  "altitude": [
-    "Altitude : Show current Altitude to be used by calculating Sea level Pressure",
-    "Altitude -30000..30000: Set local Altitude in meters"
-  ],
-  "ampres": [
-    "AmpRes : Show current Current Resolution",
-    "AmpRes 0..3: Set Current Resolution",
-    "AmpRes : Show current Current Resolution",
-    "AmpRes 0..3: Set Current Resolution"
-  ],
-  "counter": [
-    "Counter<x> : Show current Counter 1..4 value",
-    "Counter<x> 0: Reset Counter 1..4",
-    "Counter<x> 1..64900: Preset Counter 1..4",
-    "Counter<x> -1..64900: Decrement Counter 1..4",
-    "Counter<x> +1..64900: Increment Counter 1..4"
-  ],
-  "counterdebounce": [
-    "CounterDebounce : Show current global Counter debounce time in mSec",
-    "CounterDebounce 0 / off: Turn global Counter debounce off",
-    "CounterDebounce 1..3200: Set global Counter debounce in mSec"
-  ],
-  "countertype": [
-    "CounterType<x> : Show current Counter 1..4 type as pulse Counter or pulse Timer",
-    "CounterType<x> 0 / off: Set current Counter 1..4 type as pulse Counter",
-    "CounterType<x> 1 / on: Set current Counter 1..4 type as pulse Timer"
-  ],
-  "energyres": [
-    "EnergyRes : Show current Energy Resolution",
-    "EnergyRes 0..5: Set Energy Resolution",
-    "EnergyRes : Show current Energy Resolution",
-    "EnergyRes 0..5: Set Energy Resolution"
-  ],
-  "humres": [
-    "HumRes : Show current Humidity Resolution",
-    "HumRes 0..3: Set Humidity Resolution"
-  ],
-  "pressres": [
-    "PressRes : Show current Pressure Resolution",
-    "PressRes 0..3: Set Pressure Resolution"
-  ],
-  "sensor13": [
-    "Sensor13 : Show current Ina219 Calibration Mode",
-    "Sensor13 0: Set Ina219 Calibration to max 32V and 2A",
-    "Sensor13 1: Set Ina219 Calibration to max 32V and 1A",
-    "Sensor13 2: Set Ina219 Calibration to max 16V and 0.4A"
-  ],
-  "sensor15": [
-    "Sensor15 2: Start MHZ19(B) Zero Point Calibration"
-  ],
-  "sensor27": [
-    "Sensor27 : Show APDS9960 gesture mode",
-    "Sensor27 0 / off: Disable APDS9960 gesture mode",
-    "Sensor27 1 / on: Enable APDS9960 gesture mode"
-  ],
-  "tempres": [
-    "TempRes : Show current Temperature Resolution",
-    "TempRes 0..3: Set Temperature Resolution"
-  ],
-  "tempunit": [
-    "TempUnit : Replaced by SetOption8"
-  ],
-  "voltres": [
-    "VoltRes : Show current Voltage Resolution",
-    "VoltRes 0..3: Set Voltage Resolution",
-    "VoltRes : Show current Voltage Resolution",
-    "VoltRes 0..3: Set Voltage Resolution"
-  ],
-  "wattres": [
-    "WattRes : Show current Power Resolution",
-    "WattRes 0..3: Set Power Resolution",
-    "WattRes : Show current Power Resolution",
-    "WattRes 0..3: Set Power Resolution"
-  ],
-  "latitude": [
-    "Latitude : Show current user provided latitude",
-    "Latitude <value>: Set latitude"
-  ],
-  "longitude": [
-    "Longitude : Show current user provided longitude",
-    "Longitude <value>: Set longitude"
-  ],
-  "timer": [
-    "Timer<x> : Show current parameters for Timer<x> where x = 1 to 16.",
-    "Timer<x> 0: Clear Timer<x> parameters",
-    "Timer<x> 1 .. 16: Copy Timer(payload) parameters to Timer<x>",
-    "Timer<x> { ... }: Set all or individual parameters (https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#timers)"
-  ],
-  "timers": [
-    "Timers : Show parameters of all 16 timers",
-    "Timers 0: Global Disable Timers",
-    "Timers 1: Global Enable Timers",
-    "Timers 2: Toggle Global Enable Timers Flag"
-  ],
-  "backlog": [
-    "Backlog : Abort backlog if active",
-    "Backlog <cmnds>: List of commands to be executed in sequence separated by a ;"
-  ],
-  "buttonrestrict": [
-    "ButtonRestrict : Replaced by SetOption1"
-  ],
-  "delay": [
-    "Delay : Reset backlog delay to 0.2 seconds",
-    "Delay 2..3600: Set delay between two backlog commands with 0.1 seconds increment"
-  ],
-  "emulation": [
-    "Emulation : Show current emulation state",
-    "Emulation 0 / off: Disable emulation",
-    "Emulation 1: Enable Belkin WeMo emulation for Alexa",
-    "Emulation 2: Enable Hue Bridge emulation for Alexa"
-  ],
-  "event": [
-    "Event <event>: Execute an event to trigger a rule as documented https://github.com/arendst/Sonoff-Tasmota/wiki/Rules"
-  ],
-  "friendlyname": [
-    "FriendlyName : Show friendly name as used by emulation",
-    "FriendlyName<x> : Show friendly name as used by emulation",
-    "FriendlyName<x> 1: Reset friendly name to user_config(_override).h value (`FRIENDLY_NAME`)",
-    "FriendlyName<x> <name>: Set friendly name (32 chars max)"
-  ],
-  "gpios": [
-    "Gpios : Show available sensors and devices by name and index for user selection"
-  ],
-  "gpio": [
-    "Gpio : Show current GPIO usage for current module",
-    "Gpio<pin> <sensor>: Select sensor to be connected to <pin>"
-  ],
-  "i2cscan": [
-    "I2Cscan : Scan I2C bus and show device addresses found"
-  ],
-  "mem1..5": [
-    "Mem1..5 : Show current persistent variable data",
-    "Mem1..5 <value>: Store a string value in a variable",
-    "Mem1..5 '': Clear value"
-  ],
-  "modules": [
-    "Modules : Show available modules by name and index"
-  ],
-  "module": [
-    "Module : Show active module by name and index",
-    "Module <index>: Switch to selected module and restart"
-  ],
-  "mqtt": [
-    "Mqtt : Replaced by SetOption3"
-  ],
-  "otaurl": [
-    "OtaUrl : Show current otaurl",
-    "OtaUrl 1: Reset otaurl to user_config(_override).h value (`OTA_URL`)",
-    "OtaUrl <url>: Set otaurl (100 chars max)"
-  ],
-  "pwm": [
-    "Pwm : Show current PWM setting for enabled channels",
-    "Pwm<x> 0..1023: Set Pwm channel x to value ranging from 0 to 1023"
-  ],
-  "pwmfrequency": [
-    "PwmFrequency : Show current PWM frequency in Hz",
-    "PwmFrequency 1: Reset PWM frequency to 880Hz",
-    "PwmFrequency 100..4000: Set PWM frequency from minimum 100Hz to maximum 4kHz"
-  ],
-  "pwmrange": [
-    "PwmRange : Show current maximum PWM range value",
-    "PwmRange 1: Reset maximum PWM range to 1023",
-    "PwmRange 255..1023: Set maximum PWM range"
-  ],
-  "reset": [
-    "Reset 1: Reset sonoff parameters to user_config(_override).h values and restart",
-    "Reset 2: Erase flash, reset sonoff parameters to user_config(_override).h values and restart",
-    "Reset 3: Erase flash SDK parameters and restart",
-    "Reset 4: Reset sonoff parameters to user_config(_override).h values but retain wifi credentials and restart",
-    "Reset 5: Erase all flash from program end to end of physical flash and reset the parameters to what is configured in user_config(_override).h but retain wifi ssid's and passwords and then restart."
-  ],
-  "restart": [
-    "Restart 1: Restart sonoff",
-    "Restart 99: Force restart sonoff without config save"
-  ],
-  "rule1..3": [
-    "Rule1..3 : Show current rule and settings",
-    "Rule1..3 0: Disable rules",
-    "Rule1..3 1: Enable rules",
-    "Rule1..3 2: Toggle rules",
-    "Rule1..3 4: Disable one-shot detection (Perform commands as long as trigger is met)",
-    "Rule1..3 5: Enable one-shot detection (Perform commands once until trigger is not met)",
-    "Rule1..3 6: Toggle one-shot detection",
-    "Rule1..3 8: (6.1.1.12) Disable stop-on-error after exception restart",
-    "Rule1..3 9: (6.1.1.12) Enable stop-on-error after exception restart",
-    "Rule1..3 10: (6.1.1.12) Toggle stop-on-error after exception restart",
-    "Rule1..3 <rule>: Define a rule as documented https://github.com/arendst/Sonoff-Tasmota/wiki/Rules",
-    "Rule1..3 +<rule>: Append a rule as documented https://github.com/arendst/Sonoff-Tasmota/wiki/Rules",
-    "Rule1..3 '': Clear rule"
-  ],
-  "ruletimer1..8": [
-    "RuleTimer1..8 : Show current RuleTimer in seconds",
-    "RuleTimer1..8 <value>: Set countdown RuleTimer in seconds (max. 32766 seconds)"
-  ],
-  "savedata": [
-    "SaveData : Save parameter changes and show current state as Manual, On or every x seconds",
-    "SaveData 0 / off: Save parameter changes only manually",
-    "SaveData 1 / on: (default) Save parameter changes every second",
-    "SaveData <sec>: Save parameter changes between every 2 and 3600 seconds"
-  ],
-  "savestate": [
-    "SaveState : Replaced by SetOption0"
-  ],
-  "sleep": [
-    "Sleep : Show current sleep state as 0 (Off) or duration of up to 250 mSec",
-    "Sleep 0 / off: (default) Turn sleep off",
-    "Sleep 1..250: Set sleep duration from 1 to 250 mSec to enable energy saving"
-  ],
-  "state": [
-    "State : Show current device states"
-  ],
-  "status": [
-    "Status : Show abbreviated status information",
-    "Status 0: Show all status information",
-    "Status 1: Show more status information",
-    "Status 2: Show firmware information",
-    "Status 3: Show syslog information",
-    "Status 4: Show memory information",
-    "Status 5: Show network information",
-    "Status 6: Show MQTT information",
-    "Status 7: Show Real Time Clock information",
-    "Status 8: Show sensor information",
-    "Status 9: (Sonoff Pow only) Show Power thresholds",
-    "Status 10: Show sensor information (Retained for legacy reasons - equivalent to Status 8)",
-    "Status 11: Show power information equal to teleperiod state message",
-    "Status 8: Show Power usage",
-    "Status 9: Show Power thresholds"
-  ],
-  "timezone": [
-    "Timezone : Show current timezone",
-    "Timezone -13..13: Set timezone",
-    "Timezone 99: Use Daylight Saving parameters configured with `TimeDST` and `TimeSTD`"
-  ],
-  "timedst": [
-    "TimeDST : Show Daylight Saving TimeZone Parameters",
-    "TimeDST 0: Reset Daylight Saving TimeZone parameters to user_config(_override).h values",
-    "TimeDST H,W,M,D,h,T: Set Daylight Saving TimeZone Parameters (https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#management)"
-  ],
-  "timestd": [
-    "TimeSTD : Show Standard TimeZone Parameters",
-    "TimeSTD 0: Reset Standard TimeZone parameters to user_config(_override).h values",
-    "TimeSTD H,W,M,D,h,T: Set Standard TimeZone Parameters (https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#management)"
-  ],
-  "upgrade": [
-    "Upgrade 1: Download ota firmware from your web server and restart",
-    "Upgrade <version>: Download ota firmware from web server if <version> is higher than device version"
-  ],
-  "upload": [
-    "Upload 1: Download ota firmware from your web server and restart",
-    "Upload <version>: Download ota firmware from web server if <version> is higher than device version"
-  ],
-  "var1..5": [
-    "Var1..5 : Show current temporary variable data",
-    "Var1..5 <value>: Store a string value in a variable",
-    "Var1..5 '': Clear value"
-  ],
-  "add1..5": [
-    "Add1..5 : Show current temporary data in Var1..5",
-    "Add1..5 <value>: Add a value to a variable Var1..5"
-  ],
-  "sub1..5": [
-    "Sub1..5 : Show current temporary data in Var1..5",
-    "Sub1..5 <value>: Substract a value to a variable Var1..5"
-  ],
-  "mult1..5": [
-    "Mult1..5 : Show current temporary data in Var1..5",
-    "Mult1..5 <value>: Multiply a value to a variable Var1..5"
-  ],
-  "scale1..5": [
-    "Scale1..5 : Show current temporary data in Var1..5",
-    "Scale1..5 v,fl,fh,tl,th: Scale a value from a low and high limit to another low and high limits and save in VAR1..5",
-    "Scale1..5 v: value: the number to scale",
-    "Scale1..5 fl: fromLow: the lower bound of the value\u2019s current range",
-    "Scale1..5 fh: fromHigh: the upper bound of the value\u2019s current range",
-    "Scale1..5 tl: toLow: the lower bound of the value\u2019s target range",
-    "Scale1..5 th: toHigh: the upper bound of the value\u2019s target range"
-  ],
-  "calcres": [
-    "CalcRes : Show current number of decimals used in commands ADD, SUB, MULT and SCALE",
-    "CalcRes 0..7: Set number of decimals (0 - 7) to be used in commands ADD, SUB, MULT and SCALE"
-  ],
-  "ap": [
-    "AP : Show current selected Wifi Access Point (AP)",
-    "AP 0: Switch to other Wifi Access Point (AP)",
-    "AP 1: Select Wifi Access Point 1 (AP)",
-    "AP 2: Select Wifi Access Point 2 (AP)"
-  ],
-  "hostname": [
-    "Hostname : Show current hostname",
-    "Hostname 1: Reset hostname to `MQTT_TOPIC-<4digits>` and restart",
-    "Hostname <host>: Set hostname (32 chars max) and restart. If <host> contains % the hostname will be reset to the default."
-  ],
-  "ipaddress1": [
-    "IPAddress1 : Show current IP address",
-    "IPAddress1 0.0.0.0: Use dynamic IP addresses (DHCP) [follow this with a \"restart 1\" command once you complete your IP config of IP Address, subnet mask & gateway]",
-    "IPAddress1 x.x.x.x: Set (decimal) static IP address  [follow this with a \"restart 1\" command once you complete your IP config of IP Address, subnet mask & gateway]"
-  ],
-  "ipaddress2": [
-    "IPAddress2 : Show current IP address of Gateway",
-    "IPAddress2 x.x.x.x: Set (decimal) IP address of Gateway [follow this with a \"restart 1\" command once you complete your IP config of IP Address, subnet mask & gateway]"
-  ],
-  "ipaddress3": [
-    "IPAddress3 : Show current subnet mask",
-    "IPAddress3 x.x.x.x: Set (decimal) subnet mask  [follow this with a \"restart 1\" command once you complete your IP config of IP Address, subnet mask & gateway]"
-  ],
-  "ipaddress4": [
-    "IPAddress4 : Show current IP address of DNS server",
-    "IPAddress4 x.x.x.x: Set (decimal) IP address of DNS server  [follow this with a \"restart 1\" command once you complete your IP config of IP Address, subnet mask & gateway]"
-  ],
-  "ntpserver": [
-    "NtpServer<x> : Show NTP server 1 to 3 name or ip address",
-    "NtpServer<x> 0: Set NTP server 1 to 3 name to none and restart",
-    "NtpServer<x> 1: Reset NTP server 1 to 3 name to `user_config.h` (`NTP_SERVERx`) and restart",
-    "NtpServer<x> <ntphost>: Set NTP server 1 to 3 name or ip address (32 chars max)"
-  ],
-  "password": [
-    "Password : Show AP1 current Wifi password",
-    "Password 1: Reset AP1 Wifi password to `user_config.h` (`STA_PASS1`) and restart",
-    "Password <pwd>: Set AP1 Wifi password (64 chars max) and restart",
-    "Password<x> : Show APx current Wifi password",
-    "Password<x> 1: Reset APx Wifi password to `user_config.h` (`STA_PASS1` or `STA_PASS2`) and restart",
-    "Password<x> <pwd>: Set APx Wifi password (64 chars max) and restart"
-  ],
-  "ssid / ssid": [
-    "SSId / SSId<x> : Show APx current Wifi SSId",
-    "SSId / SSId<x> 1: Reset APx Wifi SSId to `user_config.h` (`STA_SSID1` or `STA_SSID2`) and restart",
-    "SSId / SSId<x> <ssid>: Set APx Wifi SSId (32 chars max) and restart"
-  ],
-  "webpassword": [
-    "WebPassword : Show current web server Admin password for user `WEB_USERNAME`",
-    "WebPassword 0: Disable use of password",
-    "WebPassword 1: Reset password to value in `user_config.h` (`WEB_PASSWORD`)",
-    "WebPassword <pwd>: Set web server Admin password for user `WEB_USERNAME` (32 chars max)"
-  ],
-  "websend": [
-    "WebSend [<host>] <command>: Send command to host where host is hostname or IP address. If command start with a \\ it will be used as a link",
-    "WebSend [<host>:<port>] <command>: Send command to host where host is hostname or IP address",
-    "WebSend [<host>,<user>:<password>] <command>: Send command to host where host is hostname or IP address",
-    "WebSend [<host>:<port>,<user>:<password>] <command>: Send command to host where host is hostname or IP address"
-  ],
-  "webserver": [
-    "WebServer : Show current web server state",
-    "WebServer 0 / off: Stop web server",
-    "WebServer 1 / user: Start web server in user mode",
-    "WebServer 2 / admin: Start web server in admin mode"
-  ],
-  "wificonfig": [
-    "WifiConfig : Show current config tool",
-    "WifiConfig 0: Disable wifi config but restart (used with alternate AP)",
-    "WifiConfig 1: Start smart config for 1 minute and set as current config tool",
-    "WifiConfig 2: Start wifi manager (web server at 192.168.4.1) and set as current config tool",
-    "WifiConfig 3: Start WPS config for 1 minute and set as current config tool",
-    "WifiConfig 4: Disable wifi config but retry other AP without restart",
-    "WifiConfig 5: Disable wifi config but retry same AP without restart and flash writes"
-  ],
-  "buttonretain": [
-    "ButtonRetain : Show current button MQTT retain flag state",
-    "ButtonRetain 0 / off: (default) Disable use of MQTT retain flag",
-    "ButtonRetain 1 / on: Set ButtonTopic to Topic and enable MQTT retain flag on button press"
-  ],
-  "buttontopic": [
-    "ButtonTopic : Show current MQTT button topic",
-    "ButtonTopic 0 / off: Disable use of MQTT button topic",
-    "ButtonTopic 1: Set MQTT button topic to Topic",
-    "ButtonTopic <topic>: Set MQTT button topic (32 chars max)"
-  ],
-  "switchtopic": [
-    "SwitchTopic 2: Set MQTT button topic to compile time define `MQTT_BUTTON_TOPIC`",
-    "SwitchTopic : Show current MQTT switch topic",
-    "SwitchTopic 0 / off: Disable use of MQTT switch topic",
-    "SwitchTopic 1: Set MQTT switch topic to Topic",
-    "SwitchTopic 2: Set MQTT switch topic to compile time define `MQTT_SWITCH_TOPIC`",
-    "SwitchTopic <topic>: Set MQTT switch topic (32 chars max)"
-  ],
-  "fulltopic": [
-    "FullTopic : Show current MQTT fulltopic string",
-    "FullTopic 1: Reset MQTT fulltopic to `user_config.h` (`MQTT_FULLTOPIC`) and restart",
-    "FullTopic <fulltopic>: Set MQTT fulltopic (100 chars max) using optional %topic% and %prefix% and restart"
-  ],
-  "grouptopic": [
-    "GroupTopic : Show current MQTT group topic",
-    "GroupTopic 1: Reset MQTT group topic to `user_config.h` (`MQTT_GRPTOPIC`) and restart",
-    "GroupTopic <grouptopic>: Set MQTT group topic (32 chars max) and restart"
-  ],
-  "mqttclient": [
-    "MqttClient : Show current MQTT client",
-    "MqttClient 1: Reset MQTT client to `user_config.h` (`MQTT_CLIENT_ID`) and restart",
-    "MqttClient <client>: Set MQTT client (32 chars max) and restart. May use wildcard %06X to be replaced by last six characters of MAC address"
-  ],
-  "mqttfingerprint": [
-    "MqttFingerprint : (  TLS only) Show current fingerprint",
-    "MqttFingerprint <print>: (TLS only) Set current fingerprint as 20 space separated bytes (59 chars max)"
-  ],
-  "mqtthost": [
-    "MqttHost : Show current MQTT host",
-    "MqttHost 0: Clear MQTT host field and allow mDNS to find MQTT host",
-    "MqttHost 1: Reset MQTT host to `user_config.h` (`MQTT_HOST`) and restart",
-    "MqttHost <host>: Set MQTT host (32 chars max) and restart"
-  ],
-  "mqttpassword": [
-    "MqttPassword : Show current MQTT password",
-    "MqttPassword 0: Set MQTT password to none",
-    "MqttPassword 1: Reset MQTT password to `user_config.h` (`MQTT_PASS`) and restart",
-    "MqttPassword <pswrd>: Set MQTT password (32 chars max) and restart"
-  ],
-  "mqttport": [
-    "MqttPort : Show current MQTT port",
-    "MqttPort 1: Reset MQTT port to `user_config.h` (`MQTT_PORT`) and restart",
-    "MqttPort <port>: Set MQTT port between 2 and 32766 and restart"
-  ],
-  "mqttresponse": [
-    "MqttResponse : Replaced by SetOption4"
-  ],
-  "mqttretry": [
-    "MqttRetry : Show current MQTT connection retry timer in seconds",
-    "MqttRetry 10: (default) Set MQTT connection retry timer in seconds",
-    "MqttRetry 10..32000: Set MQTT connection retry timer in seconds"
-  ],
-  "mqttuser": [
-    "MqttUser : Show current MQTT user name",
-    "MqttUser 0: Set MQTT user name to none",
-    "MqttUser 1: Reset MQTT user name to `user_config.h` (`MQTT_USER`) and restart",
-    "MqttUser <user>: Set MQTT user name (32 chars max) and restart"
-  ],
-  "prefix1": [
-    "Prefix1 : Show current MQTT command subscription prefix",
-    "Prefix1 1: Reset MQTT command subscription prefix to `user_config.h` (`SUB_PREFIX`) and restart",
-    "Prefix1 <prefix>: Set MQTT command subscription prefix (10 chars max) and restart"
-  ],
-  "prefix2": [
-    "Prefix2 : Show current MQTT status prefix",
-    "Prefix2 1: Reset MQTT status prefix to `user_config.h` (`PUB_PREFIX`) and restart",
-    "Prefix2 <prefix>: Set MQTT status prefix (10 chars max) and restart"
-  ],
-  "prefix3": [
-    "Prefix3 : Show current MQTT telemetry prefix",
-    "Prefix3 1: Reset MQTT telemetry prefix to `user_config.h` (`PUB_PREFIX2`) and restart",
-    "Prefix3 <prefix>: Set MQTT telemetry prefix (10 chars max) and restart"
-  ],
-  "publish": [
-    "Publish <topic> <payload>: Publish any topic and optional payload"
-  ],
-  "publish2": [
-    "Publish2 <topic> <payload>: Publish any topic and optional payload with retain"
-  ],
-  "sensorretain": [
-    "SensorRetain : Show current sensor MQTT retain flag state",
-    "SensorRetain 0 / off: (default) Disable use of sensor MQTT retain flag",
-    "SensorRetain 1 / on: Enable MQTT retain flag on message tele/sonoff/SENSOR"
-  ],
-  "statetext1": [
-    "StateText1 : Show current Off state text",
-    "StateText1 <text>: Set Off state text (10 chars max)"
-  ],
-  "statetext2": [
-    "StateText2 : Show current On state text",
-    "StateText2 <text>: Set On state text (10 chars max)"
-  ],
-  "statetext3": [
-    "StateText3 : Show current Toggle state text",
-    "StateText3 <text>: Set Toggle state text (10 chars max)"
-  ],
-  "statetext4": [
-    "StateText4 : Show current button Hold state text",
-    "StateText4 <text>: Set button Hold state text (10 chars max)"
-  ],
-  "switchretain": [
-    "SwitchRetain : Show current button MQTT retain flag state",
-    "SwitchRetain 0 / off: (default) Disable use of MQTT retain flag",
-    "SwitchRetain 1 / on: Set ButtonTopic to Topic and enable MQTT retain flag on button press"
-  ],
-  "teleperiod": [
-    "TelePeriod : Show current telemetry period in seconds",
-    "TelePeriod 0 / off: Disable telemetry messages",
-    "TelePeriod 1: Reset telemetry period to `user_config.h` (`TELE_PERIOD`)",
-    "TelePeriod <secs>: Set telemetry period between 10 and 3600 seconds"
-  ],
-  "topic": [
-    "Topic : Show current MQTT topic",
-    "Topic 1: Reset MQTT topic to `user_config.h` (`MQTT_TOPIC`) and restart",
-    "Topic <topic>: Set MQTT topic (32 chars max) AND button topic and restart"
-  ],
-  "units": [
-    "Units : Replaced by SetOption2"
-  ],
-  "baudrate": [
-    "Baudrate : Show current serial baudrate",
-    "Baudrate 1: Set to default baudrate of 115200 bps",
-    "Baudrate <baudrate>: Set to baudrate"
-  ],
-  "serialdelimiter": [
-    "SerialDelimiter : Show current serial delimiter",
-    "SerialDelimiter 1..127: Set serial delimiter to decimal ASCII code",
-    "SerialDelimiter 128..255: Disable serial delimiter",
-    "SerialDelimiter <\\\\escapechar>: Set serial delimiter to escape character code",
-    "SerialDelimiter <non-number>: Set serial delimiter to ASCII character",
-    "SerialDelimiter : Show current serial delimiter",
-    "SerialDelimiter 1..127: Set serial delimiter to decimal ASCII code",
-    "SerialDelimiter 128..255: Disable serial delimiter",
-    "SerialDelimiter <\\\\escapechar>: Set serial delimiter to escape character code",
-    "SerialDelimiter <non-number>: Set serial delimiter to ASCII character"
-  ],
-  "seriallog": [
-    "SerialLog 0 / off: Disable Hardware Serial Bridge and disable serial logging",
-    "SerialLog 1: Disable Hardware Serial Bridge and Show only error messages",
-    "SerialLog 2: Disable Hardware Serial Bridge and Show error and info messages",
-    "SerialLog 3: Disable Hardware Serial Bridge and Show error, info and debug messages",
-    "SerialLog 4: Disable Hardware Serial Bridge and Show all messages",
-    "SerialLog : Show current serial log level",
-    "SerialLog 0 / off: Disable Hardware Serial Bridge and disable serial logging",
-    "SerialLog 1: Disable Hardware Serial Bridge and Show only error messages",
-    "SerialLog 2: Disable Hardware Serial Bridge and Show error and info messages",
-    "SerialLog 3: Disable Hardware Serial Bridge and Show error, info and debug messages",
-    "SerialLog 4: Disable Hardware Serial Bridge and Show all messages"
-  ],
-  "serialsend": [
-    "SerialSend <text>: Disable Serial logging and send text to serial port ending with \"\\n\""
-  ],
-  "serialsend2": [
-    "SerialSend2 <text>: Disable Serial logging and send text to serial port"
-  ],
-  "serialsend3": [
-    "SerialSend3 <text>: Disable Serial logging, replace escape characters and send text to serial port"
-  ],
-  "serialsend4": [
-    "SerialSend4 <binary>: Disable Serial logging and send binary data to serial port. Data in serial response messages is encoded as hex strings."
-  ],
-  "serialsend5": [
-    "SerialSend5 <hextext>: Disable Serial logging and send hex text to serial port. Data in serial response messages is encoded as hex strings."
-  ],
-  "sbaudrate": [
-    "SBaudrate : Show current Software Serial baudrate",
-    "SBaudrate 1: Set to default baudrate of 9600 bps",
-    "SBaudrate <baudrate>: Set to baudrate"
-  ],
-  "sserialsend": [
-    "SSerialSend <text>: Send text to Software Serial port ending with \"\\n\""
-  ],
-  "sserialsend2": [
-    "SSerialSend2 <text>: Send text to Software Serial port"
-  ],
-  "sserialsend3": [
-    "SSerialSend3 <text>: Replace escape characters and send text to Software Serial port"
-  ],
-  "setoption0": [
-    "SetOption0 : Show current Save power changes state",
-    "SetOption0 1 / on: (default) Save power changes and set relay after restart",
-    "SetOption0 0 / off: Do not save power changes and do not set relay after restart"
-  ],
-  "setoption1": [
-    "SetOption1 : Show current button multi press mode",
-    "SetOption1 0 / off: (default) Allow all button actions",
-    "SetOption1 1 / on: Allow only single, double and hold press button actions"
-  ],
-  "setoption2": [
-    "SetOption2 : Show current Units state",
-    "SetOption2 0 / off: (default) Do not show units to messages",
-    "SetOption2 1 / on: Add units to messages"
-  ],
-  "setoption3": [
-    "SetOption3 : Show current MQTT state",
-    "SetOption3 0 / off: Disable MQTT",
-    "SetOption3 1 / on: Enable MQTT"
-  ],
-  "setoption4": [
-    "SetOption4 : Show current MQTT response state",
-    "SetOption4 0 / off: Return response as RESULT topic",
-    "SetOption4 1 / on: Return response as Command topic"
-  ],
-  "setoption8": [
-    "SetOption8 : Show current Temperature as either Celsius or Fahrenheit",
-    "SetOption8 0 / celsius: Set Temperature to Celsius",
-    "SetOption8 1 / fahrenheit: Set Temperature to Fahrenheit"
-  ],
-  "setoption10": [
-    "SetOption10 : Show current LWT action when changing topic",
-    "SetOption10 0 / off: (default) When topic changes drop retained old topic LWT",
-    "SetOption10 1 / on: When topic changes send old topic retained LWT offline"
-  ],
-  "setoption11": [
-    "SetOption11 : Show current button single and double press swap state",
-    "SetOption11 0 / off: (default) Legacy button single and double press",
-    "SetOption11 1 / on: Button single and double press functionality swapped"
-  ],
-  "setoption12": [
-    "SetOption12 : Show current configuration flash usage option",
-    "SetOption12 0 / off: (default) Use dynamic flash to save configuration lowering flash wear",
-    "SetOption12 1 / on: Legacy save configuration in eeprom flash location only"
-  ],
-  "setoption13": [
-    "SetOption13 : Show current button single press only state",
-    "SetOption13 0 / off: (default) Enable button single, multi-press and hold",
-    "SetOption13 1 / on: Enable button single press only for immediate response. Disable by holding 4 x SetOption32"
-  ],
-  "setoption14": [
-    "SetOption14 : Show current relay switch mode",
-    "SetOption14 0 / off: (default) Set self-locking mode for all relays",
-    "SetOption14 1 / on: Set interlock mode for all relays"
-  ],
-  "setoption15": [
-    "SetOption15 : Show current PWM control mode",
-    "SetOption15 0 / off: Allow Pwm command control",
-    "SetOption15 1 / on: (default) Disable Pwm command and allow control by Dimmer or Color commands"
-  ],
-  "setoption16": [
-    "SetOption16 1: Switch Clock scheme leds from clock-wise to counter-clock-wise mode"
-  ],
-  "setoption17": [
-    "SetOption17 : Show Color string as hex (0) or decimal (1)",
-    "SetOption17 0 / off: Respond with hex color string",
-    "SetOption17 1 / on: Respond with comma-separated decimal string"
-  ],
-  "setoption18": [
-    "SetOption18 1 / on: Enable signal light currently used with CO2 sensors only"
-  ],
-  "setoption19": [
-    "SetOption19 1 / on: Enable Home-Assistant automatic discovery"
-  ],
-  "setoption20": [
-    "SetOption20 1 / on: Enable changing Dimmer value without turning power on"
-  ],
-  "setoption21": [
-    "SetOption21 1 / on: Enable reporting Energy usage while power off"
-  ],
-  "setoption22": [
-    "SetOption22 : Reserved"
-  ],
-  "setoption23": [
-    "SetOption23 : Reserved"
-  ],
-  "setoption24": [
-    "SetOption24 0 / off: (default) 0 to show pressure in hPa, 1 to show pressure in mmHg"
-  ],
-  "setoption25": [
-    "SetOption25 : Reserved"
-  ],
-  "setoption26": [
-    "SetOption26 0 / off: (default) Keep using POWER without postfix for single power devices",
-    "SetOption26 1 / on: Add postfix to all POWER messages"
-  ],
-  "setoption28": [
-    "SetOption28 : Enable hex (0) or decimal (1) RF signal receive data representation",
-    "SetOption28 : Enable hex (0) or decimal (1) RF signal receive data representation"
-  ],
-  "setoption29": [
-    "SetOption29 : Enable hex (0) or decimal (1) IR signal receive data representation"
-  ],
-  "setoption30": [
-    "SetOption30 0 / off: (default) Automatic announcement as 'switch' for relays and 'light' for PWM in Home-Assistant MQTT discovery message.",
-    "SetOption30 1 / on: Enforce Home-Assistant discovery as 'light' platform also for relays."
-  ],
-  "setoption31": [
-    "SetOption31 1 / on: Disable wifi down notification (once every second) and mqtt (once every 2 seconds) status information blink (blinkyblinky) of wifi led"
-  ],
-  "setoption32": [
-    "SetOption32 1..100: Set key hold time from 0.1 to 10 seconds"
-  ],
-  "setoption33": [
-    "SetOption33 1..250: Set Sonoff Pow Max_Power_Retry from 1 to 250"
-  ],
-  "setoption34": [
-    "SetOption34 0..255: Set Tuya dimmer device id from 0 to 255"
-  ],
-  "setoption35": [
-    "SetOption35 0..255: Set mDNS startup delay in seconds (0 = default)"
-  ],
-  "setoption50": [
-    "SetOption50 : Same as Timers"
-  ],
-  "setoption51": [
-    "SetOption51 : Enable to view extra pins for ESP8285 in Module Config (Do not use this on ESP8266 devices)"
-  ],
-  "setoption52": [
-    "SetOption52 1 / on: (6.2.1.2) Append time offset from UTC to JSON messages"
-  ],
-  "setoption53": [
-    "SetOption53 : (6.3.0) Enable display of hostname and ip address in Gui"
-  ],
-  "setoption54": [
-    "SetOption54 1 / on: (6.3.0.4) Apply SetOption20 setting to commands from Tuya device"
-  ],
-  "setoption55": [
-    "SetOption55 : (6.3.0.7) Enable Hass short discovery messages as allowed by Hass 0.81+"
-  ],
-  "setoption56": [
-    "SetOption56 : (6.3.0.10) Enable wifi network scan to select strongest signal on restart"
-  ],
-  "setoption57": [
-    "SetOption57 : (6.3.0.10) Enable wifi network scan every 44 minutes to switch to +10dB stronger signal if detected"
-  ],
-  "setoption58": [
-    "SetOption58 : (6.3.0.11) Enable IR Raw data received in JSON message"
-  ],
-  "setoption59": [
-    "SetOption59 : (6.3.0.14) Send tele/STATE in addition to stat/RESULT for commands: `State`, `Power` and any command causing a light to be turned on."
-  ],
-  "setoption60": [
-    "SetOption60 0 / 1: (6.3.0.15) Configure Dynamic or Normal sleep [Click here to see the Wiki for Dynamic Sleep](https://github.com/arendst/Sonoff-Tasmota/wiki/Dynamic%20Sleep)"
-  ],
-  "loghost": [
-    "LogHost : Show current syslog host",
-    "LogHost 1: Reset syslog host to `user_config.h` (`SYS_LOG_HOST`)",
-    "LogHost <host>: Set syslog host (32 chars max)"
-  ],
-  "logport": [
-    "LogPort : Show current syslog port",
-    "LogPort 1: Reset syslog port to `user_config.h` (`SYS_LOG_PORT`)",
-    "LogPort <port>: Set syslog port between 2 and 32766"
-  ],
-  "syslog": [
-    "SysLog : Show current syslog level",
-    "SysLog 0 / off: Disable syslog logging",
-    "SysLog 1: Show only error messages",
-    "SysLog 2: Show error and info messages",
-    "SysLog 3: Show error, info and debug messages",
-    "SysLog 4: Show all messages"
-  ],
-  "weblog": [
-    "WebLog : Show current Web log level",
-    "WebLog 0 / off: Disable Web logging",
-    "WebLog 1: Show only error messages",
-    "WebLog 2: Show error and info messages",
-    "WebLog 3: Show error, info and debug messages",
-    "WebLog 4: Show all messages"
-  ],
-  "currenthigh": [
-    "CurrentHigh : Show current current high threshold value",
-    "CurrentHigh 0 / off: (default) Disable current high threshold",
-    "CurrentHigh <milliamps>: Set current high threshold value"
-  ],
-  "currentlow": [
-    "CurrentLow : Show current current low threshold value",
-    "CurrentLow 0 / off: (default) Disable current low threshold",
-    "CurrentLow <milliamps>: Set current low threshold value"
-  ],
-  "currentset": [
-    "CurrentSet <milliamps>: Auto-calibrate current to a target value"
-  ],
-  "energyreset": [
-    "EnergyReset : Show Energy Total, Yesterday and Today"
-  ],
-  "energyreset1": [
-    "EnergyReset1 0..42500: ((P)Re)Set Energy Today in Wh"
-  ],
-  "energyreset2": [
-    "EnergyReset2 0..42500: ((P)Re)Set Energy Yesterday in Wh"
-  ],
-  "energyreset3": [
-    "EnergyReset3 0..42500000: ((P)Re)Set Energy Total in Wh"
-  ],
-  "freqres": [
-    "FreqRes : (6.2.1.5) Show current Frequency Resolution",
-    "FreqRes 0..3: (6.2.1.5) Set Frequency Resolution"
-  ],
-  "frequencyset": [
-    "FrequencySet <hertz>: (6.2.1.5) Auto-calibrate frequency to a target value"
-  ],
-  "maxpower": [
-    "MaxPower : Show current maximum power allowed setting",
-    "MaxPower 0 / off: Disable use maximum power monitoring",
-    "MaxPower <watt>: Set maximum allowed power"
-  ],
-  "maxpowerhold": [
-    "MaxPowerHold : Show current time in seconds to stay over MaxPower before power off",
-    "MaxPowerHold 1: Set default time to 10 seconds to stay over MaxPower before power off",
-    "MaxPowerHold <seconds>: Set time in seconds to stay over MaxPower before power off"
-  ],
-  "maxpowerwindow": [
-    "MaxPowerWindow : Show current time in seconds to stay power off before re-applying power up to 5 times",
-    "MaxPowerWindow 1: Set default time to 30 seconds to stay power off before re-applying power up to 5 times",
-    "MaxPowerWindow <seconds>: Set time in seconds to stay power off before re-applying power up to 5 times"
-  ],
-  "powerdelta": [
-    "PowerDelta 0: Disable reporting on power change",
-    "PowerDelta 1: Enable reporting on 80% power change",
-    "PowerDelta <percentage>: Enable reporting on percentage power change to send an MQTT telemetry message"
-  ],
-  "powerhigh": [
-    "PowerHigh : Show current power high threshold value",
-    "PowerHigh 0 / off: (default) Disable power high threshold",
-    "PowerHigh <watt>: Set power high threshold value to send an MQTT telemetry message"
-  ],
-  "powerlow": [
-    "PowerLow : Show current power low threshold value",
-    "PowerLow 0 / off: (default) Disable power low threshold",
-    "PowerLow <watt>: Set power low threshold value to send an MQTT telemetry message"
-  ],
-  "powerset": [
-    "PowerSet <watt>: Auto-calibrate power to a target value"
-  ],
-  "voltagehigh": [
-    "VoltageHigh : Show current voltage high threshold value",
-    "VoltageHigh 0 / off: (default) Disable voltage high threshold",
-    "VoltageHigh <voltage>: Set voltage high threshold value"
-  ],
-  "voltagelow": [
-    "VoltageLow : Show current voltage low threshold value",
-    "VoltageLow 0 / off: (default) Disable voltage low threshold",
-    "VoltageLow <voltage>: Set voltage low threshold value"
-  ],
-  "voltageset": [
-    "VoltageSet <volt>: Auto-calibrate voltage to a target value"
-  ],
-  "channel": [
-    "Channel<x> : Show current channel color where x is 1(red), 2(green), 3(blue), 4(cold), 5(warm)",
-    "Channel<x> 0..100: Set channel dimmer value from 0 to 100%"
-  ],
-  "color": [
-    "Color : Show current color setting as CCWW, RRGGBB, RRGGBBWW or RRGGBBCCWW",
-    "Color <red>,<green>,<blue>: Set color to decimal values",
-    "Color #<value>: Set color to hexadecimal value",
-    "Color <CCWW>: (Sonoff Led) Set color to CCWW hexadecimal value",
-    "Color <RRGGBB>: (WS2812, H801, MagicHome) Set color to RRGGBB hexadecimal value",
-    "Color <RRGGBBWW>: (AiLight, H801, MagicHome) Set color to RRGGBBWW hexadecimal value",
-    "Color <RRGGBBCCWW>: (Sonoff B1) Set color to RRGGBBCCWW hexadecimal value",
-    "Color 1: Set color to Red",
-    "Color 2: Set color to Green",
-    "Color 3: Set color to Blue",
-    "Color 4: Set color to Orange",
-    "Color 5: Set color to Light Green",
-    "Color 6: Set color to Light Blue",
-    "Color 7: Set color to Amber",
-    "Color 8: Set color to Cyan",
-    "Color 9: Set color to Purple",
-    "Color 10: Set color to Yellow",
-    "Color 11: Set color to Pink",
-    "Color 12: Set color to White",
-    "Color +: Set next color out of 12",
-    "Color -: Set previous color out of 12",
-    "Color <red>,<green>,<blue>: Set color to decimal values",
-    "Color #RRGGBB: (WS2812x) Set Color to hexadecimal value",
-    "Color #RRGGBBWW: (SK6812) Set Color to hexadecimal value"
-  ],
-  "color2": [
-    "Color2 #<value>: Set color to hexadecimal value but adjust to current Dimmer value",
-    "Color2 #<value>: Set color to hexadecimal value but adjust to current Dimmer value"
-  ],
-  "ct": [
-    "CT : (Sonoff B1 and Led) Show current Color Temperature (153 = Cold, 500 = Warm)",
-    "CT 153..500: (Sonoff B1 and Led) Set color temperature from cold to warm",
-    "CT +: Increment CT in 10 steps",
-    "CT -: Decrement CT in 10 steps"
-  ],
-  "dimmer": [
-    "Dimmer : Show current dimmer setting from 0 to 100%",
-    "Dimmer 0..100: Set dimmer value from 0 to 100%",
-    "Dimmer +: Increment brightness in 10 steps",
-    "Dimmer -: Decrement brightness in 10 steps"
-  ],
-  "fade": [
-    "Fade : Show current fade state",
-    "Fade 0 / off: (default) Do not use fade",
-    "Fade 1 / on: Use fade"
-  ],
-  "hsbcolor": [
-    "HsbColor : Show current Hue, Saturation and Brightness",
-    "HsbColor <hue>,<sat>,<bri>: Set Hue, Saturation and Brightness"
-  ],
-  "hsbcolor1": [
-    "HsbColor1 <hue>: Set Hue"
-  ],
-  "hsbcolor2": [
-    "HsbColor2 <sat>: Set Saturation"
-  ],
-  "hsbcolor3": [
-    "HsbColor3 <bri>: Set Brightness"
-  ],
-  "ledtable": [
-    "LedTable : Show current Led table intensity correction state",
-    "LedTable 0 / off: (default) Do not use Led table for intensity correction",
-    "LedTable 1 / on: Use Led table for intensity correction"
-  ],
-  "scheme": [
-    "Scheme : Show current selected scheme",
-    "Scheme 0: (default) Use a single color for all pixels in light/strip/ring",
-    "Scheme 1: (= Wakeup) Start wake up sequence",
-    "Scheme 2: Cycle through RGB colors using speed option",
-    "Scheme 3: Cycle through RBG colors using speed option",
-    "Scheme 4: Random cycle through colors using speed and fade options",
-    "Scheme +: Set next Scheme",
-    "Scheme -: Set previous Scheme",
-    "Scheme : Show current selected scheme",
-    "Scheme 0: (default) Use a single color for all pixels in light/strip/ring",
-    "Scheme 1: (= Wakeup) Start wake up sequence",
-    "Scheme 2: Cycle through RGB colors using speed option",
-    "Scheme 3: Cycle through RBG colors using speed option",
-    "Scheme 4: Random cycle through colors using speed and fade options",
-    "Scheme 5: Show clock",
-    "Scheme 6: Show incandescent pattern",
-    "Scheme 7: Show RGB pattern",
-    "Scheme 8: Show Christmas pattern",
-    "Scheme 9: Show Hanukkah pattern",
-    "Scheme 10: Show Kwanzaa pattern",
-    "Scheme 11: Show rainbow pattern",
-    "Scheme 12: Show fire pattern"
-  ],
-  "speed": [
-    "Speed : Show current fade speed selection",
-    "Speed 1..20: Select desired fade speed from 1 = fast to 20 = very slow",
-    "Speed +: Increase Speed",
-    "Speed -: Decrease Speed"
-  ],
-  "wakeup": [
-    "Wakeup : Start wake up sequence from Off to Dimmer value",
-    "Wakeup 0..100: Start wake up sequence from Off to provided Dimmer value"
-  ],
-  "wakeupduration": [
-    "WakeupDuration : Show current wake up light duration in seconds",
-    "WakeupDuration 1..3600: Set wake up light duration in seconds"
-  ],
-  "color3": [
-    "Color3 : Show current seconds clock hand color setting as RRGGBB",
-    "Color3 <RRGGBB>: Set seconds clock hand color to RRGGBB hexadecimal value"
-  ],
-  "color4": [
-    "Color4 : Show current minutes clock hand color setting as RRGGBB",
-    "Color4 <RRGGBB>: Set minutes clock hand color to RRGGBB hexadecimal value"
-  ],
-  "color5": [
-    "Color5 : Show current hour clock hand color setting as RRGGBB",
-    "Color5 <RRGGBB>: Set hour clock hand color to RRGGBB hexadecimal value"
-  ],
-  "color6": [
-    "Color6 : Show current marker color setting as RRGGBB",
-    "Color6 <RRGGBB>: Set marker color to RRGGBB hexadecimal value"
-  ],
-  "led1..led": [
-    "Led1..Led<count> : Show specific led current color as RRGGBB",
-    "Led1..Led<count> <RRGGBB>: Set specific led to desired color RRGGBB"
-  ],
-  "pixels": [
-    "Pixels : Show current pixel count",
-    "Pixels <count>: Set amount of pixels in strip or ring up to 512 and reset Rotation"
-  ],
-  "rotation": [
-    "Rotation : Show current rotation in pixel count",
-    "Rotation <count>: Set amount of pixels to rotate strip or ring up to Pixels value"
-  ],
-  "width(1)": [
-    "Width(1) : Show current led group width",
-    "Width(1) 0..4: Set led group width used by Schemes 6 - 12"
-  ],
-  "width2": [
-    "Width2 : Show current width of the seconds clock hand",
-    "Width2 0..30: Set the width of the seconds clock hand"
-  ],
-  "width3": [
-    "Width3 : Show current width of the minutes clock hand",
-    "Width3 0..30: Set the width of the minutes clock hand"
-  ],
-  "width4": [
-    "Width4 : Show current width of the hour clock hand",
-    "Width4 0..30: Set the width of the hour clock hand"
-  ],
-  "rfcode": [
-    "RfCode : Show last send 24-bit user code",
-    "RfCode 1..8388607: Send 24-bit user code using RfSync, RfLow and RfHigh timing",
-    "RfCode #1..#7FFFFF: Send 24-bit hexadecimal user code using RfSync, RfLow and RfHigh timing"
-  ],
-  "rfhigh": [
-    "RfHigh : Show high pulse time in microseconds",
-    "RfHigh 1: Reset high pulse time to 840 microseconds",
-    "RfHigh 2..32767: Set high pulse time in microseconds",
-    "RfHigh #2..#7FFF: Set high pulse time in hexadecimal microseconds"
-  ],
-  "rfhost": [
-    "RfHost : Show 16-bit host part of user code",
-    "RfHost 1: Reset 16-bit host part of user code to 11802 (#2E1A)",
-    "RfHost 2..32767: Set 16-bit host part of user code",
-    "RfHost #2..7FFF: Set 16-bit host part of user code in hexadecimal"
-  ],
-  "rfkey": [
-    "RfKey<x> : Send learned or default RF data for RfKey1 to RfKey16",
-    "RfKey<x> 1: Send default RF data for RfKey1 to RfKey16 using RfSync, RfLow, RfHigh and RfHost parameters",
-    "RfKey<x> 2: Learn RF data for RfKey1 to RfKey16",
-    "RfKey<x> 3: Unlearn RF data for RfKey1 to RfKey16",
-    "RfKey<x> 4: Save RF data using RfSync, RfLow, RfHigh and last RfCode parameters",
-    "RfKey<x> 5: Show default or learnt RF data"
-  ],
-  "rflow": [
-    "RfLow : Show low pulse time in microseconds",
-    "RfLow 1: Reset low pulse time to 270 microseconds",
-    "RfLow 2..32767: Set low pulse time in microseconds",
-    "RfLow #2..#7FFF: Set low pulse time in hexadecimal microseconds"
-  ],
-  "rfsync": [
-    "RfSync : Show start sync pulse time in microseconds",
-    "RfSync 1: Reset start sync pulse time to 8470 microseconds",
-    "RfSync 2..32767: Set start sync pulse time in microseconds",
-    "RfSync #2..#7FFF: Set start sync pulse time in hexadecimal microseconds"
-  ],
-  "rfraw": [
-    "RfRaw : Show current state. Off for iTead default firmware, On for Portisch firmware support",
-    "RfRaw 0: (Default on restart) Set iTead default firmware support and messages",
-    "RfRaw 1: Set Portisch firmware support and messages",
-    "RfRaw 166 or AAA655: (Portisch) Start sniffing/reading RF signals disabling iTead default RF handling",
-    "RfRaw 167 or AAA755: (Portisch) Stop sniffing/reading RF signals enabling iTead default RF handling",
-    "RfRaw 168 or AAA855: (Portisch) Transmiting iTead default RF protocols",
-    "RfRaw 169 or AAA955: (Portisch) Start sniffing and learning predefined protocols",
-    "RfRaw 176 or AAB055: (Portisch) Bucket Transmitting using command 0xB0",
-    "RfRaw 177 or AAB155: (Portisch) Start Bucket sniffing using command 0xB1",
-    "RfRaw 192 or AAC000C055: (Portisch) Beep - 00C0 is the length of the sound",
-    "RfRaw 255 or AAFF55: (Portisch) Show Rf firmware version",
-    "RfRaw <Hexadecimal>: (Portisch) Data to be send to RF chip"
-  ],
-  "domoticzidx": [
-    "DomoticzIdx<x> : Show current Domoticz relay1 to relay4 index",
-    "DomoticzIdx<x> 0 / off: (default) Disable use of Domoticz",
-    "DomoticzIdx<x> <idx>: Set Domoticz relay1 to relay4 index"
-  ],
-  "domoticzkeyidx": [
-    "DomoticzKeyIdx<x> : Show current Domoticz key1 to key4 index",
-    "DomoticzKeyIdx<x> 0: (default) Disable use of key1 to key4 index",
-    "DomoticzKeyIdx<x> <idx>: Set Domoticz key1 to key4 index. To use it you'll need to enable ButtonTopic too"
-  ],
-  "domoticzsensoridx": [
-    "DomoticzSensorIdx<x> : Show current Domoticz sensor1 to sensor5 index",
-    "DomoticzSensorIdx<x> 0: (default) Disable use of sensor1 to sensor5 index",
-    "DomoticzSensorIdx<x> <idx>: Set Domoticz sensor1 to sensor5 index."
-  ],
-  "domoticzswitchidx": [
-    "DomoticzSwitchIdx<x> : Show current Domoticz switch1 to switch4 index",
-    "DomoticzSwitchIdx<x> 0: (default) Disable use of switch1 to switch4 index",
-    "DomoticzSwitchIdx<x> <idx>: Set Domoticz switch1 to switch4 index. To use it you'll need to enable SwitchTopic too"
-  ],
-  "domoticzupdatetimer": [
-    "DomoticzUpdateTimer : Show current Domoticz update timer value in seconds",
-    "DomoticzUpdateTimer 0 / off: (default) Disable sending interrim Domoticz status",
-    "DomoticzUpdateTimer 1..3600: Send status to Domoticz between every 1 and 3600 seconds"
-  ]
+  "AP": {},
+  "Add": {},
+  "Altitude": {},
+  "AmpRes": {},
+  "Backlog": {},
+  "Baudrate": {},
+  "BlinkCount": {},
+  "BlinkTime": {},
+  "ButtonDebounce": {},
+  "ButtonRetain": {},
+  "ButtonTopic": {},
+  "Buzzer": {},
+  "CT": {},
+  "CalcRes": {},
+  "Channel": {},
+  "Color": {},
+  "Color2": {},
+  "Color3": {},
+  "Color4": {},
+  "Color5": {},
+  "Color6": {},
+  "Counter": {},
+  "CounterDebounce": {},
+  "CounterType": {},
+  "CurrentHigh": {},
+  "CurrentLow": {},
+  "CurrentSet": {},
+  "Delay": {},
+  "Dimmer": {},
+  "Display": {},
+  "DisplayAddress": {},
+  "DisplayCols": {},
+  "DisplayDimmer": {},
+  "DisplayFont": {},
+  "DisplayMode": {},
+  "DisplayModel": {},
+  "DisplayRefresh": {},
+  "DisplayRotate": {},
+  "DisplayRows": {},
+  "DisplaySize": {},
+  "DisplayText": {},
+  "DoMove": {},
+  "DoRotate": {},
+  "DoTurn": {},
+  "DomoticzIdx": {},
+  "DomoticzKeyIdx": {},
+  "DomoticzSensorIdx": {},
+  "DomoticzSwitchIdx": {},
+  "DomoticzUpdateTimer": {},
+  "Emulation": {},
+  "EnergyRes": {},
+  "EnergyReset": {},
+  "EnergyReset1": {},
+  "EnergyReset2": {},
+  "EnergyReset3": {},
+  "Event": {},
+  "Fade": {},
+  "FanSpeed": {},
+  "FreqRes": {},
+  "FrequencySet": {},
+  "FriendlyName": {},
+  "FullTopic": {},
+  "Gpio": {},
+  "Gpios": {},
+  "GroupTopic": {},
+  "Hostname": {},
+  "HsbColor": {},
+  "HsbColor1": {},
+  "HsbColor2": {},
+  "HsbColor3": {},
+  "HumRes": {},
+  "I2Cscan": {},
+  "IPAddress1": {},
+  "IPAddress2": {},
+  "IPAddress3": {},
+  "IPAddress4": {},
+  "IRhvac": {},
+  "IRsend": {},
+  "Interlock": {},
+  "KNX_CB": {},
+  "KNX_ENABLED": {},
+  "KNX_ENHANCED": {},
+  "KNX_GA": {},
+  "KNX_PA": {},
+  "KnxTx_Cmnd": {},
+  "KnxTx_Val": {},
+  "Latitude": {},
+  "Led": {},
+  "LedLink": {},
+  "LedMask": {},
+  "LedPower": {},
+  "LedState": {},
+  "LedTable": {},
+  "LogHost": {},
+  "LogPort": {},
+  "Longitude": {},
+  "MP3DAC": {},
+  "MP3Device": {},
+  "MP3EQ": {},
+  "MP3Pause": {},
+  "MP3Play": {},
+  "MP3Reset": {},
+  "MP3Stop": {},
+  "MP3Track": {},
+  "MP3Volume": {},
+  "MaxPower": {},
+  "MaxPowerHold": {},
+  "MaxPowerWindow": {},
+  "Mem": {},
+  "Module": {},
+  "Modules": {},
+  "Motor": {},
+  "MqttClient": {},
+  "MqttFingerprint": {},
+  "MqttHost": {},
+  "MqttPassword": {},
+  "MqttPort": {},
+  "MqttRetry": {},
+  "MqttUser": {},
+  "Mult": {},
+  "NtpServer": {},
+  "OtaUrl": {},
+  "Password": {},
+  "Pixels": {},
+  "Power": {},
+  "PowerDelta": {},
+  "PowerHigh": {},
+  "PowerLow": {},
+  "PowerOnState": {},
+  "PowerRetain": {},
+  "PowerSet": {},
+  "Prefix1": {},
+  "Prefix2": {},
+  "Prefix3": {},
+  "PressRes": {},
+  "Publish": {},
+  "Publish2": {},
+  "PulseTime": {},
+  "Pwm": {},
+  "PwmFrequency": {},
+  "PwmRange": {},
+  "Reset": {},
+  "Restart": {},
+  "RfCode": {},
+  "RfHigh": {},
+  "RfHost": {},
+  "RfKey": {},
+  "RfLow": {},
+  "RfRaw": {},
+  "RfSync": {},
+  "Rotation": {},
+  "Rule": {},
+  "RuleTimer": {},
+  "SBaudrate": {},
+  "SSerialSend": {},
+  "SSerialSend2": {},
+  "SSerialSend3": {},
+  "SSerialSend4": {},
+  "SSerialSend5": {},
+  "SaveData": {},
+  "Scale": {},
+  "Scheme": {},
+  "Sensor13": {},
+  "Sensor15": {},
+  "Sensor27": {},
+  "Sensor34": {},
+  "Sensor53": {},
+  "SensorRetain": {},
+  "SerialDelimiter": {},
+  "SerialLog": {},
+  "SerialSend": {},
+  "SerialSend2": {},
+  "SerialSend3": {},
+  "SerialSend4": {},
+  "SerialSend5": {},
+  "SetMIS": {},
+  "SetRPM": {},
+  "SetSPR": {},
+  "Sleep": {},
+  "Speed": {},
+  "Ssid": {},
+  "State": {},
+  "StateText1": {},
+  "StateText2": {},
+  "StateText3": {},
+  "StateText4": {},
+  "Status": {},
+  "Sub": {},
+  "Subscribe": {},
+  "SwitchDebounce": {},
+  "SwitchMode": {},
+  "SwitchRetain": {},
+  "SwitchTopic": {},
+  "SysLog": {},
+  "Tariff": {},
+  "TelePeriod": {},
+  "TempRes": {},
+  "Template": {},
+  "Time": {},
+  "TimeDST": {},
+  "TimeSTD": {},
+  "Timer": {},
+  "Timers": {},
+  "Timezone": {},
+  "Topic": {},
+  "TuyaMcu": {},
+  "Unsubscribe": {},
+  "Upgrade": {},
+  "Upload": {},
+  "Var": {},
+  "VoltRes": {},
+  "VoltageHigh": {},
+  "VoltageLow": {},
+  "VoltageSet": {},
+  "Wakeup": {},
+  "WakeupDuration": {},
+  "WattRes": {},
+  "WebLog": {},
+  "WebPassword": {},
+  "WebSend": {},
+  "WebServer": {},
+  "Websensor": {},
+  "Width1": {},
+  "Width2": {},
+  "Width3": {},
+  "Width4": {},
+  "WifiConfig": {},
+  "SetOption0": {},
+  "SetOption1": {},
+  "SetOption2": {},
+  "SetOption3": {},
+  "SetOption4": {},
+  "SetOption8": {},
+  "SetOption10": {},
+  "SetOption11": {},
+  "SetOption12": {},
+  "SetOption13": {},
+  "SetOption15": {},
+  "SetOption16": {},
+  "SetOption17": {},
+  "SetOption18": {},
+  "SetOption19": {},
+  "SetOption20": {},
+  "SetOption21": {},
+  "SetOption24": {},
+  "SetOption26": {},
+  "SetOption28": {},
+  "SetOption29": {},
+  "SetOption30": {},
+  "SetOption31": {},
+  "SetOption32": {},
+  "SetOption33": {},
+  "SetOption34": {},
+  "SetOption36": {},
+  "SetOption37": {},
+  "SetOption38": {},
+  "SetOption39": {},
+  "SetOption40": {},
+  "SetOption41": {},
+  "SetOption42": {},
+  "SetOption43": {},
+  "SetOption44": {},
+  "SetOption45": {},
+  "SetOption46": {},
+  "SetOption51": {},
+  "SetOption52": {},
+  "SetOption53": {},
+  "SetOption54": {},
+  "SetOption55": {},
+  "SetOption56": {},
+  "SetOption57": {},
+  "SetOption58": {},
+  "SetOption59": {},
+  "SetOption60": {},
+  "SetOption61": {},
+  "SetOption62": {},
+  "SetOption63": {},
+  "SetOption64": {},
+  "SetOption66": {},
+  "SetOption67": {},
+  "SetOption68": {},
+  "SetOption69": {}
 }

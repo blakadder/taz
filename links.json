@@ -1,41 +1,74 @@
 {
-  "hackbox": ["The Hackbox: Official Tasmota development release repository","https://thehackbox.org/tasmota"],
-
-  "wiki":       ["Tasmota Wiki",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki"],
-  "rules":      ["Tasmota Wiki: Rules",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/Rules"],
-  "scripter":   ["Tasmota Wiki: Scripter",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/Scripting-Language"],
-  "commands":   ["Tasmota Wiki: Commands",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/Commands"],
-  "esptool":    ["Tasmota Wiki: EspTool",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/Flashing#esptoolpy"],
-  "templates":  ["Tasmota Wiki: Templates",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/Templates"],
-  "faq":        ["Tasmota Wiki: Frequently Asked Questions",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/faq"],
-  "prereq":     ["Tasmota Wiki: Prerequisites",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/Prerequisites"],
-  "hw":         ["Tasmota Wiki: Hardware preparation",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/Hardware-Preparation"],
-  "expand":     ["Tasmota Wiki: Expanding Sonoff",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/Expanding-Sonoffs"],
-  
-  "tuya":       ["Tasmota Wiki: MCU Based Tuya Dimmers and Switches",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/MCU-Based-Tuya-Dimmers-and-Switches"],
-  "tuyamcu":    ["Tasmota Wiki: TuyaMCU",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/TuyaMCU"],
-  
-  "ha":         ["Official HomeAssistant Discord",
-                 "https://discord.gg/c5DvZ4e"],
-  "github":     ["Tasmota GitHub",
-                 "https://github.com/arendst/Sonoff-Tasmota"],
-
-  "tdm":        ["Tasmota Device Manager",
-                 "https://github.com/jziolkowski/tdm"],
-  "exorcism":   ["My device randomly switches on and off. Do I have ghosts in my house?",
-                 "https://github.com/arendst/Sonoff-Tasmota/wiki/FAQ#my-device-randomly-switches-on-and-off-do-i-have-ghosts-in-my-house"],
-  "repo":       ["Official Device Template Repository",
-                 "https://blakadder.github.io/templates"]
+  "commands": {
+    "description": "Tasmota Wiki: Commands",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/Commands"
+  },
+  "esptool": {
+    "description": "Tasmota Wiki: EspTool",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/Flashing#esptoolpy"
+  },
+  "exorcism": {
+    "description": "My device randomly switches on and off. Do I have ghosts in my house?",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/FAQ#my-device-randomly-switches-on-and-off-do-i-have-ghosts-in-my-house"
+  },
+  "expand": {
+    "description": "Tasmota Wiki: Expanding Sonoff",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/Expanding-Sonoffs"
+  },
+  "faq": {
+    "description": "Tasmota Wiki: Frequently Asked Questions",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/faq"
+  },
+  "github": {
+    "description": "Tasmota GitHub",
+    "url": "https://github.com/arendst/Sonoff-Tasmota"
+  },
+  "ha": {
+    "description": "Official HomeAssistant Discord",
+    "url": "https://discord.gg/c5DvZ4e"
+  },
+  "hackbox": {
+    "description": "The Hackbox: Official Tasmota development release repository",
+    "url": "https://thehackbox.org/tasmota"
+  },
+  "hw": {
+    "description": "Tasmota Wiki: Hardware preparation",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/Hardware-Preparation"
+  },
+  "prereq": {
+    "description": "Tasmota Wiki: Prerequisites",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/Prerequisites"
+  },
+  "repo": {
+    "description": "Official Device Template Repository",
+    "url": "https://blakadder.github.io/templates"
+  },
+  "rules": {
+    "description": "Tasmota Wiki: Rules",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/Rules"
+  },
+  "scripter": {
+    "description": "Tasmota Wiki: Scripter",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/Scripting-Language"
+  },
+  "tdm": {
+    "description": "Tasmota Device Manager",
+    "url": "https://github.com/jziolkowski/tdm"
+  },
+  "templates": {
+    "description": "Tasmota Wiki: Templates",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/Templates"
+  },
+  "tuya": {
+    "description": "Tasmota Wiki: MCU Based Tuya Dimmers and Switches",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/MCU-Based-Tuya-Dimmers-and-Switches"
+  },
+  "tuyamcu": {
+    "description": "Tasmota Wiki: TuyaMCU",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki/TuyaMCU"
+  },
+  "wiki": {
+    "description": "Tasmota Wiki",
+    "url": "https://github.com/arendst/Sonoff-Tasmota/wiki"
+  }
 }
