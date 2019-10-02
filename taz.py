@@ -4,7 +4,7 @@ import json
 import re
 import requests
 
-from datetime import datetime
+from datetime import datetime, time
 
 from discord import File
 from discord.ext import commands
@@ -34,9 +34,9 @@ muted_users = {}
 git = Github()
 tasmota = git.get_repo("arendst/Sonoff-Tasmota")
 
-re_issue = re.compile("(?:\A|\s)#(\d{4})")
-re_command = re.compile("(?:\s)?\?c (\w*)(?:\b)?|`(\w*)`(?:\b)?", re.IGNORECASE)
-re_link = re.compile("(?:\s)?\?l (\w*)(?:\b)?|\[(\w*)\](?:\b)?")
+re_issue = re.compile(r"(?:\A|\s)#(\d{4})")
+re_command = re.compile(r"(?:\s)?\?c (\w*)(?:\b)?|`(\w*)`(?:\b)?", re.IGNORECASE)
+re_link = re.compile(r"(?:\s)?\?l (\w*)(?:\b)?|\[(\w*)\](?:\b)?")
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('?'), description="Helper Bot", case_insensitive=True)
 
@@ -73,7 +73,7 @@ async def on_message(message):
 
         if lnks:
             parsed_links = set(sorted([l for result in lnks for l in result if l]))
-            await ctx.invoke(links, parsed_links)
+            await ctx.invoke(link, parsed_links)
 
     await bot.process_commands(message)
 
@@ -81,7 +81,6 @@ async def on_message(message):
 # COMMANDS #
 @bot.command(aliases=["l"], brief="Return a link or show available links.")
 async def link(ctx, keywords: str=''):
-    print(keywords)
     if not isinstance(keywords, str):
         found_links = []
         for keyword in keywords:
@@ -163,7 +162,8 @@ async def command(ctx, cmds):
         if found_commands:
             embed = discord.Embed(title="Tasmota Commands Wiki", description="\n".join(found_commands),
                                   colour=discord.Colour(0x3498db))
-            await ctx.channel.send(embed=embed)
+            mentions = [m.mention for m in ctx.message.mentions if not m.bot]
+            await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
 
 @commands.has_any_role('Admin', 'Moderator', "Contributor")
@@ -224,10 +224,14 @@ async def roles_add(ctx, role):
         for r in ctx.guild.roles:
             if r.name == role:
                 await ctx.message.author.add_roles(r)
+                embed = discord.Embed(title="Success", description="You are now a member of '{}' group".format(role), colour=discord.Colour(0x7ED321))
                 break
         else:
             embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Role '{}' not found".format(role))
-            await ctx.send(embed=embed)
+
+    else:
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="You can't assign yourself this role".format(role))
+    await ctx.send(embed=embed)
 
 
 @roles_group.command(name="del", brief="Delete a help- role from yourself")
@@ -236,10 +240,15 @@ async def roles_del(ctx, role):
         for r in ctx.message.author.roles:
             if r.name == role:
                 await ctx.message.author.remove_roles(r)
+                embed = discord.Embed(title="Success", description="You no longer are a member of '{}' group".format(role), colour=discord.Colour(0x7ED321))
+                await ctx.channel.send(embed=embed)
                 break
         else:
             embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="You don't have role '{}'".format(role))
             await ctx.send(embed=embed)
+    else:
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="You can't remove this role".format(role))
+        await ctx.send(embed=embed)
 
 # MUTE/UNMUTE #
 @bot.command(aliases=["m"], brief="Mute a user or show the list of currently muted users.")
@@ -308,7 +317,7 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
             if variant:
                 for i in size_branch:
                     if i["variant"] == variant:
-                        bins = "[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n".format(**i)
+                        bins = "[{binary}](<{otaurl}>)\nbuilt {built} against {commit}\n".format(**i)
                         embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
                         break
                 else:
@@ -401,6 +410,7 @@ async def fetch_hackbox():
         global hackbox_dict
         hackbox_dict = requests.get("http://thehackbox.org/tasmota/development.php").json()
         await asyncio.sleep(3600)
+
 
 if __name__ == "__main__":
     bot.loop.create_task(mute_check())
