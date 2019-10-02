@@ -2,6 +2,7 @@ import discord
 import asyncio
 import json
 import re
+import requests
 
 from datetime import datetime
 
@@ -27,6 +28,7 @@ with open('welcome.txt') as w:
 with open('remarks.txt') as r:
     remarks = r.read()
 
+hackbox_dict = {}
 muted_users = {}
 
 git = Github()
@@ -260,6 +262,42 @@ async def lmgtfy(ctx, *q: str):
 async def rtfw(ctx):
     await ctx.channel.send(file=File('rtfw.png'))
 
+
+@bot.command(brief="Link helper for dev builds from the hackbox.")
+async def ota(ctx, core="pre-2.6", size="1M", variant=""):
+    bins = []
+    mentions = []
+    desc = "**Core: **{}\n**Flash size: **{}\n\n".format(core, size)
+
+    core_branch = hackbox_dict["development"].get(core)
+    if core_branch:
+        size_branch = core_branch.get(size)
+        if size_branch:
+            if variant:
+                if size_branch.get(variant):
+                    variant = size_branch.get(variant)
+                    bins = "[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n".format(**variant)
+                    embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
+                else:
+                    embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds")
+            else:
+                for bin in size_branch:
+                    bins.append("[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n".format(**bin))
+
+                desc += "\n".join(bins)
+                embed = discord.Embed(title="Official development builds", description=desc, colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
+                mentions = [m.mention for m in ctx.message.mentions if not m.bot]
+
+        else:
+            embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Size not found in builds")
+    else:
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Core version not found in builds")
+
+    await ctx.channel.send(embed=embed, content=" ".join(mentions))
+
+
+
+
 # WELCOME #
 @bot.command(brief="Re-send welcome message to mentioned user(s)")
 async def welcome(ctx):
@@ -324,6 +362,15 @@ async def mute_check():
                 asyncio.sleep(1)
         await asyncio.sleep(15)
 
+
+async def fetch_hackbox():
+    await bot.wait_until_ready()
+    while not bot.is_closed():
+        global hackbox_dict
+        hackbox_dict = requests.get("http://thehackbox.org/tasmota/development.php").json()
+        await asyncio.sleep(3600)
+
 if __name__ == "__main__":
     bot.loop.create_task(mute_check())
+    bot.loop.create_task(fetch_hackbox())
     bot.run(TOKEN)
