@@ -80,7 +80,7 @@ async def on_message(message):
 
 # COMMANDS #
 @bot.command(aliases=["l"], brief="Return a link or show available links.")
-async def links(ctx, keywords: str=''):
+async def link(ctx, keywords: str=''):
     print(keywords)
     if not isinstance(keywords, str):
         found_links = []
@@ -102,15 +102,15 @@ async def links(ctx, keywords: str=''):
 
 
 @commands.has_any_role('Admin', 'Moderator', "Contributor")
-@bot.group(name="link", aliases=["ls"])
-async def link_group(ctx):
+@bot.group(name="links", aliases=["ls"], brief="Add/delete Taz links")
+async def links_group(ctx):
     if ctx.invoked_subcommand is None:
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Invalid command passed")
         await ctx.send(embed=embed)
 
 
-@link_group.command(name="add", brief="Add a link")
-async def link_add(ctx, keyword: str, url: str, *description: str):
+@links_group.command(name="add", brief="Add a link")
+async def links_add(ctx, keyword: str, url: str, *description: str):
     keyword = keyword.lower()
     description = " ".join(description)
 
@@ -130,8 +130,8 @@ async def link_add(ctx, keyword: str, url: str, *description: str):
         await ctx.channel.send(embed=embed)
 
 
-@link_group.command(name="del", brief="Delete a link")
-async def link_del(ctx, keyword: str):
+@links_group.command(name="del", brief="Delete a link")
+async def links_del(ctx, keyword: str):
     keyword = keyword.lower()
     lnk = await find_link(keyword)
     print(lnk)
@@ -167,7 +167,7 @@ async def command(ctx, cmds):
 
 
 @commands.has_any_role('Admin', 'Moderator', "Contributor")
-@bot.group(name="commands", aliases=["cs"])
+@bot.group(name="commands", aliases=["cs"], brief="Add/delete Tasmota commands")
 async def command_group(ctx):
     if ctx.invoked_subcommand is None:
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Invalid command passed")
