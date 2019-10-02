@@ -274,10 +274,11 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
         size_branch = core_branch.get(size)
         if size_branch:
             if variant:
-                if size_branch.get(variant):
-                    variant = size_branch.get(variant)
-                    bins = "[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n".format(**variant)
-                    embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
+                for i in size_branch:
+                    if i["variant"] == variant:
+                        bins = "[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n".format(**i)
+                        embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
+                        break
                 else:
                     embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds")
             else:
@@ -294,8 +295,6 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Core version not found in builds")
 
     await ctx.channel.send(embed=embed, content=" ".join(mentions))
-
-
 
 
 # WELCOME #
