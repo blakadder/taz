@@ -317,7 +317,7 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
             if variant:
                 for i in size_branch:
                     if i["variant"] == variant:
-                        bins = "[{binary}](<{otaurl}>)\nbuilt {built} against {commit}\n".format(**i)
+                        bins = "[{binary}](<{otaurl}>)\nbuilt {built} against {commit}\n\n`backlog otaurl {otaurl}; upgrade 1`".format(**i)
                         embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
                         break
                 else:
@@ -325,7 +325,7 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
                     embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds. Available variants:\n\n{}".format("\n".join(variants)))
             else:
                 for bin in size_branch:
-                    bins.append("[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n".format(**bin))
+                    bins.append("[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n`backlog otaurl {otaurl}; upgrade 1`\n".format(**bin))
 
                 desc += "\n".join(bins)
                 embed = discord.Embed(title="Official development builds", description=desc, colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
