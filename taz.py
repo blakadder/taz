@@ -368,7 +368,7 @@ async def on_command_error(ctx, error):
         embed.description = "Required argument is missing."
     elif isinstance(error, commands.CommandNotFound):
         if ctx.message.content.startswith("??"):
-            pass
+            return
     else:
         embed.description = str(type(error)) + "\n" + str(error.original)
     await ctx.send(embed=embed)
