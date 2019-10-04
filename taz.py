@@ -69,18 +69,28 @@ async def on_message(message):
 
         if cmnd:
             parsed_cmnds = set(sorted([c for result in cmnd for c in result if c]))
+            print(parsed_cmnds)
             await ctx.invoke(command, parsed_cmnds)
 
         if lnks:
             parsed_links = set(sorted([l for result in lnks for l in result if l]))
+            print(parsed_links)
             await ctx.invoke(link, parsed_links)
 
     await bot.process_commands(message)
 
 
-# COMMANDS #
+# LINKS #
 @bot.command(aliases=["l"], brief="Return a link or show available links.")
-async def link(ctx, keywords: str=''):
+async def link(ctx, keywords=""):
+    mentions = [m.mention for m in ctx.message.mentions if not m.bot]
+    if not keywords:
+        link_list = " ".join(sorted(
+            ["[{}](<{}>): {}\n".format(k, links_dict[k]["url"], links_dict[k]["description"]) for k in links_dict.keys()]))
+        embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
+        embed.set_footer(text="You can click them directly.")
+        await ctx.channel.send(embed=embed, content=" ".join(mentions))
+
     if not isinstance(keywords, str):
         found_links = []
         for keyword in keywords:
@@ -91,15 +101,7 @@ async def link(ctx, keywords: str=''):
                 embed = discord.Embed(description="\n".join(found_links), colour=discord.Colour(0x3498db))
             else:
                 embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Link '{}' not found".format(keyword))
-
-    elif not keywords:
-        link_list = " ".join(sorted(
-            ["[{}](<{}>): {}\n".format(k, links_dict[k]["url"], links_dict[k]["description"]) for k in links_dict.keys()]))
-        embed = discord.Embed(title="Available links", description=link_list, colour=discord.Colour(0x3498db))
-        embed.set_footer(text="You can click them directly.")
-
-    mentions = [m.mention for m in ctx.message.mentions if not m.bot]
-    await ctx.channel.send(embed=embed, content=" ".join(mentions))
+        await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
 
 @commands.has_any_role('Admin', 'Moderator', "Contributor")
@@ -340,6 +342,13 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
 
     await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
+@bot.command(brief="Channel purge. Use with EXTREME care")
+@commands.has_any_role('Admin', 'Moderator')
+async def purge_channel(ctx):
+    await ctx.channel.purge()
+    embed = discord.Embed(title="Success", description="Channel purged by {}".format(ctx.message.author),
+                          colour=discord.Colour(0x7ED321))
+    await ctx.channel.send(embed=embed)
 
 # WELCOME #
 @bot.command(brief="Re-send welcome message to mentioned user(s)")
