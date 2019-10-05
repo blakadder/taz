@@ -214,14 +214,14 @@ async def command_del(ctx, cmd: str):
 @bot.group(name="roles", brief="Manage your help roles. Use without parameters for a list.")
 async def roles_group(ctx):
     if ctx.invoked_subcommand is None:
-        roles = sorted([r.name for r in ctx.guild.roles if r.name.startswith("help-")])
+        roles = sorted([r.name for r in ctx.guild.roles if r.name.startswith("help-") or r.name == "announcements"])
         embed = discord.Embed(title="Available roles", colour=discord.Colour(0x3498db), description="\n".join(roles))
         await ctx.send(embed=embed)
 
 
 @roles_group.command(name="add", brief="Add yourself a help- role")
 async def roles_add(ctx, role):
-    if role.startswith("help-"):
+    if role.startswith("help-") or role == "announcements":
         for r in ctx.guild.roles:
             if r.name == role:
                 await ctx.message.author.add_roles(r)
@@ -237,7 +237,7 @@ async def roles_add(ctx, role):
 
 @roles_group.command(name="del", brief="Delete a help- role from yourself")
 async def roles_del(ctx, role):
-    if role.startswith("help-"):
+    if role.startswith("help-") or role == "announcements":
         for r in ctx.message.author.roles:
             if r.name == role:
                 await ctx.message.author.remove_roles(r)
