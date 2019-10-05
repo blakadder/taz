@@ -345,7 +345,7 @@ async def ota(ctx, core="pre-2.6", size="1M", variant=""):
 @bot.command(brief="Channel purge. Use with EXTREME care")
 @commands.has_any_role('Admin', 'Moderator')
 async def purge_channel(ctx):
-    await ctx.channel.purge(1000)
+    await ctx.channel.purge(limit=100)
     embed = discord.Embed(title="Success", description="Channel purged by {}".format(ctx.message.author),
                           colour=discord.Colour(0x7ED321))
     await ctx.channel.send(embed=embed)
