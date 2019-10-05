@@ -69,12 +69,10 @@ async def on_message(message):
 
         if cmnd:
             parsed_cmnds = set(sorted([c for result in cmnd for c in result if c]))
-            print(parsed_cmnds)
             await ctx.invoke(command, parsed_cmnds)
 
         if lnks:
             parsed_links = set(sorted([l for result in lnks for l in result if l]))
-            print(parsed_links)
             await ctx.invoke(link, parsed_links)
 
     await bot.process_commands(message)
@@ -137,7 +135,6 @@ async def links_add(ctx, keyword: str, url: str, *description: str):
 async def links_del(ctx, keyword: str):
     keyword = keyword.lower()
     lnk = await find_link(keyword)
-    print(lnk)
     if lnk:
         links_dict.pop(lnk)
         with open('links.json', "w") as l:
