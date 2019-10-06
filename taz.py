@@ -97,8 +97,8 @@ async def link(ctx, keywords=""):
                 lnk = links_dict[keyword]
                 found_links.append("[{}](<{}>)".format(lnk["description"], lnk["url"]))
                 embed = discord.Embed(description="\n".join(found_links), colour=discord.Colour(0x3498db))
-            else:
-                embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Link '{}' not found".format(keyword))
+            # else:
+            #     embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Link '{}' not found".format(keyword))
         await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
 
