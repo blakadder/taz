@@ -107,7 +107,8 @@ async def link(ctx, keywords=""):
 async def links_group(ctx):
     if ctx.invoked_subcommand is None:
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Invalid command passed")
-        await ctx.send(embed=embed)
+        msg = await ctx.send(embed=embed)
+        await msg.delete(delay=5)
 
 
 @links_group.command(name="add", brief="Add a link")
@@ -117,7 +118,8 @@ async def links_add(ctx, keyword: str, url: str, *description: str):
 
     if await find_link(keyword, url):
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="This keyword or this url is already present")
-        await ctx.send(embed=embed)
+        msg = await ctx.send(embed=embed)
+        await msg.delete(delay=5)
 
     else:
         links_dict[keyword] = {"description": description, "url": url}
@@ -148,7 +150,8 @@ async def links_del(ctx, keyword: str):
         await ctx.channel.send(embed=embed)
     else:
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Link '{}' not found".format(keyword))
-        await ctx.send(embed=embed)
+        msg = await ctx.send(embed=embed)
+        await msg.delete(delay=5)
 
 # COMMANDS #
 @bot.command(aliases=["c", "cmd"], brief="Link to wiki page of command")
@@ -172,7 +175,8 @@ async def command(ctx, cmds):
 async def command_group(ctx):
     if ctx.invoked_subcommand is None:
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Invalid command passed")
-        await ctx.send(embed=embed)
+        msg = await ctx.send(embed=embed)
+        await msg.delete(delay=5)
 
 
 @command_group.command(name="add", brief="Add a Tasmota command")
@@ -208,7 +212,8 @@ async def command_del(ctx, cmd: str):
         await ctx.channel.send(embed=embed)
     else:
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Command '{}' not found".format(cmd))
-        await ctx.send(embed=embed)
+        msg = await ctx.send(embed=embed)
+        await msg.delete(delay=5)
 
 # ROLES #
 @bot.group(name="roles", brief="Manage your help roles. Use without parameters for a list.")
@@ -226,13 +231,17 @@ async def roles_add(ctx, role):
             if r.name == role:
                 await ctx.message.author.add_roles(r)
                 embed = discord.Embed(title="Success", description="You are now a member of '{}' group".format(role), colour=discord.Colour(0x7ED321))
+                await ctx.send(embed=embed)
                 break
         else:
             embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Role '{}' not found".format(role))
+            msg = await ctx.send(embed=embed)
+            await msg.delete(delay=5)
 
     else:
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="You can't assign yourself this role".format(role))
-    await ctx.send(embed=embed)
+        msg = await ctx.send(embed=embed)
+        await msg.delete(delay=5)
 
 
 @roles_group.command(name="del", brief="Delete a help- role from yourself")
@@ -246,10 +255,12 @@ async def roles_del(ctx, role):
                 break
         else:
             embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="You don't have role '{}'".format(role))
-            await ctx.send(embed=embed)
+            msg = await ctx.send(embed=embed)
+            await msg.delete(delay=5)
     else:
         embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="You can't remove this role".format(role))
-        await ctx.send(embed=embed)
+        msg = await ctx.send(embed=embed)
+        await msg.delete(delay=5)
 
 # MUTE/UNMUTE #
 @bot.command(aliases=["m"], brief="Mute a user or show the list of currently muted users.")
@@ -258,7 +269,8 @@ async def mute(ctx, member: discord.Member=None, duration: int=5):
     if member and member == bot.user:
         embed = discord.Embed(
             title="Yeah, good luck with that", colour=discord.Colour(0x3498db), description="I'd laugh if I had a sense of humor.")
-        await ctx.channel.send(content=member.mention, embed=embed)
+        msg = await ctx.channel.send(content=member.mention, embed=embed)
+        await msg.delete(delay=5)
     elif member:
         muted_users[member] = datetime.now() + timedelta(minutes=duration)
         await bot.add_roles(member, get(member.server.roles, name="Muted"))
@@ -377,7 +389,9 @@ async def on_command_error(ctx, error):
             return
     else:
         embed.description = str(type(error)) + "\n" + str(error.original)
-    await ctx.send(embed=embed)
+    msg = await ctx.send(embed=embed)
+    await msg.delete(delay=5)
+
 
 
 @bot.event
