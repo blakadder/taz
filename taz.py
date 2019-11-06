@@ -29,10 +29,11 @@ with open('remarks.txt') as r:
     remarks = r.read()
 
 hackbox_dict = {}
+templates_dict = {}
 muted_users = {}
 
 git = Github()
-tasmota = git.get_repo("arendst/Sonoff-Tasmota")
+tasmota = git.get_repo("arendst/Tasmota")
 
 re_issue = re.compile(r"(?:\A|\s)#(\d{4})")
 re_command = re.compile(r"(?:\s)?\?c (\w*)(?:\b)?|`(\w*)`(?:\b)?", re.IGNORECASE)
@@ -58,7 +59,7 @@ async def on_message(message):
                     nr = int(i)
                     if nr >= 1000:
                         issue = tasmota.get_issue(number=nr)
-                        response.append("[#{}: {}](<https://github.com/arendst/Sonoff-Tasmota/issues/{}>)".format(i, issue.title, i))
+                        response.append("[#{}: {}](<https://github.com/arendst/Tasmota/issues/{}>)".format(i, issue.title, i))
                 except Exception as error:
                     if isinstance(error, UnknownObjectException):
                         bad.append(i)
@@ -161,7 +162,7 @@ async def command(ctx, cmds):
         for cmd in cmds:
             cmnd = await find_command(cmd)
             if cmnd:
-                found_commands.append("[{}](<https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#{}>)".format(cmnd, cmnd))
+                found_commands.append("[{}](<https://github.com/arendst/Tasmota/wiki/Commands#{}>)".format(cmnd, cmnd))
 
         if found_commands:
             embed = discord.Embed(title="Tasmota Commands Wiki", description="\n".join(found_commands),
@@ -273,10 +274,11 @@ async def mute(ctx, member: discord.Member=None, duration: int=5):
         await msg.delete(delay=5)
     elif member:
         muted_users[member] = datetime.now() + timedelta(minutes=duration)
-        await bot.add_roles(member, get(member.server.roles, name="Muted"))
+        await member.add_roles(get(ctx.guild.roles, name="Muted"))
         embed = discord.Embed(title="{} has been muted in all channels for {} minute{}".format(member.name, duration, "s" if duration > 1 else ""), colour=discord.Colour(0x3498db),
                               description="Consider this a warning.")
         await ctx.channel.send(content=member.mention, embed=embed)
+        print("{} muted {} for {}".format(ctx.message.author.name, member.name, duration))
     else:
         embed = discord.Embed(title="Currently muted members", colour=discord.Colour(0x3498db))
         for member, duration in muted_users.items():
@@ -288,7 +290,7 @@ async def mute(ctx, member: discord.Member=None, duration: int=5):
 @commands.has_any_role('Admin', 'Moderator')
 async def unmute(ctx, member: discord.Member):
     if muted_users.get(member, None):
-        await bot.remove_roles(member, get(member.server.roles, name="Muted"))
+        await member.remove_roles(get(ctx.guild.roles, name="Muted"))
         embed = discord.Embed(title="{} is no longer muted".format(member.name), colour=discord.Colour(0x2ecc71))
     else:
         embed = discord.Embed(title="{} is not currently muted".format(member.name), colour=discord.Colour(0x3498db))
@@ -318,36 +320,47 @@ async def rtfw(ctx):
 
 
 @bot.command(brief="Link helper for dev builds from the hackbox.")
-async def ota(ctx, core="pre-2.6", size="1M", variant=""):
+async def ota(ctx, variant="", core="pre-2.6"):
     bins = []
     mentions = []
-    desc = "**Core: **{}\n**Flash size: **{}\n\n".format(core, size)
+    desc = "**Core: **{}\n".format(core)
+    bin_str = "**Language: **{language}\n\n[{binary}](<{otaurl}>)\nbuilt {built} against {commit}\n\n`backlog otaurl {otaurl}; upgrade 1`\n"
 
-    core_branch = hackbox_dict["development"].get(core)
-    if core_branch:
-        size_branch = core_branch.get(size)
-        if size_branch:
-            if variant:
-                for i in size_branch:
-                    if i["variant"] == variant:
-                        bins = "[{binary}](<{otaurl}>)\nbuilt {built} against {commit}\n\n`backlog otaurl {otaurl}; upgrade 1`".format(**i)
-                        embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
-                        break
-                else:
-                    variants = sorted([i["variant"] for i in size_branch])
-                    embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds. Available variants:\n\n{}".format("\n".join(variants)))
-            else:
-                for bin in size_branch:
-                    bins.append("[{binary}](<{otaurl}>)\nbuilt {built} against [{commit}]\n`backlog otaurl {otaurl}; upgrade 1`\n".format(**bin))
-
-                desc += "\n".join(bins)
-                embed = discord.Embed(title="Official development builds", description=desc, colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
-                mentions = [m.mention for m in ctx.message.mentions if not m.bot]
-
-        else:
-            embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Size not found in builds. Available sizes:\n\n{}".format("\n".join(list(core_branch.keys()))))
+    bin = hackbox_dict.get(variant)
+    if bin:
+        embed = discord.Embed(title="Official development builds", description=desc+bin_str.format(**bin), colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
+        mentions = [m.mention for m in ctx.message.mentions if not m.bot]
     else:
-        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Core version not found in builds. Available cores:\n\n{}".format("\n".join(list(hackbox_dict["development"].keys()))))
+        variants = sorted(list(hackbox_dict.keys()))
+        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds. Available variants:\n\n{}".format("\n".join(variants)))
+
+
+
+    # core_branch = hackbox_dict["development"].get(core)
+    #
+    # if core_branch:
+    #     size_branch = core_branch.get("1M")
+    #     if variant:
+    #         for i in size_branch:
+    #             if i["variant"] == variant:
+    #                 bins = bin_str.format(**i)
+    #                 embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
+    #                 break
+    #         else:
+    #             variants = sorted([i["variant"] for i in size_branch])
+    #             embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds. Available variants:\n\n{}".format("\n".join(variants)))
+    #     else:
+    #         for default_variant in ['minimal', 'tasmota']:
+    #             bin = size_branch[default_variant]
+    #             print(bin)
+    #             bins.append(bin_str.format(**bin))
+    #
+    #         desc += "\n".join(bins)
+    #         embed = discord.Embed(title="Official development builds", description=desc, colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
+    #         mentions = [m.mention for m in ctx.message.mentions if not m.bot]
+    #
+    # else:
+    #     embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Core version not found in builds. Available cores:\n\n{}".format("\n".join(list(hackbox_dict["development"].keys()))))
 
     await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
@@ -415,10 +428,10 @@ async def find_link(keyword, url=""):
 
 async def mute_check():
     await bot.wait_until_ready()
-    while not bot.is_closed:
+    while not bot.is_closed():
         for member, d in list(muted_users.items()):
             if datetime.now() >= muted_users[member]:
-                await bot.remove_roles(member, get(member.server.roles, name="Muted"))
+                await member.remove_roles(get(member.guild.roles, name="Muted"))
                 embed = discord.Embed(title="You are no longer muted", colour=discord.Colour(0x2ecc71))
                 await member.send(content=member.mention, embed=embed)
                 del muted_users[member]
@@ -431,11 +444,28 @@ async def fetch_hackbox():
     await bot.wait_until_ready()
     while not bot.is_closed():
         global hackbox_dict
-        hackbox_dict = requests.get("http://thehackbox.org/tasmota/development.php").json()
+        data = requests.get("http://thehackbox.org/tasmota/development.php").json()
+        hackbox_dict = {}
+        for branch in data.keys():
+            for core in data[branch].keys():
+                for build in data[branch][core]:
+                    variant = build.pop('variant')
+                    build.update({"core": core, "branch": branch})
+                    hackbox_dict[variant] = build
+        print("Fetched HackBox")
         await asyncio.sleep(3600)
+
+async def fetch_templates():
+    await bot.wait_until_ready()
+    while not bot.is_closed():
+        global templates_dict
+        templates_dict = requests.get("https://blakadder.github.io/templates/templates.json").json()
+        print("Fetched templates")
+        await asyncio.sleep(24*3600)
 
 
 if __name__ == "__main__":
-    bot.loop.create_task(mute_check())
     bot.loop.create_task(fetch_hackbox())
+    bot.loop.create_task(fetch_templates())
+    bot.loop.create_task(mute_check())
     bot.run(TOKEN)
