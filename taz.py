@@ -326,13 +326,21 @@ async def ota(ctx, variant="", core="pre-2.6"):
     desc = "**Core: **{}\n".format(core)
     bin_str = "**Language: **{language}\n\n[{binary}](<{otaurl}>)\nbuilt {built} against {commit}\n\n`backlog otaurl {otaurl}; upgrade 1`\n"
 
-    bin = hackbox_dict.get(variant)
-    if bin:
-        embed = discord.Embed(title="Official development builds", description=desc+bin_str.format(**bin), colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
-        mentions = [m.mention for m in ctx.message.mentions if not m.bot]
+    if variant:
+        bin = hackbox_dict.get(variant)
+        if bin:
+            embed = discord.Embed(title="Official development builds", description=desc+bin_str.format(**bin), colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
+            mentions = [m.mention for m in ctx.message.mentions if not m.bot]
+        else:
+            variants = sorted(list(hackbox_dict.keys()))
+            embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds. Available variants:\n\n{}".format("\n".join(variants)))
     else:
-        variants = sorted(list(hackbox_dict.keys()))
-        embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds. Available variants:\n\n{}".format("\n".join(variants)))
+        for variant in ["minimal", "tasmota"]:
+            bin = hackbox_dict.get(variant)
+            bins.append(bin_str.format(**bin))
+
+        embed = discord.Embed(title="Official development builds", description=desc+"\n".join(bins), colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
+        mentions = [m.mention for m in ctx.message.mentions if not m.bot]
 
 
 
