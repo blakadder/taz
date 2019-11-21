@@ -36,7 +36,7 @@ git = Github()
 tasmota = git.get_repo("arendst/Tasmota")
 
 re_issue = re.compile(r"(?:\A|\s)#(\d{4})")
-re_command = re.compile(r"(?:\s)?\?c (\w*)(?:\b)?|`(\w*)`(?:\b)?", re.IGNORECASE)
+re_command = re.compile(r"(?:\s)?\?c (\*?\w*\*?)(?:\b)?|`(\*?\w*\*?)`(?:\b)?", re.IGNORECASE)
 re_link = re.compile(r"(?:\s)?\?l (\w*)(?:\b)?|\[(\w*)\](?:\b)?")
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or('?'), description="Helper Bot", case_insensitive=True)
@@ -98,8 +98,7 @@ async def link(ctx, keywords=""):
                 lnk = links_dict[keyword]
                 found_links.append("[{}](<{}>)".format(lnk["description"], lnk["url"]))
                 embed = discord.Embed(description="\n".join(found_links), colour=discord.Colour(0x3498db))
-            # else:
-            #     embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Link '{}' not found".format(keyword))
+
         await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
 
@@ -160,9 +159,10 @@ async def command(ctx, cmds):
     if not isinstance(cmds, str):
         found_commands = []
         for cmd in cmds:
-            cmnd = await find_command(cmd)
-            if cmnd:
-                found_commands.append("[{}](<https://github.com/arendst/Tasmota/wiki/Commands#{}>)".format(cmnd, cmnd))
+            found_cmnd = await find_command(cmd)
+            if found_cmnd:
+                for found in found_cmnd:
+                    found_commands.append("[{}](<https://github.com/arendst/Tasmota/wiki/Commands#{}>)".format(found, found))
 
         if found_commands:
             embed = discord.Embed(title="Tasmota Commands Wiki", description="\n".join(found_commands),
@@ -320,7 +320,7 @@ async def rtfw(ctx):
 
 
 @bot.command(brief="Link helper for dev builds from the hackbox.")
-async def ota(ctx, variant="", core="pre-2.6"):
+async def ota(ctx, variant="", core="2.6.1"):
     bins = []
     mentions = []
     desc = "**Core: **{}\n".format(core)
@@ -341,34 +341,6 @@ async def ota(ctx, variant="", core="pre-2.6"):
 
         embed = discord.Embed(title="Official development builds", description=desc+"\n".join(bins), colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
         mentions = [m.mention for m in ctx.message.mentions if not m.bot]
-
-
-
-    # core_branch = hackbox_dict["development"].get(core)
-    #
-    # if core_branch:
-    #     size_branch = core_branch.get("1M")
-    #     if variant:
-    #         for i in size_branch:
-    #             if i["variant"] == variant:
-    #                 bins = bin_str.format(**i)
-    #                 embed = discord.Embed(title="Official development builds", description=desc+bins, colour=discord.Colour(0x3498db))
-    #                 break
-    #         else:
-    #             variants = sorted([i["variant"] for i in size_branch])
-    #             embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Variant not found in builds. Available variants:\n\n{}".format("\n".join(variants)))
-    #     else:
-    #         for default_variant in ['minimal', 'tasmota']:
-    #             bin = size_branch[default_variant]
-    #             print(bin)
-    #             bins.append(bin_str.format(**bin))
-    #
-    #         desc += "\n".join(bins)
-    #         embed = discord.Embed(title="Official development builds", description=desc, colour=discord.Colour(0x3498db), url="http://thehackbox.org/tasmota")
-    #         mentions = [m.mention for m in ctx.message.mentions if not m.bot]
-    #
-    # else:
-    #     embed = discord.Embed(title="Error", colour=discord.Colour(0xe74c3c), description="Core version not found in builds. Available cores:\n\n{}".format("\n".join(list(hackbox_dict["development"].keys()))))
 
     await ctx.channel.send(embed=embed, content=" ".join(mentions))
 
@@ -393,6 +365,7 @@ async def welcome(ctx):
         await ctx.message.author.send(remarks)
     await ctx.channel.send("Welcome message sent.")
 
+
 # EVENTS #
 @bot.event
 async def on_member_join(member):
@@ -414,16 +387,22 @@ async def on_command_error(ctx, error):
     await msg.delete(delay=5)
 
 
-
 @bot.event
 async def on_ready():
     print('Logged in as {} ({})'.format(bot.user.name, bot.user.id))
 
 
 async def find_command(cmd):
-    for cmnd in commands_dict.keys():
-        if cmd.lower() == cmnd.lower():
-            return cmnd
+    cmds = []
+    for cmnd in list(commands_dict.keys()):
+        if cmd.startswith("*") or cmd.endswith("*"):
+            if re.fullmatch(cmd.replace("*", "(\w*)"), cmnd, re.IGNORECASE):
+                cmds.append(cmnd)
+
+        elif cmd.lower() == cmnd.lower():
+            cmds.append(cmnd)
+
+    return cmds
 
 
 async def find_link(keyword, url=""):
