@@ -162,7 +162,7 @@ async def command(ctx, cmds):
             found_cmnd = await find_command(cmd)
             if found_cmnd:
                 for found in found_cmnd:
-                    found_commands.append("[{}](<https://tasmota.github.io/docs/#/Commands?id={}>)".format(found, found.lower()))
+                    found_commands.append("[{}](<https://tasmota.github.io/docs/Commands#{}>)".format(found, found.lower()))
 
         if found_commands:
             embed = discord.Embed(title="Tasmota Commands Wiki", description="\n".join(found_commands),

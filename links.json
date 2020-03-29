@@ -1,23 +1,19 @@
 {
   "commands": {
     "description": "Complete Commands List",
-    "url": "https://tasmota.github.io/docs/#/Commands"
+    "url": "https://tasmota.github.io/docs/Commands"
   },
   "esptool": {
     "description": "How to flash Tasmota with esptool",
-    "url": "https://tasmota.github.io/docs/#/installation/Flashing?id=esptoolpy"
+    "url": "https://tasmota.github.io/docs/Getting-Started#esptoolpy"
   },
   "exorcism": {
     "description": "My device randomly switches on and off. Do I have ghosts in my house?",
-    "url": "https://tasmota.github.io/docs/#/help/FAQ?id=my-device-randomly-switches-on-and-off-do-i-have-ghosts-in-my-house"
-  },
-  "expand": {
-    "description": "Expanding Tasmota",
-    "url": "https://tasmota.github.io/docs/#/peripherals/"
+    "url": "https://tasmota.github.io/docs/FAQ#my-device-randomly-switches-on-and-off-do-i-have-ghosts-in-my-house"
   },
   "faq": {
     "description": "Tasmota Frequently Asked Questions and Troubleshooting",
-    "url": "https://tasmota.github.io/docs/#/help/"
+    "url": "https://tasmota.github.io/docs/FAQ/"
   },
   "github": {
     "description": "Tasmota GitHub",
@@ -32,64 +28,64 @@
     "url": "https://thehackbox.org/tasmota"
   },
   "hw": {
-    "description": "Tasmota Wiki: Hardware preparation",
-    "url": "https://tasmota.github.io/docs/#/installation/Hardware-Preparation"
+    "description": "Tasmota Docs: Hardware preparation",
+    "url": "https://tasmota.github.io/docs/Getting-Started#hardware-preparation"
   },
   "prereq": {
-    "description": "Tasmota Wiki: Prerequisites",
-    "url": "https://tasmota.github.io/docs/#/installation/Prerequisites"
+    "description": "Tasmota Docs: Getting Started",
+    "url": "https://tasmota.github.io/docs/Getting-Started"
   },
   "repo": {
     "description": "Official Tasmota Device Templates Repository",
     "url": "https://blakadder.github.io/templates"
   },
   "rules": {
-    "description": "Tasmota Wiki: Rules",
-    "url": "https://tasmota.github.io/docs/#/Rules"
+    "description": "Tasmota Docs: Rules",
+    "url": "https://tasmota.github.io/docs/Rules"
   },
   "scripter": {
-    "description": "Tasmota Wiki: Scripter",
-    "url": "https://tasmota.github.io/docs/#/Scripting-Language"
+    "description": "Tasmota Docs: Scripter",
+    "url": "https://tasmota.github.io/docs/Scripting-Language"
   },
   "tdm": {
     "description": "Tasmota Device Manager",
     "url": "https://github.com/jziolkowski/tdm"
   },
   "templates": {
-    "description": "Tasmota Wiki: Templates",
-    "url": "https://tasmota.github.io/docs/#/Templates"
+    "description": "Tasmota Docs: Templates",
+    "url": "https://tasmota.github.io/docs/Templates"
   },
   "tuyamcu": {
-    "description": "Tasmota Wiki: TuyaMCU",
-    "url": "https://tasmota.github.io/docs/#/TuyaMCU"
+    "description": "Tasmota Docs: TuyaMCU",
+    "url": "https://tasmota.github.io/docs/TuyaMCU"
   },
-  "wiki": {
+  "Docs": {
     "description": "Tasmota Documentation",
-    "url": "https://tasmota.github.io/docs/#/"
+    "url": "https://tasmota.github.io/docs/"
   },
   "zigbee": {
-    "description": "Tasmota Wiki: Zigbee to Tasmota",
-    "url": "https://tasmota.github.io/docs/#/Zigbee"
+    "description": "Tasmota Docs: Zigbee to Tasmota",
+    "url": "https://tasmota.github.io/docs/Zigbee"
   },
   "upgrading": {
-    "description": "Tasmota Wiki: Upgrading",
-    "url": "https://tasmota.github.io/docs/#/Upgrading"
+    "description": "Tasmota Docs: Upgrading",
+    "url": "https://tasmota.github.io/docs/Upgrading"
   },
   "lights": {
-    "description": "Tasmota Wiki: Lights",
-    "url": "https://tasmota.github.io/docs/#/Lights"
+    "description": "Tasmota Docs: Lights",
+    "url": "https://tasmota.github.io/docs/Lights"
   },
   "webui": {
-    "description": "Tasmota Wiki: WebUI",
-    "url": "https://tasmota.github.io/docs/#/WebUI"
+    "description": "Tasmota Docs: WebUI",
+    "url": "https://tasmota.github.io/docs/WebUI"
   },
   "theme": {
-    "description": "Tasmota Wiki: WebUI Theming",
-    "url": "https://tasmota.github.io/docs/#/WebUI#Themes"
+    "description": "Tasmota Docs: WebUI Theming",
+    "url": "https://tasmota.github.io/docs/WebUI#themes"
   },
   "tuya": {
-    "description": "Tasmota Wiki: Tuya Devices",
-    "url": "https://tasmota.github.io/docs/#/TuyaMCU"
+    "description": "Tasmota Docs: Tuya Devices",
+    "url": "https://tasmota.github.io/docs/TuyaMCU"
   },
   "digiblur": {
     "description": "Digiblur's Discord",
@@ -104,11 +100,7 @@
     "url": "http://thehackbox.org/tasmota/"
   },
   "peripherals": {
-    "description": "Tasmota Wiki: Peripherals",
-    "url": "https://tasmota.github.io/docs/#/peripherals/"
+    "description": "Tasmota Docs: Peripherals",
+    "url": "https://tasmota.github.io/docs/Supported-Peripherals/"
   },
-  "betty": {
-    "description": "The name is Betty!!!",
-    "url": "https://www.youtube.com/watch?v=9iEoq8qZZK8"
-  }
 }
